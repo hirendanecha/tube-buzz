@@ -72,4 +72,17 @@ export class ChannelService {
 
     return this.http.request(req);
   }
+
+  getMetaData(url) {
+    return this.http.post(`${environment.apiUrl}/get-meta`, url);
+  }
+  getProfile(id): Observable<Object> {
+    return this.http.get<Object>(`${environment.apiUrl}customers/profile/${id}`);
+  }
+  getNotificationList(id: number, data = {}): Observable<any> {
+    return this.http.post(
+      `${environment.apiUrl}/get-notification/${id}?q=${Date.now()}`,
+      data
+    );
+  }
 }

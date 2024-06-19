@@ -1,27 +1,111 @@
-<div class="login-main-left">
-  <div class="text-center mb-5 login-main-left-header pt-4">
-    <img src="assets/img/favicon.png" class="img-fluid" alt="LOGO">
-    <h5 class="mt-3 mb-3">Welcome to Video</h5>
-    <p>It is a long established fact that a reader <br> will be distracted by the readable.</p>
-  </div>
-  <form action="index.html">
-    <div class="form-group">
-      <label>Mobile number</label>
-      <input type="text" class="form-control" placeholder="Enter mobile number">
+<div class="row">
+  <div class="col-12 col-md-8 col-lg-7 col-xl-6 mx-auto d-flex flex-column">
+    <div class="d-flex justify-content-center my-20" routerLink="/">
+      <img
+        height="60"
+        src="assets/images/landingpage/freedom-buzz.png"
+        class="h-60-px rounded"
+        alt=""
+      />
     </div>
-    <div class="form-group">
-      <label>Password</label>
-      <input type="password" class="form-control" placeholder="Password">
-    </div>
-    <div class="mt-4">
-      <div class="row">
-        <div class="col-12">
-          <button type="submit" class="btn btn-outline-primary btn-block btn-lg">Sign In</button>
+    <div class="d-flex flex-column justify-content-center mt-10">
+      <!-- <p class="text-2 mb-5">
+        Have an existing old Freedom.social account, click on Reset Password or create a new account!
+        <a class="fw-500 cursor" (click)="forgotPasswordOpen()">Click here</a>
+      </p> -->
+      <p class="text-2 mb-5">
+        Not activated?
+        <a class="fw-500" routerLink="/register">Register</a>
+      </p>
+      <h3 class="mb-4">Log In to Your Account</h3>
+
+      <form
+        id="loginForm"
+        class="form-dark d-flex flex-column"
+        #signInForm="ngForm"
+        [formGroup]="loginForm"
+        (ngSubmit)="signInForm.form.valid && onSubmit()"
+        novalidate
+        autocomplete="none"
+      >
+        <!-- *ngIf="!isLoggedIn" -->
+        <div
+          class="alert alert-{{ type }}"
+          role="alert"
+          *ngIf="errorMessage || msg"
+        >
+          {{ errorMessage || msg }}
         </div>
-      </div>
+        <div class="mb-3">
+          <label class="form-label"
+            >Email Address or Username<span class="text-danger">*</span></label
+          >
+          <input
+            type="email"
+            class="input-area form-control"
+            required
+            placeholder="Enter Your Email"
+            formControlName="Email"
+            autocomplete="email"
+          />
+          <div
+            class="srv-validation-message text-danger"
+            *ngIf="
+                signInForm.submitted &&
+                   loginForm.controls['Email'].invalid &&
+                   loginForm.controls['Email'].errors?.['required']
+                 "
+          >
+            Email field is required.
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between">
+            <label class="form-label"
+              >Password<span class="text-danger">*</span></label
+            >
+            <a class="fw-500 c-pointer" (click)="forgotPasswordOpen()"
+              >Forgot Password ?</a
+            >
+          </div>
+          <div class="d-flex custom-input-area position-relative">
+            <input
+              type="password"
+              class="input-area form-control"
+              required
+              placeholder="Enter Password"
+              formControlName="Password"
+              #passwordInput
+              />
+            <!-- <fa-icon [icon]="passwordHidden ? ['fas', 'eye'] : ['fas', 'eye-slash']" class="font-20-px position-absolute" (click)="togglePasswordVisibility(passwordInput)"></fa-icon> -->
+          </div>
+          <div
+            class="srv-validation-message text-danger"
+            *ngIf="
+              signInForm.submitted &&
+                 loginForm.controls['Password'].invalid &&
+                 loginForm.controls['Password'].errors?.['required']
+               "
+          >
+            Please enter valid password!
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between captcha-btn">
+          <!-- <div id="captcha" #captcha></div> -->
+          <div class="login-btn">
+          <button class="btn btn-primary my-2 ms-auto h-40-px " type="submit">
+            Log in
+          </button>
+        </div>
+        </div>
+      </form>
     </div>
-  </form>
-  <div class="text-center mt-5">
-    <p class="light-gray">Don’t have an account? <a href="register.html">Sign Up</a></p>
+  </div>
+  <div class="text-center mt-3">
+    <p class="text-danger">
+      If you are having technical issues, email
+      <a href="mailto:support@Freedom.Buzz">{{ "support@Freedom.Buzz" }}</a>
+    </p>
   </div>
 </div>

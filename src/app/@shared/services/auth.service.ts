@@ -6,13 +6,18 @@ import { CommonService } from './common.service';
 import { ToastService } from './toast.service';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  withCredentials: true,
+};
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   // admin: BehaviorSubject<any>;
+  private baseUrl = environment.apiUrl;
   userDetails: any = {};
   user: BehaviorSubject<any>;
   token: BehaviorSubject<any>;
@@ -149,6 +154,16 @@ export class AuthService {
   verifyToken(token): Observable<any> {
     return this.http.get(
       `${environment.apiUrl}customers/verify-token/${token}`
+    );
+  }
+  customerlogin(login: any): Observable<Object> {
+    return this.http.post(
+      this.baseUrl + 'login',
+      {
+        email: login.Email,
+        password: login.Password,
+      },
+      httpOptions
     );
   }
 }

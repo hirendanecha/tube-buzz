@@ -80,13 +80,13 @@ export function app(): express.Express {
         }
         const params = req.params[0];
         var seo: any = {
-          title: 'Freedom.Tube',
+          title: 'Tube.Buzz',
           description:
             'The Umbrella platform for All freedom based projects worldwide',
-          image: 'https://tube.freedom.buzz/assets/banner/freedom-buzz-high-res.jpeg',
+          image: 'https://tube.freedom.buzz/assets/banner/TubeBuzz-Logo.png',
           site: 'https://tube.freedom.buzz/',
           url: 'https://tube.freedom.buzz' + params,
-          keywords: 'Freedom.Tube',
+          keywords: 'Tube.Buzz',
         };
         if (params.indexOf('channel/') > -1) {
           let id = params.split('/');
@@ -125,9 +125,9 @@ export function app(): express.Express {
           const pdhtml = document.createElement('div');
           pdhtml.innerHTML = post?.postdescription || post?.metadescription;
           const talent = {
-            name: post?.title || post?.albumname || 'Freedom.Tube Post',
+            name: post?.title || post?.albumname || 'Tube.Buzz Post',
             description: pdhtml?.textContent || 'Post content',
-            image: post?.thumbfilename || post?.metaimage || post?.imageUrl || 'https://tube.freedom.buzz/assets/FreedomTube-logo.png',
+            image: post?.thumbfilename || post?.metaimage || post?.imageUrl || 'https://tube.freedom.buzz/assets/TubeBuzz-Logo.png',
           };
           seo.title = talent.name;
           seo.description = strip_html_tags(talent.description);
