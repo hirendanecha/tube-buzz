@@ -69,7 +69,7 @@ export class SeoService {
     }
 
     if (!tagValue.image) {
-      tagValue.image = 'https://freedom.buzz/assets/images/banner/TubeBuzz-Logo.png';
+      tagValue.image = 'https://tube.buzz/assets/images/banner/TubeBuzz-Logo.png';
     }
 
     this.meta.updateTag({

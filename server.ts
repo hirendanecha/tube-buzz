@@ -83,9 +83,9 @@ export function app(): express.Express {
           title: 'Tube.Buzz',
           description:
             'The Umbrella platform for All freedom based projects worldwide',
-          image: 'https://tube.freedom.buzz/assets/banner/TubeBuzz-Logo.png',
-          site: 'https://tube.freedom.buzz/',
-          url: 'https://tube.freedom.buzz' + params,
+          image: 'https://tube.buzz/assets/banner/TubeBuzz-Logo.png',
+          site: 'https://tube.buzz/',
+          url: 'https://tube.buzz' + params,
           keywords: 'Tube.Buzz',
         };
         if (params.indexOf('channel/') > -1) {
@@ -127,7 +127,7 @@ export function app(): express.Express {
           const talent = {
             name: post?.title || post?.albumname || 'Tube.Buzz Post',
             description: pdhtml?.textContent || 'Post content',
-            image: post?.thumbfilename || post?.metaimage || post?.imageUrl || 'https://tube.freedom.buzz/assets/TubeBuzz-Logo.png',
+            image: post?.thumbfilename || post?.metaimage || post?.imageUrl || 'https://tube.buzz/assets/TubeBuzz-Logo.png',
           };
           seo.title = talent.name;
           seo.description = strip_html_tags(talent.description);

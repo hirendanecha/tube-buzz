@@ -20,12 +20,12 @@
       class="navbar-nav d-sm-flex flex-row justify-content-around align-self-center ms-auto m-lg-auto gap-3 gap-xl-20 gap-lg-10 py-0 nav-btn"
     >
       <li title="Buzz Home" class="cursor">
-        <a href="https://freedom.buzz/home" target="_blank">
+        <a href="https://tube.buzz/home" target="_blank">
           <fa-icon [icon]="['fas', 'house']" class="font-24-px" />
         </a>
       </li>
       <li title="Research" class="cursor d-none d-sm-flex">
-        <a href="https://freedom.buzz/research" target="_blank">
+        <a href="https://tube.buzz/research" target="_blank">
           <fa-icon [icon]="['fas', 'book-open']" class="font-24-px mx-sm-5" />
         </a>
       </li>
@@ -36,7 +36,9 @@
       </li>
     </ul>
     <!-- Navbar -->
-    <ul class="navbar-nav ms-auto ms-md-0 osahan-right-navbar align-items-center">
+    <ul
+      class="navbar-nav ms-auto ms-md-0 osahan-right-navbar align-items-center"
+    >
       <div class="single-item">
         <div
           class="icon-area d-center position-relative"
@@ -162,10 +164,10 @@
       </div>
 
       <div class="d-flex">
-        <a href="https://freedom.buzz/login">
+        <a routerLink="/login">
           <button class="btn btn-success me-2">Login</button>
         </a>
-        <a href="https://freedom.buzz/register">
+        <a routerLink="register">
           <button class="btn btn-primary">Sign up</button>
         </a>
       </div>
