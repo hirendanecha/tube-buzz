@@ -39,7 +39,7 @@ export class CreateChannelComponent {
     private uploadFilesService: UploadFilesService,
     public authService: AuthService,
   ) {
-    this.profileId = JSON.parse(this.authService.getUserData() as any).Id;
+    this.profileId = JSON.parse(this.authService.getUserData() as any).profileId;
   }
 
   ngOnInit(): void {}
