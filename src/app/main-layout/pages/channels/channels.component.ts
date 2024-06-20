@@ -36,7 +36,7 @@ export class ChannelsComponent implements OnInit, AfterViewInit {
   }
 
   getChannelByUserId(): void {
-    this.commonService.get(`${this.apiUrl}/my-channel/${this.userData.UserID}`).subscribe({
+    this.commonService.get(`${this.apiUrl}/my-channel/${this.userData.Id}`).subscribe({
       next: (res) => {
         // console.log(res.data);
         if (res.data.length) {

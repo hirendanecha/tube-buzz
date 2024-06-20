@@ -93,7 +93,7 @@ export class MyAccountComponent {
 
   getChannelByUserId(): void {
     const url = environment.apiUrl
-    this.commonService.get(`${url}channels/my-channel/${this.userData.UserID}`).subscribe({
+    this.commonService.get(`${url}channels/my-channel/${this.userData.Id}`).subscribe({
       next: (res) => {
         if (res) {
           this.channelData = res;
@@ -107,7 +107,7 @@ export class MyAccountComponent {
     });
   }
   getChannels(): void {
-    const userId = JSON.parse(this.authService.getUserData() as any)?.UserID;
+    const userId = JSON.parse(this.authService.getUserData() as any)?.Id;
     const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
     this.commonService.get(apiUrl).subscribe({
       next: (res) => {

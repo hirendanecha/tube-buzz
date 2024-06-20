@@ -75,15 +75,13 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
   ) {
     this.profileId = +localStorage.getItem('profileId');
     this.userMail = JSON.parse(localStorage.getItem('userData'))?.Email;
+    this.userId = JSON.parse(localStorage.getItem('userData'))?.Id;
     if (this.profileId) {
       this.getProfile(this.profileId);
     }
     this.useDetails = JSON.parse(this.authService.getUserData() as any);
-    console.log(this.useDetails);
   }
   ngOnInit(): void {
-    console.log("mail",this.userMail);
-    
     this.getAllCountries();
     this.getUserDetails();
   }
@@ -108,10 +106,10 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
       State: this.useDetails?.State,
       Username: this.useDetails?.Username,
       MobileNo: this.useDetails?.MobileNo || '',
-      UserID: this.useDetails?.UserID,
       ProfilePicName: this.useDetails?.ProfilePicName,
       CoverPicName: this.useDetails?.CoverPicName,
-      // Email:this.useDetails?.Email
+      // Email:this.useDetails?.Email,
+      UserID: this.useDetails?.Id
     };
     this.userForm.setValue(data);
   }
@@ -121,7 +119,7 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
       next: (res: any) => {
         this.spinner.hide();
         if (res.data) {
-          this.customer = res.data[0];
+          this.customer = res.data;
           this.getAllCountries();
         }
       },

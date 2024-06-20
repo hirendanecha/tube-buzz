@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastService } from '../../services/toast.service';
 import { ChannelService } from '../../services/channels.service';
 import { AuthService } from '../../services/auth.service';
+import { UploadFilesService } from '../../services/upload-files.service';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class CreateChannelComponent {
     public toastService: ToastService,
     public activateModal: NgbActiveModal,
     private channelService: ChannelService,
+    private uploadFilesService: UploadFilesService,
     public authService: AuthService,
   ) {
     this.profileId = JSON.parse(this.authService.getUserData() as any).Id;
@@ -80,7 +82,7 @@ export class CreateChannelComponent {
 
   upload() {
     this.spinner.show();
-    this.channelService.upload(this.profileImg.file, this.profileId, 'channel').subscribe({
+    this.uploadFilesService.uploadFile(this.profileImg.file).subscribe({
       next: (res: any) => {
         this.spinner.hide();
         if (this.profileImg.file?.size < 5120000) {

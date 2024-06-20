@@ -53,26 +53,6 @@ export class ChannelService {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
 
-  upload(file: File, id: any, defaultType: string): Observable<HttpEvent<any>> {
-    const formData: FormData = new FormData();
-    formData.append('folder', defaultType);
-    formData.append('file', file);
-    formData.append('id', id);
-    formData.append('default', defaultType);
-
-    const req = new HttpRequest(
-      'POST',
-      `${environment.apiUrl}utils/upload`,
-      formData,
-      {
-        reportProgress: true,
-        responseType: 'json',
-      }
-    );
-
-    return this.http.request(req);
-  }
-
   getMetaData(url) {
     return this.http.post(`${environment.apiUrl}/get-meta`, url);
   }

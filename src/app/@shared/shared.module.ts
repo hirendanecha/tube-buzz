@@ -278,7 +278,9 @@ export class SharedModule {
       faCaretDown,
       faUserCircle,
       faAngleRight,
-      faFolderOpen
+      faFolderOpen,
+      faCalendar,
+      faCloudUpload
     );
   }
 }
