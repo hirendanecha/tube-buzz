@@ -211,19 +211,19 @@
       </div> -->
   
       <button
-      type="button"
-      class="btn btn-outline-danger btn-block btn-md"
-      (click)="resetForm()"
+      class="btn btn-primary mt-5 login-button float-end w-100-px"
+      (click)="confirmAndUpdateCustomer()"
     >
-      Cancel
+      <!-- type="submit" -->
+      Update
     </button>
-      <button
-      type="button"
-      class="btn btn-outline-primary btn-block btn-md ms-4"
-      (click)="saveChanges()"
-      [disabled]="!isEdit && userForm.invalid"
-      >
-      Save Changes
+    <button
+      class="btn btn-outline-danger mt-5 px-3 py-1 h-auto d-flex gap-2 align-items-center mb-5 delete-account float-start"
+      (click)="deleteAccount()"
+    >
+      Delete
+
+      <fa-icon [icon]="['fas', 'trash-can']" class="font-20-px" />
     </button>
     </div>
   </div>

@@ -73,7 +73,11 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
     private customerService:CustomerService,
     private tokenStorage:TokenStorageService
   ) {
+    this.profileId = +localStorage.getItem('profileId');
     this.userMail = JSON.parse(localStorage.getItem('auth-user'))?.Email;
+    if (this.profileId) {
+      this.getProfile(this.profileId);
+    }
     this.useDetails = JSON.parse(this.authService.getUserData() as any);
     console.log(this.useDetails);
   }
@@ -110,6 +114,22 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
       // Email:this.useDetails?.Email
     };
     this.userForm.setValue(data);
+  }
+  getProfile(id): void {
+    this.spinner.show();
+    this.customerService.getProfile(id).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        if (res.data) {
+          this.customer = res.data[0];
+          this.getAllCountries();
+        }
+      },
+      error: (error) => {
+        this.spinner.hide();
+        console.log(error);
+      },
+    });
   }
 
   saveChanges(): void {
