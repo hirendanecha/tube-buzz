@@ -30,7 +30,7 @@ export class VideoCardComponent implements OnInit, AfterViewInit {
     public modalService: NgbModal,
     public authService: AuthService
   ) {
-    this.profileid = JSON.parse(this.authService.getUserData() as any)?.Id;
+    this.profileid = JSON.parse(this.authService.getUserData() as any)?.profileId;
     this.includedChannels = localStorage.getItem('get-channels');
     // console.log(this.profileid);
   }
