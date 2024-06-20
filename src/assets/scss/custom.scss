@@ -1590,11 +1590,11 @@ h6 {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff516b', endColorstr='#826cfd',GradientType=1 );
 
   /* IE6-9 fallback on horizontal gradient */
-  height: calc(100vh - 0rem);
+  // height: calc(100vh - 0rem);
 }
 
 .full-height {
-  height: calc(100vh - 0rem);
+  // height: calc(100vh - 0rem);
 }
 
 .login-main-left {
