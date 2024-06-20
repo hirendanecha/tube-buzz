@@ -66,7 +66,7 @@
               data-src="{{ shareService.userDetails?.ProfilePicName }}"
               alt=""
               loading="lazy"
-              onerror="this.onerror=null;this.src='assets/default-profile.jpg';"
+              onerror="this.onerror=null;this.src='/assets/default-profile.jpg';"
             />
             <!-- {{ shareService.userDetails?.Username }} -->
             <div class="c-header-name">
@@ -98,6 +98,14 @@
                 [fixedWidth]="true"
               />
               &nbsp; TubeBuzz Profile
+            </button>
+            <button ngbDropdownItem routerLink="/settings">
+              <fa-icon
+                class="font-20-px"
+                [icon]="['fas', 'gear']"
+                [fixedWidth]="true"
+              />
+              &nbsp; Setting & Privacy
             </button>
             <!-- <button ngbDropdownItem>
             <fa-icon [icon]="['fas', 'video']" [fixedWidth]="true" />

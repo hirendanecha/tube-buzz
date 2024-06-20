@@ -1,160 +1,230 @@
-<div class="upload-details">
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="main-title">
-        <h6>Settings</h6>
-      </div>
-    </div>
+<div class="d-flex flex-column gap-5 edit-profile">
+  <div class="d-flex flex-column flex-md-row gap-5">
+    <app-img-picker
+      classes="w-300-px h-300-px"
+      defaultImg="/assets/img/favicon.png"
+      [url]="customer.ProfilePicName"
+      (onFileChange)="onProfileImgChange($event)"
+    />
+    <app-img-picker
+      class="w-100"
+      classes="h-300-px"
+      defaultImg="/assets/img/TubeBuzz-Logo.png"
+      [url]="customer.CoverPicName"
+      (onFileChange)="onProfileCoverImgChange($event)"
+    />
   </div>
-  <form [formGroup]="userForm" (change)="onChangeData()">
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label class="control-label"
-            >First Name <span class="required">*</span></label
-          >
-          <input
-            class="form-control border-form-control"
-            formControlName="FirstName"
-            type="text"
-          />
-        </div>
+  <div class="d-flex flex-column flex-md-row gap-md-5">
+    <div class="single-box p-5 w-100">
+      <div class="text-start">
+        <!-- <span class="mb-3">1. Complete all required information</span> -->
       </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label class="control-label"
-            >Last Name <span class="required">*</span></label
-          >
-          <input
-            class="form-control border-form-control"
-            formControlName="LastName"
-            type="text"
-          />
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label class="control-label"
-            >Username <span class="required">*</span></label
-          >
-          <input
-            class="form-control border-form-control"
-            formControlName="Username"
-            type="text"
-          />
-          <div
-            class="srv-validation-message text-danger"
-            *ngIf="userForm?.controls['Username']?.invalid &&
-                     userForm?.controls['Username']?.errors?.['required']"
-          >
-            Username field is required.
+      <form
+        id="loginForm"
+        class="form-dark"
+        ngNativeValidate
+        autocomplete="off"
+        [formGroup]="userForm"
+        
+      >
+        <!-- (ngSubmit)="confirmAndUpdateCustomer()" -->
+        <div class="row">
+          <div class="col-12 col-md-6 mb-3">
+            <label class="d-flex form-label">First Name</label>
+            <input
+              type="text"
+              class="input-area form-control"
+              name="fname"
+              placeholder="Enter Your Name"
+              formControlName="FirstName"
+              />
+              <!-- [(ngModel)]="customer.FirstName" -->
+          </div>
+          <div class="col-12 col-md-6 mb-3">
+            <label class="d-flex form-label">Last Name</label>
+            <input
+              type="text"
+              class="input-area form-control"
+              name="lname"
+              placeholder="Enter Your Name"
+              formControlName="LastName"
+            />
           </div>
         </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label class="control-label"
-            >Phone <span class="required">*</span></label
-          >
-          <input
-            class="form-control border-form-control"
-            formControlName="MobileNo"
-            type="number"
-          />
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label class="control-label"
-            >Country <span class="required">*</span></label
-          >
-          <select
-            id="Country"
-            required
-            name="Country"
-            class="form-control w-100"
-            [(ngModel)]="useDetails.Country"
-            [ngModelOptions]="{ standalone: true }"
-            (change)="changeCountry($event)"
-          >
-            <option
-              [value]="item.country_code"
-              *ngFor="let item of allCountryData"
+        <div class="row">
+          <div class="col-12 col-md-6 mb-3">
+            <label class="d-flex form-label align-items-center"
+              >User Name</label
             >
-              {{ item.country }}
-            </option>
-          </select>
+            <input
+              type="text"
+              name="uname"
+              class="input-area form-control"
+              placeholder="Enter your Username"
+              formControlName="Username"
+              (keyup)="onChangeTag($event)"
+            />
+          </div>
+          <div class="col-12 col-md-6 mb-3">
+            <label class="d-flex form-label align-items-center"
+              >Email<span class="font-12-px ms-2">(not editable)</span></label
+            >
+  
+            <input
+              type="text"
+              name="email"
+              class="input-area form-control"
+              placeholder="Enter your email"
+              [(ngModel)]="userMail"
+              [ngModelOptions]="{ standalone: true }"
+              disabled
+             />
+          </div>
         </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label class="control-label"
-            >Zip Code <span class="required">*</span></label
-          >
-          <input
+        <div class="row">
+          <div class="col-12 col-md-6 mb-3">
+            <label class="d-flex form-label">Country</label>
+            <select
+              id="country"
+              name="country"
+              class="input-area w-100 form-control"
+              [(ngModel)]="useDetails.Country"
+              [ngModelOptions]="{ standalone: true }"
+              (change)="changeCountry($event)"
+              >
+              <!-- [(ngModel)]="customer.Country" -->
+              <!-- <option value="">Select Country</option> -->
+              <option
+                [value]="item.country_code"
+                *ngFor="let item of allCountryData"
+              >
+                {{ item.country }}
+              </option>
+            </select>
+          </div>
+          <div class="col-12 col-md-6 mb-3">
+            <label class="d-flex form-label">Zip Code</label>
+            <input
             class="form-control border-form-control"
             formControlName="Zip"
             type="number"
             #zipCode
           />
-          <div
-            class="srv-validation-message text-danger"
-            *ngIf="userForm.controls['Zip'].invalid &&
-                     userForm.controls['Zip'].errors?.['required']"
-          >
-            Zip field is required.
+              <div
+              class="srv-validation-message text-danger"
+              *ngIf="userForm.controls['Zip'].invalid &&
+                       userForm.controls['Zip'].errors?.['required']"
+            >
+              Zip field is required.
+            </div>
+              <!-- [(ngModel)]="customer.Zip" -->
           </div>
         </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label class="control-label"
-            >State <span class="required">*</span></label
-          >
-          <input
-            class="form-control border-form-control"
-            formControlName="State"
-            type="text"
-          />
+        <div class="row">
+          <div class="col-12 col-md-6 mb-3">
+            <label class="d-flex form-label">State</label>
+            <input
+              type="text"
+              class="input-area form-control"
+              placeholder="Enter your state"
+              name="state"
+              formControlName="State"
+              />
+              <!-- [(ngModel)]="customer.State" -->
+          </div>
+          <div class="col-12 col-md-6 mb-3">
+            <label class="d-flex form-label">City</label>
+            <!-- <input
+              type="text"
+              class="input-area"
+              name="city"
+              placeholder="Enter your city"
+              disabled
+              [(ngModel)]="customer.City"
+            /> -->
+  
+            <input
+              type="text"
+              class="input-area form-control"
+              name="County"
+              placeholder="Enter your city"
+              formControlName="City"
+              />
+              <!-- [(ngModel)]="customer.County" -->
+          </div>
         </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label class="control-label"
-            >City <span class="required">*</span></label
+        <div class="row">
+          <div class="col-6 col-md-6 mb-3">
+            <label class="d-flex form-label">County</label>
+            <!-- <input
+              type="text"
+              class="input-area"
+              name="County"
+              placeholder="Enter your county"
+              disabled
+              [(ngModel)]="customer.County"
+            /> -->
+            <input
+              type="text"
+              class="input-area form-control"
+              name="city"
+              placeholder="Enter your county"
+              formControlName="City"
+              />
+              <!-- [(ngModel)]="customer.City" -->
+          </div>
+          <div class="col-6 col-md-6 mb-3">
+            <label class="d-flex form-label">Mobile</label>
+            <input
+              type="number"
+              class="input-area form-control"
+              name="mobile"
+              placeholder="Enter your mobile number"
+              formControlName="MobileNo"
+              />
+              <!-- [(ngModel)]="customer.MobileNo" -->
+          </div>
+          <!-- <div
+            class="justify-content-end align-items-end d-flex"
           >
-          <input
-            class="form-control border-form-control"
-            formControlName="City"
-            type="text"
-          />
+        </div> -->
         </div>
-      </div>
+      </form>
+      <!-- <div class="d-flex flex-column">
+        <label class="d-flex form-label">Preferences</label>
+        <div class="d-flex">
+          <p class="m-2">
+            Notification Sound when you are tagged
+            <strong>{{ isNotificationSoundEnabled ? "On" : "Off" }}</strong>
+          </p>
+          <div class="form-switch">
+            <input
+              [(ngModel)]="isNotificationSoundEnabled"
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="flexSwitchCheckChecked"
+              (change)="notificationSound()"
+            />
+          </div>
+        </div>
+      </div> -->
+  
+      <button
+      type="button"
+      class="btn btn-outline-danger btn-block btn-md"
+      (click)="resetForm()"
+    >
+      Cancel
+    </button>
+      <button
+      type="button"
+      class="btn btn-outline-primary btn-block btn-md ms-4"
+      (click)="saveChanges()"
+      >
+      <!-- [disabled]="!isEdit && userForm.invalid" -->
+      Save Changes
+    </button>
     </div>
-    <div class="row">
-      <div class="col-sm-12 text-right">
-        <button
-          type="button"
-          class="btn btn-outline-danger btn-block btn-md"
-          (click)="resetForm()"
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          class="btn btn-outline-primary btn-block btn-md ms-4"
-          (click)="saveChanges()"
-          [disabled]="!isEdit && userForm.invalid"
-        >
-          Save Changes
-        </button>
-      </div>
-    </div>
-  </form>
+  </div>
 </div>

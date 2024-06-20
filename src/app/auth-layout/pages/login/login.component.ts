@@ -84,7 +84,7 @@ export class LoginComponent implements OnInit{
             this.isLoginFailed = false;
             this.isLoggedIn = true;
             this.toastService.success('Logged in successfully');
-            window.location.reload();
+            // window.location.reload();
             this.router.navigate([`/home`]);
           } else {
             this.loginMessage = data.mesaage;

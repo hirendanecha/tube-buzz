@@ -1,10 +1,18 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { debounceTime, fromEvent } from 'rxjs';
+import { debounceTime, forkJoin, fromEvent } from 'rxjs';
+import { Customer } from 'src/app/@shared/constant/customer';
+import { ConfirmationModalComponent } from 'src/app/@shared/modals/confirmation-modal/confirmation-modal.component';
 import { AuthService } from 'src/app/@shared/services/auth.service';
 import { CommonService } from 'src/app/@shared/services/common.service';
+import { CustomerService } from 'src/app/@shared/services/customer.service';
+import { SharedService } from 'src/app/@shared/services/shared.service';
 import { ToastService } from 'src/app/@shared/services/toast.service';
+import { TokenStorageService } from 'src/app/@shared/services/token-storage.service';
+import { UploadFilesService } from 'src/app/@shared/services/upload-files.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -13,10 +21,22 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./edit-profile.component.scss'],
 })
 export class EditProfileComponent implements OnInit, AfterViewInit {
+  customer: Customer = new Customer();
   useDetails: any = {};
   allCountryData: any = [];
   isEdit = false;
-
+  userMail: string;
+  userId: number;
+  userlocalId: number;
+  profileId: number;
+  profileImg: any = {
+    file: null,
+    url: '',
+  };
+  profileCoverImg: any = {
+    file: null,
+    url: '',
+  };
   apiUrl = environment.apiUrl + 'customers/';
 
   @ViewChild('zipCode') zipCode: ElementRef;
@@ -44,12 +64,22 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
     public authService: AuthService,
     private commonService: CommonService,
     private toasterService: ToastService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private modalService: NgbModal,
+    private uploadService:UploadFilesService,
+    private sharedService:SharedService,
+    private toastService: ToastService,
+    private router: Router,
+    private customerService:CustomerService,
+    private tokenStorage:TokenStorageService
   ) {
+    this.userMail = JSON.parse(localStorage.getItem('auth-user'))?.Email;
     this.useDetails = JSON.parse(this.authService.getUserData() as any);
     console.log(this.useDetails);
   }
   ngOnInit(): void {
+    console.log("mail",this.userMail);
+    
     this.getAllCountries();
     this.getUserDetails();
   }
@@ -77,6 +107,7 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
       UserID: this.useDetails?.UserID,
       ProfilePicName: this.useDetails?.ProfilePicName,
       CoverPicName: this.useDetails?.CoverPicName,
+      // Email:this.useDetails?.Email
     };
     this.userForm.setValue(data);
   }
@@ -155,8 +186,148 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
   resetForm() {
     this.getUserDetails();
   }
+  onChangeTag(event) {
+    this.customer.Username = event.target.value
+      .replaceAll(' ', '')
+      .replaceAll(/\s*,+\s*/g, ',');
+  }
 
   onChangeData(): void {
     this.isEdit = true;
+  }
+  convertToUppercase(event: any) {
+    const inputElement = event.target as HTMLInputElement;
+    let inputValue = inputElement.value;
+    inputValue = inputValue.replace(/\s/g, '');
+    inputElement.value = inputValue.toUpperCase();
+  }
+  onProfileImgChange(event: any): void {
+    this.profileImg = event;
+  }
+
+  onProfileCoverImgChange(event: any): void {
+    this.profileCoverImg = event;
+  }
+  uploadImgAndUpdateCustomer(): void {
+    let uploadObs = {};
+    if (this.profileImg?.file?.name) {
+      uploadObs['profileImg'] = this.uploadService.uploadFile(
+        this.profileImg?.file
+      );
+    }
+
+    if (this.profileCoverImg?.file?.name) {
+      uploadObs['profileCoverImg'] = this.uploadService.uploadFile(
+        this.profileCoverImg?.file
+      );
+    }
+
+    if (Object.keys(uploadObs)?.length > 0) {
+      this.spinner.show();
+
+      forkJoin(uploadObs).subscribe({
+        next: (res: any) => {
+          if (res?.profileImg?.body?.url) {
+            this.profileImg['file'] = null;
+            this.profileImg['url'] = res?.profileImg?.body?.url;
+            this.sharedService['userData']['ProfilePicName'] =
+              this.profileImg['url'];
+          }
+
+          if (res?.profileCoverImg?.body?.url) {
+            this.profileCoverImg['file'] = null;
+            this.profileCoverImg['url'] = res?.profileCoverImg?.body?.url;
+            this.sharedService['userData']['CoverPicName'] =
+              this.profileCoverImg['url'];
+          }
+
+          this.updateCustomer();
+          this.spinner.hide();
+        },
+        error: (err) => {
+          this.spinner.hide();
+        },
+      });
+    } else {
+      this.updateCustomer();
+    }
+  }
+  updateCustomer(): void {
+    if (this.profileId) {
+      this.spinner.show();
+      this.customer.ProfilePicName =
+        this.profileImg?.url || this.customer.ProfilePicName;
+      this.customer.CoverPicName =
+        this.profileCoverImg?.url || this.customer.CoverPicName;
+      this.customer.IsActive = 'Y';
+      this.customer.UserID = +this.userId;
+      this.customerService
+        .updateProfile(this.profileId, this.customer)
+        .subscribe({
+          next: (res: any) => {
+            this.spinner.hide();
+            if (!res.error) {
+              this.toastService.success(res.message);
+              this.sharedService.getUserDetails();
+            } else {
+              this.toastService.danger(res?.message);
+            }
+          },
+          error: (error) => {
+            console.log(error.error.message);
+            this.spinner.hide();
+            this.toastService.danger(error.error.message);
+          },
+        });
+    }
+  }
+  confirmAndUpdateCustomer(): void {
+    if (this.profileId) {
+      const modalRef = this.modalService.open(ConfirmationModalComponent, {
+        centered: true,
+      });
+      modalRef.componentInstance.title = 'Update Profile';
+      modalRef.componentInstance.confirmButtonLabel = 'Update';
+      modalRef.componentInstance.cancelButtonLabel = 'Cancel';
+      modalRef.componentInstance.message =
+        'Are you sure want to update profile details?';
+
+      modalRef.result.then((res) => {
+        if (res === 'success') {
+          this.uploadImgAndUpdateCustomer();
+        }
+      });
+    }
+  }
+  deleteAccount(): void {
+    const modalRef = this.modalService.open(ConfirmationModalComponent, {
+      centered: true,
+    });
+    modalRef.componentInstance.title = 'Delete Account';
+    modalRef.componentInstance.confirmButtonLabel = 'Delete';
+    modalRef.componentInstance.cancelButtonLabel = 'Cancel';
+    modalRef.componentInstance.message =
+      'Are you sure want to delete your account?';
+    modalRef.result.then((res) => {
+      if (res === 'success') {
+        this.customerService
+          .deleteCustomer(this.userlocalId, this.profileId)
+          .subscribe({
+            next: (res: any) => {
+              if (res) {
+                this.toastService.success(
+                  res.message || 'Account deleted successfully'
+                );
+                this.tokenStorage.signOut();
+                this.router.navigateByUrl('register');
+              }
+            },
+            error: (error) => {
+              console.log(error);
+              this.toastService.success(error.message);
+            },
+          });
+      }
+    });
   }
 }

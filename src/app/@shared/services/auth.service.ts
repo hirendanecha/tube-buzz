@@ -156,6 +156,12 @@ export class AuthService {
       `${environment.apiUrl}customers/verify-token/${token}`
     );
   }
+  forgotPassword(data: Object): Observable<Object> {
+    return this.http.post(
+      `${environment.apiUrl}customers/forgot-password`,
+      data
+    );
+  }
   customerlogin(login: any): Observable<Object> {
     return this.http.post(
       this.baseUrl + 'login',
