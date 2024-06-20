@@ -221,8 +221,8 @@
       type="button"
       class="btn btn-outline-primary btn-block btn-md ms-4"
       (click)="saveChanges()"
+      [disabled]="!isEdit && userForm.invalid"
       >
-      <!-- [disabled]="!isEdit && userForm.invalid" -->
       Save Changes
     </button>
     </div>

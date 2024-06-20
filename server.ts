@@ -80,13 +80,13 @@ export function app(): express.Express {
         }
         const params = req.params[0];
         var seo: any = {
-          title: 'Tube.Buzz',
+          title: 'Tube.buzz',
           description:
             'The Umbrella platform for All freedom based projects worldwide',
           image: 'https://tube.buzz/assets/banner/TubeBuzz-Logo.png',
           site: 'https://tube.buzz/',
           url: 'https://tube.buzz' + params,
-          keywords: 'Tube.Buzz',
+          keywords: 'Tube.buzz',
         };
         if (params.indexOf('channel/') > -1) {
           let id = params.split('/');
@@ -125,7 +125,7 @@ export function app(): express.Express {
           const pdhtml = document.createElement('div');
           pdhtml.innerHTML = post?.postdescription || post?.metadescription;
           const talent = {
-            name: post?.title || post?.albumname || 'Tube.Buzz Post',
+            name: post?.title || post?.albumname || 'Tube.buzz Post',
             description: pdhtml?.textContent || 'Post content',
             image: post?.thumbfilename || post?.metaimage || post?.imageUrl || 'https://tube.buzz/assets/TubeBuzz-Logo.png',
           };

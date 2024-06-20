@@ -148,7 +148,7 @@ export class VideoComponent implements OnInit, OnChanges {
         this.videoDetails = res[0];
 
         const data = {
-          title: `Tube.Buzz ${this.videoDetails.albumname}`,
+          title: `Tube.buzz ${this.videoDetails.albumname}`,
           description: this.videoDetails.postdescription,
         };
         this.seoService.updateSeoMetaData(data);
