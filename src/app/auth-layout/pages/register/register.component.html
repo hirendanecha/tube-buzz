@@ -8,6 +8,12 @@
       {{ registrationMessage || msg }}
     </div>
     <div class="row">
+      <div class="col-12 col-md-6 mb-3 px-6">
+        <label class="form-label"
+          >Profile Picture<span class="text-danger"></span
+        ></label>
+        <app-img-picker (onFileChange)="selectFiles($event)" />
+      </div>
       <div class="col-12 col-md-6 mb-3">
         <div class="col-12 mb-3">
           <label class="form-label">First Name</label>
@@ -22,12 +28,6 @@
         </div>
       </div>
 
-      <!-- <div class="col-12 col-md-6 mb-3 d-none px-6">
-        <label class="form-label"
-          >Profile Picture<span class="text-danger"></span
-        ></label>
-        <app-img-picker (onFileChange)="selectFiles($event)" />
-      </div> -->
       <div class="col-12 col-md-6 mb-3 single-box px-6">
         <p class="align-items-center text-start my-auto mt-3 font-check">
           Hide your personal information and remain anonymous on
@@ -38,7 +38,6 @@
           <span class="text-danger">*</span>
         </div>
       </div>
-
       <div class="col-12 col-md-6 mb-3">
         <label class="form-label">Username<span class="text-danger">*</span></label>
         <input type="text" class="input-area form-control" name="Username" placeholder="Enter Your Username Name"

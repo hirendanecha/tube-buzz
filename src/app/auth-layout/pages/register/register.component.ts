@@ -105,9 +105,9 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     this.passwordHidden = !this.passwordHidden;
   }
 
-  // selectFiles(event) {
-  //   this.profileImg = event;
-  // }
+  selectFiles(event) {
+    this.profileImg = event;
+  }
 
   upload(file: any = {}) {
     // if (file.size / (1024 * 1024) > 5) {
@@ -212,12 +212,13 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   onSubmit(): void {
     this.msg = '';
-    // if (!this.profileImg?.file?.name) {
-    //   this.msg = 'Please upload profile picture';
-    //   this.scrollTop();
-    //   // return false;
-    // }
+    if (!this.profileImg?.file?.name) {
+      this.msg = 'Please upload profile picture';
+      this.scrollTop();
+      // return false;
+    }
     if (
+      this.profileImg?.file?.name &&
       this.registerForm.valid &&
       this.registerForm.get('TermAndPolicy').value === true &&
       this.registerForm.get('Anonymous').value === true
