@@ -30,8 +30,8 @@ export class AuthService {
   ) {
     // const adminJson = localStorage.getItem('adminAuth') ? JSON.parse(localStorage.getItem('adminAuth') || '') : {};
     // this.admin = new BehaviorSubject<any>(adminJson);
-    const userJson = localStorage.getItem('authUser')
-      ? JSON.parse(localStorage.getItem('authUser') as any)
+    const userJson = localStorage.getItem('userData')
+      ? JSON.parse(localStorage.getItem('userData') as any)
       : {};
     this.user = new BehaviorSubject<any>(userJson);
     // this.token = new BehaviorSubject<any>(this.cookieService.get('token') ? this.cookieService.get('token') : '');
@@ -82,7 +82,7 @@ export class AuthService {
 
   // userLogin(userJson: any = {}): Observable<any> {
   //     localStorage.clear();
-  //     localStorage.setItem('auth-user', JSON.stringify(userJson));
+  //     localStorage.setItem('userData', JSON.stringify(userJson));
 
   //     if (!!userJson) {
   //         this.user.next(userJson);
@@ -144,11 +144,11 @@ export class AuthService {
   // }
 
   setUserData(userDetails: any) {
-    // localStorage.setItem('authUser', JSON.stringify(userDetails));
+    // localStorage.setItem('userData', JSON.stringify(userDetails));
   }
 
   getUserData() {
-    return localStorage.getItem('authUser');
+    return localStorage.getItem('userData');
   }
 
   verifyToken(token): Observable<any> {

@@ -10,6 +10,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from 'src/app/@shared/services/auth.service';
 import { VideoPostModalComponent } from 'src/app/@shared/modals/video-post-modal/video-post-modal.component';
 import { NotificationsModalComponent } from '../notifications-modal/notifications-modal.component';
+import { ToastService } from 'src/app/@shared/services/toast.service';
+import { CustomerService } from 'src/app/@shared/services/customer.service';
 
 @Component({
   selector: 'app-header',
@@ -25,10 +27,11 @@ export class HeaderComponent implements OnInit {
     public shareService: ShareService,
     private breakpointService: BreakpointService,
     private offcanvasService: NgbOffcanvas,
-    private commonService: CommonService,
+    private customerService: CustomerService,
     private cookieService: CookieService,
     public authService: AuthService,
     private router: Router,
+    private toastService: ToastService,
     private modalService: NgbModal
   ) {
     const isRead = localStorage.getItem('isRead');
@@ -60,11 +63,20 @@ export class HeaderComponent implements OnInit {
 
   logout(): void {
     // this.isCollapsed = true;
-    this.cookieService.delete('auth-user', '/', environment.domain);
-    localStorage.clear();
-    sessionStorage.clear();
-    location.href = environment.logoutUrl;
+    // this.cookieService.delete('auth-user', '/', environment.domain);
+    // location.href = environment.logoutUrl;
     // location.href = "https://freedom-api.opash.in/api/v1/customers/logout";
+    this.customerService.logout().subscribe({
+      next: (res) => {
+        localStorage.clear();
+        sessionStorage.clear();
+        this.toastService.success('Logout successfully');
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 
   isUserMediaApproved(): boolean {

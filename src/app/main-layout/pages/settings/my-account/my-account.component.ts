@@ -30,7 +30,7 @@ export class MyAccountComponent {
     public shareService: ShareService,
   ) {
     this.channelId = +localStorage.getItem('channelId');
-    this.userData = JSON.parse(localStorage.getItem('authUser'));
+    this.userData = JSON.parse(localStorage.getItem('userData'));
   }
 
   ngOnInit(): void {

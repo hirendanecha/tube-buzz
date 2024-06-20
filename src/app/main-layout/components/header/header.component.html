@@ -16,7 +16,7 @@
           src="\assets\TubeBuzz-Logo.png"
       /></a>
     </div>
-    <ul
+    <!-- <ul
       class="navbar-nav d-sm-flex flex-row justify-content-around align-self-center ms-auto m-lg-auto gap-3 gap-xl-20 gap-lg-10 py-0 nav-btn"
     >
       <li title="Buzz Home" class="cursor">
@@ -34,7 +34,7 @@
           <fa-icon [icon]="['fas', 'play']" class="font-24-px" />
         </a>
       </li>
-    </ul>
+    </ul> -->
     <!-- Navbar -->
     <ul
       class="navbar-nav ms-auto ms-md-0 osahan-right-navbar align-items-center"
@@ -63,7 +63,7 @@
             ngbDropdownToggle
           >
             <img
-              data-src="{{ shareService.userDetails?.ProfilePicName }}"
+              data-src="{{ userDetails?.ProfilePicName }}"
               alt=""
               loading="lazy"
               onerror="this.onerror=null;this.src='/assets/default-profile.jpg';"
@@ -73,7 +73,7 @@
               {{
                 shareService?.userChannelName
                   ? shareService?.userChannelName
-                  : shareService.userDetails?.Username
+                  : userDetails?.Username
               }}
             </div>
             <fa-icon [icon]="['fas', 'caret-down']" [fixedWidth]="true" />
@@ -83,7 +83,8 @@
             aria-labelledby="userDropdown"
             class="shadow-lg p-1 mb-5 rounded"
           >
-            <button ngbDropdownItem (click)="myAccountNavigation()">
+            <!-- <button ngbDropdownItem (click)="myAccountNavigation()"> -->
+            <button ngbDropdownItem routerLink="/account">
               <fa-icon
                 class="font-20-px"
                 [icon]="['fas', 'user-circle']"
@@ -91,14 +92,14 @@
               />
               &nbsp; My Account
             </button>
-            <button ngbDropdownItem routerLink="/account">
+            <!-- <button ngbDropdownItem routerLink="/account">
               <fa-icon
                 class="font-20-px"
                 [icon]="['fas', 'user']"
                 [fixedWidth]="true"
               />
               &nbsp; Tube.buzz Profile
-            </button>
+            </button> -->
             <button ngbDropdownItem routerLink="/settings">
               <fa-icon
                 class="font-20-px"

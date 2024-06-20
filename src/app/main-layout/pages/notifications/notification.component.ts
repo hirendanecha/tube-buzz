@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { ToastService } from 'src/app/@shared/services/toast.service';
-import { CommonService } from 'src/app/@shared/services/common.service';
-import { AuthService } from 'src/app/@shared/services/auth.service';
 import { ShareService } from 'src/app/@shared/services/share.service';
+import { CustomerService } from 'src/app/@shared/services/customer.service';
 
 @Component({
   selector: 'app-notification',
@@ -17,7 +16,7 @@ export class NotificationsComponent {
   hasMoreData = false;
   
   constructor(
-    private commonService: CommonService,
+    private customerService: CustomerService,
     private spinner: NgxSpinnerService,
     private router: Router,
     private toastService: ToastService,
@@ -30,12 +29,12 @@ export class NotificationsComponent {
 
   getNotificationList() {
     this.spinner.show();
-    const id = this.shareService.userDetails.Id;
+    const id = localStorage.getItem('profileId');
     const data = {
       page: this.activePage,
       size: 30,
     };
-    this.commonService.getNotificationList(Number(id), data).subscribe({
+    this.customerService.getNotificationList(Number(id), data).subscribe({
       next: (res: any) => {
         this.spinner.hide();
         if (this.activePage < res.pagination.totalPages) {
@@ -55,7 +54,7 @@ export class NotificationsComponent {
   }
 
   removeNotification(id: number): void {
-    this.commonService.deleteNotification(id).subscribe({
+    this.customerService.deleteNotification(id).subscribe({
       next: (res: any) => {
         this.toastService.success(
           res.message || 'Notification delete successfully'
@@ -66,7 +65,7 @@ export class NotificationsComponent {
   }
 
   readUnreadNotification(id, isRead): void {
-    this.commonService.readUnreadNotification(id, isRead).subscribe({
+    this.customerService.readUnreadNotification(id, isRead).subscribe({
       next: (res) => {
         this.toastService.success(res.message);
         this.getNotificationList();

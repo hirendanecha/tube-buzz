@@ -272,7 +272,13 @@ export class SharedModule {
       faChevronLeft,
       faPhoneFlip,
       faVoicemail,
-      faPhoneVolume
+      faPhoneVolume,
+      faPlayCircle,
+      faUpload,
+      faCaretDown,
+      faUserCircle,
+      faAngleRight,
+      faFolderOpen
     );
   }
 }

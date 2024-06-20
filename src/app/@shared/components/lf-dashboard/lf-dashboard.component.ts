@@ -123,11 +123,6 @@ export class LfDashboardComponent implements OnInit {
     window.open(url, '_blank');
   }
 
-  isUserMediaApproved(): boolean {
-  return this.shareService.userDetails.MediaApproved === 1;
-  // return this.useDetails?.MediaApproved === 1;
-  }
-
   // openVideoUploadPopUp(): void {
   //   const modalRef = this.modalService.open(VideoPostModalComponent, {
   //     centered: true,

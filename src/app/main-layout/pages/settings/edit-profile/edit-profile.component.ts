@@ -74,7 +74,7 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
     private tokenStorage:TokenStorageService
   ) {
     this.profileId = +localStorage.getItem('profileId');
-    this.userMail = JSON.parse(localStorage.getItem('auth-user'))?.Email;
+    this.userMail = JSON.parse(localStorage.getItem('userData'))?.Email;
     if (this.profileId) {
       this.getProfile(this.profileId);
     }

@@ -93,11 +93,10 @@ export class ShareService {
     const url = environment.apiUrl + `customers/profile/${id}`
     this.commonService.get(url).subscribe({
       next: ((res: any) => {
-        localStorage.setItem('authUser', JSON.stringify(res.data[0]));
+        localStorage.setItem('userData', JSON.stringify(res.data[0]));
         this.userDetails = res.data[0];
         const mediaApproved = res.data[0].MediaApproved === 1;
         this.updateMediaApproved(mediaApproved);
-        console.log(this.userDetails)
         this.getChannelByUserId(this.userDetails?.channelId);
       }), error: error => {
         console.log(error)
@@ -105,7 +104,7 @@ export class ShareService {
     })
   }
   getNotificationList() {
-    const id = this.userDetails.Id;
+    const id = localStorage.getItem('profileId');
     const data = {
       page: 1,
       size: 20,
