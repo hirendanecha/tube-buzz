@@ -80,16 +80,16 @@
     </ng-container>
     <!-- <div
       *ngIf="mediaApproved && channelId" -->
-    <div *ngIf="shareService.getCredentials()" class="d-flex c-bg-color py-2 justify-content-evenly justify-content-md-center column-gap-2 column-gap-xxl-4 col-12 col-md-12 col-lg-8 m-auto mt-4 my-xxl-4 justify-content-center mb-view-left-txt"
+    <!-- <div *ngIf="shareService.getCredentials()" class="d-flex c-bg-color py-2 justify-content-evenly justify-content-md-center column-gap-2 column-gap-xxl-4 col-12 col-md-12 col-lg-8 m-auto mt-4 my-xxl-4 justify-content-center mb-view-left-txt"
     >
-      <!-- routerLink="/channels" -->
-      <!-- <div
+      routerLink="/channels"
+      <div
         (click)="getmyChannel()"
         class="d-block d-md-flex gap-2 align-items-center c-text flex-wrap justify-content-center"
       >
         <fa-icon [icon]="['fas', 'user']" [fixedWidth]="true" />
         My Channel
-      </div> -->
+      </div>
 
       <ng-container *ngIf="channelId">
         <div ngbDropdown class="d-flex flex-column flex-sm-row align-items-center gap-2 d-inline-block btn-group float-end right-action">
@@ -131,14 +131,14 @@
           <fa-icon [icon]="['fas', 'upload']" [fixedWidth]="true" />
           Upload
         </div>
-        <!-- <div
+        <div
           class="d-flex flex-column flex-sm-row gap-2 align-items-center c-text flex-wrap justify-content-center"
           (click)="openConferencePopUp()"
         >
           <fa-icon [icon]="['fas', 'plus-square']" [fixedWidth]="true" />
           Conference
           <span class="d-none d-xl-block">& Record</span>
-        </div> -->
+        </div>
       </ng-container>
       <div
       class="d-flex gap-2 align-items-center c-text flex-wrap justify-content-center"
@@ -147,6 +147,6 @@
       <fa-icon [icon]="['fas', 'plus']" [fixedWidth]="true" />
       Create Channel
     </div>
-    </div>
+    </div> -->
   </div>
 </div>

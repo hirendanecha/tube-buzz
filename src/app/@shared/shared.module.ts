@@ -116,6 +116,7 @@ import {
   faCirclePlus,
   faBorderAll,
   faCamera,
+  faClapperboard,
 } from '@fortawesome/free-solid-svg-icons';
 import { HttpClientModule } from '@angular/common/http';
 import { VideoCardComponent } from './components/video-card/video-card.component';
@@ -280,7 +281,8 @@ export class SharedModule {
       faAngleRight,
       faFolderOpen,
       faCalendar,
-      faCloudUpload
+      faCloudUpload,
+      faClapperboard
     );
   }
 }

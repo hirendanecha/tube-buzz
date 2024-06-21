@@ -12,23 +12,12 @@
 
   <div class="modal-body text-center">
     <form class="form-dark row" ngNativeValidate autocomplete="off">
-      <div class="col-12 mb-5" *ngIf="!postData?.id">
+      <div class="col-12 mb-2" *ngIf="!postData?.id">
         <label class="form-label d-flex"
           >Select Channel<span class="text-danger">*</span></label
         >
-        <!-- <select
-          type="text"
-          class="form-control"
-          name="albumname"
-          placeholder="Enter your video title"
-        >
-          <option value="" *ngFor="let channel of channelList">
-            <span>{{ channel.firstname }}</span>
-          </option>
-        </select> -->
         <select
           id="channel"
-          required
           name="channel"
           class="form-control w-100"
           (change)="selectChannel($event.target.value)"
@@ -38,7 +27,24 @@
           </option>
         </select>
       </div>
-      <div class="col-12 mb-5">
+      <div class="col-12 mb-2">
+        <label class="form-label d-flex"
+          >Select Category<span class="text-danger">*</span></label
+        >
+        <select
+          id="category"
+          name="category"
+          class="form-control w-100"
+          (change)="selectCategory($event.target.value)"
+        >
+        <ng-container *ngIf="channelCategory$ | async as channelCategory">
+          <option [value]="channel?.categoryName" *ngFor="let channel of channelCategory">
+            <span>{{ channel.categoryName }}</span>
+          </option>
+        </ng-container>
+        </select>
+      </div>
+      <div class="col-12 mb-3">
         <label class="form-label d-flex"
           >Video Title(max 50 characters)<span class="text-danger"
             >*</span
@@ -103,7 +109,7 @@
         </ng-container>
       </div>
 
-      <div class="col-6 mb-5 d-grid">
+      <div class="col-6 mb-3 d-grid">
         <label class="form-label d-flex"
           >Video<span class="text-danger">*</span
           ><span class="d-none d-sm-block ms-2"
@@ -148,7 +154,7 @@
           />
         </div>
       </div>
-      <div class="col-12 mb-5">
+      <div class="col-12 mb-3">
         <label class="form-label d-flex"
           >Enter Upto 5 Tags Separated By A Comma<span
             class="text-danger"

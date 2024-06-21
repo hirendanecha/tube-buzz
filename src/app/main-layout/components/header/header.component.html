@@ -1,5 +1,5 @@
 <nav
-  class="navbar navbar-expand navbar-light bg-white osahan-nav fixed-top justify-content-between gap-3"
+  class="navbar navbar-expand navbar-light bg-white osahan-nav fixed-top justify-content-between gap-3 h-56-px"
 >
   <ng-container *ngIf="shareService.getCredentials(); else noCredentials">
     <div class="nav-logo">
@@ -37,8 +37,49 @@
     </ul> -->
     <!-- Navbar -->
     <ul
-      class="navbar-nav ms-auto ms-md-0 osahan-right-navbar align-items-center"
+      class="navbar-nav ms-auto ms-md-0 osahan-right-navbar align-items-center gap-sm-5 gap-3"
     >
+    <li class="nav-item dropdown no-arrow osahan-right-navbar-user">
+      <div
+        ngbDropdown
+        class="d-inline-block btn-group float-end right-action"
+      >
+        <a
+          class="user-dropdown-link d-flex align-items-center"
+          id="userDropdown"
+          role="button"
+          ngbDropdownToggle
+        >
+        <fa-icon
+        class="font-28-px"
+        [icon]="['fas', 'square-plus']"
+        [fixedWidth]="true"
+      />
+        </a>
+        <div
+          ngbDropdownMenu
+          aria-labelledby="userDropdown"
+          class="shadow-lg p-1 mb-5 rounded"
+        >
+          <button ngbDropdownItem (click)="openVideoUploadPopUp()">
+            <fa-icon
+              class="font-20-px"
+              [icon]="['fas', 'upload']"
+              [fixedWidth]="true"
+            />
+            &nbsp; Upload
+          </button>
+          <button ngbDropdownItem (click)="createChannel()">
+            <fa-icon
+              class="font-20-px"
+              [icon]="['fas', 'plus']"
+              [fixedWidth]="true"
+            />
+            &nbsp; Create Channel
+          </button>
+        </div>
+      </div>
+    </li>
       <div class="single-item">
         <div
           class="icon-area d-center position-relative"
@@ -48,7 +89,7 @@
             *ngIf="shareService.isNotify"
             class="abs-area position-absolute d-center smtxt"
           ></span>
-          <fa-icon [icon]="['fas', 'bell']" class="font-20-px" />
+          <fa-icon [icon]="['fas', 'bell']" class="font-28-px" />
         </div>
       </div>
       <li class="nav-item dropdown no-arrow osahan-right-navbar-user">
@@ -57,26 +98,26 @@
           class="d-inline-block btn-group float-end right-action"
         >
           <a
-            class="nav-link user-dropdown-link w-160-px d-flex align-items-center"
+            class="user-dropdown-link w-160-px d-flex align-items-center"
             id="userDropdown"
             role="button"
             ngbDropdownToggle
           >
             <img
-              data-src="{{ userDetails?.ProfilePicName }}"
+              data-src="{{ userDetails?.ProfilePicName || '/assets/default-profile.jpg' }}"
               alt=""
               loading="lazy"
               onerror="this.onerror=null;this.src='/assets/default-profile.jpg';"
             />
             <!-- {{ shareService.userDetails?.Username }} -->
-            <div class="c-header-name">
+            <!-- <div class="c-header-name">
               {{
                 shareService?.userChannelName
                   ? shareService?.userChannelName
                   : userDetails?.Username
               }}
             </div>
-            <fa-icon [icon]="['fas', 'caret-down']" [fixedWidth]="true" />
+            <fa-icon [icon]="['fas', 'caret-down']" [fixedWidth]="true" /> -->
           </a>
           <div
             ngbDropdownMenu
@@ -176,7 +217,7 @@
         <a routerLink="/login">
           <button class="btn btn-success me-2">Login</button>
         </a>
-        <a routerLink="register">
+        <a routerLink="/register">
           <button class="btn btn-primary">Sign up</button>
         </a>
       </div>

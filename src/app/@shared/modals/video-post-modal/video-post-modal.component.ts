@@ -11,8 +11,7 @@ import {
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '../../services/toast.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { forkJoin } from 'rxjs';
-import { SocketService } from '../../services/socket.service';
+import { Observable } from 'rxjs';
 import { CommonService } from '../../services/common.service';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../../services/auth.service';
@@ -20,6 +19,7 @@ import { HttpEventType } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
+import { ChannelService } from '../../services/channels.service';
 
 @Component({
   selector: 'app-video-post-modal',
@@ -36,6 +36,7 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
   @Input() data: any;
   @Input() communityId: any;
   @Input() channelList: any = [];
+  channelCategory$: Observable<any[]>;
   postData: any = {
     id: null,
     profileid: null,
@@ -61,6 +62,7 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
   progressValue = 0;
   interval: any;
   channelId = null;
+  selectedCategory = null;
 
   streamnameProgress = 0;
   thumbfilenameProgress = 0;
@@ -71,6 +73,7 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
     private toastService: ToastService,
     private spinner: NgxSpinnerService,
     private commonService: CommonService,
+    private channelService: ChannelService,
     private authService: AuthService,
     private router: Router,
     public modalService: NgbModal,
@@ -89,6 +92,7 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
     if (this.data) {
       this.postData.id = this.data.id;
       this.postData.profileid = this.data.profileid;
+      this.postData.category = this.data.category;
       this.postData.albumname = this.data.albumname;
       this.postMessageInputValue = this.data?.postdescription;
       this.selectedThumbFile = this.data?.thumbfilename;
@@ -99,78 +103,9 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
       this.postData.keywords = this.data?.keywords;
     }
   }
-  ngOnInit(): void {}
-
-  // uploadImgAndSubmit(): void {
-  //   if (
-  //     this.postData?.profileid &&
-  //     this.postData.postdescription &&
-  //     this.postData.albumname &&
-  //     (this.postData.file1 || this.selectedVideoFile) &&
-  //     (this.postData.file2 || this.selectedThumbFile)
-  //   ) {
-  //     let uploadObs = {};
-  //     if (this.postData?.file1?.name) {
-  //       uploadObs['streamname'] = this.commonService.upload(
-  //         this.postData?.file1
-  //       );
-  //     }
-
-  //     if (this.postData?.file2?.name) {
-  //       uploadObs['thumbfilename'] = this.commonService.upload(
-  //         this.postData?.file2
-  //       );
-  //     }
-
-  //     if (Object.keys(uploadObs)?.length > 0) {
-  //       // this.spinner.show();
-  //       // this.startProgress();
-  //       this.isProgress = true;
-  //       forkJoin(uploadObs).subscribe({
-  //         next: (res: any) => {
-  //           if (res?.streamname?.body?.url) {
-  //             this.postData['file1'] = null;
-  //             this.postData['streamname'] = res?.streamname?.body?.url;
-  //           }
-
-  //           if (res?.thumbfilename?.body?.url) {
-  //             this.postData['file2'] = null;
-  //             this.postData['thumbfilename'] = res?.thumbfilename?.body?.url;
-  //           }
-
-  //           this.spinner.hide();
-  //           this.progressValue = 100;
-  //           this.createPost();
-  //         },
-  //         error: (err) => {
-  //           this.spinner.hide();
-  //         },
-  //       });
-  //     } else {
-  //       this.postData.streamname = this.selectedVideoFile;
-  //       this.postData.thumbfilename = this.selectedThumbFile;
-  //       this.progressValue = 100;
-  //       this.createPost();
-  //     }
-  //   } else {
-  //     this.toastService.danger('Please enter mandatory fields(*) data.');
-  //   }
-  // }
-
-  // startProgress() {
-  //   const interval = setInterval(() => {
-  //     if (this.progressValue < 92) {
-  //       this.progressValue =
-  //         this.progressValue > 92
-  //           ? this.progressValue
-  //           : this.progressValue + Math.floor(Math.random() * 10);
-  //     }
-  //     if (this.progressValue >= 98) {
-  //       clearInterval(interval);
-  //     }
-  //     this.cdr.markForCheck();
-  //   }, 1000);
-  // }
+  ngOnInit(): void {
+    this.channelCategory$ = this.getChannelCategory();
+  }
 
   uploadImgAndSubmit(): void {
     if (
@@ -282,6 +217,7 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
       this.postData.albumname
     ) {
       this.postData['channelId'] = this.channelId || null;
+      this.postData['category'] = this.selectedCategory || null;
       console.log('post-data', this.postData);
       this.commonService.post(this.apiUrl, this.postData).subscribe({
         next: (res: any) => {
@@ -390,5 +326,13 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
   selectChannel(channelId): void {
     this.channelId = channelId;
     console.log(this.channelId);
+  }
+
+  selectCategory(category): void {
+    this.selectedCategory = category;
+  }
+
+  getChannelCategory(): Observable<any[]> {
+    return this.channelService.getCategory();
   }
 }

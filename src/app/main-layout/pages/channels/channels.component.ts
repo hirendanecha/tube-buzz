@@ -17,11 +17,10 @@ export class ChannelsComponent implements OnInit, AfterViewInit {
     private commonService: CommonService,
     private authService: AuthService,
     private router: Router
-  ) {
-    this.userData = JSON.parse(this.authService.getUserData() as any);
-  }
-
+  ) {}
+  
   ngOnInit(): void {
+    this.userData = JSON.parse(this.authService.getUserData() as any);
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         window.scrollTo(0, 0);
@@ -36,16 +35,16 @@ export class ChannelsComponent implements OnInit, AfterViewInit {
   }
 
   getChannelByUserId(): void {
-    this.commonService.get(`${this.apiUrl}/my-channel/${this.userData.Id}`).subscribe({
+    const userId = this.userData.Id;
+    const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
+    this.commonService.get(apiUrl).subscribe({
       next: (res) => {
-        // console.log(res.data);
-        if (res.data.length) {
-          this.channelList = res.data;
-          console.log(this.channelList);
-        }
+        this.channelList = res.data;
+        let channelIds = this.channelList.map(e => e.id);
+        localStorage.setItem('get-channels', JSON.stringify(channelIds));
       },
-      error: (error) => {
-        console.log(error);
+      error(err) {
+        console.log(err);
       },
     });
   }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastService } from '../../services/toast.service';
@@ -16,12 +16,12 @@ import { UploadFilesService } from '../../services/upload-files.service';
 export class CreateChannelComponent {
   userForm = new FormGroup({
     profileid: new FormControl(),
-    feature: new FormControl(false),
-    firstname: new FormControl(''),
-    unique_link: new FormControl({ value: '', disabled: true }),
     profile_pic_name: new FormControl(''),
+    feature: new FormControl(false),
+    firstname: new FormControl('', [Validators.required]),
+    description: new FormControl(''),
+    unique_link: new FormControl({ value: '', disabled: true }),
   });
-  profilePic = '';
   profileImg: any = {
     file: null,
     url: '',
@@ -82,31 +82,27 @@ export class CreateChannelComponent {
 
   upload() {
     this.spinner.show();
-    this.uploadFilesService.uploadFile(this.profileImg.file).subscribe({
-      next: (res: any) => {
-        this.spinner.hide();
-        if (this.profileImg.file?.size < 5120000) {
+    if (this.profileImg.file) {
+      this.uploadFilesService.uploadFile(this.profileImg.file).subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
           if (res.body) {
-            this.profilePic = res?.body?.url;
-            this.userForm.get('profile_pic_name').setValue(this.profilePic);
+            const profilePic = res?.body?.url;
+            this.userForm.get('profile_pic_name').setValue(profilePic);
             this.saveChanges();
           }
-        } else {
-          if (!this.hasDisplayedError) {
-            this.toastService.danger('Image is too large!');
-            this.hasDisplayedError = true;
-          }
-        }
-      },
-      error: (err) => {
-        this.spinner.hide();
-        this.profileImg = {
-          file: null,
-          url: '',
-        };
-        return 'Could not upload the file:' + this.profileImg.file.name;
-      },
-    });
+        },
+        error: (err) => {
+          this.spinner.hide();
+          this.profileImg = {
+            file: null,
+            url: '',
+          };
+        },
+      });
+    } else {
+      this.toastService.danger('Please select channel logo!');
+    }
   }
 
   onFileSelected(event: any) {
@@ -116,5 +112,9 @@ export class CreateChannelComponent {
 
   removePostSelectedFile(): void {
     this.selectedFile = null;
+    this.profileImg = {
+      file: null,
+      url: '',
+    };
   }
 }

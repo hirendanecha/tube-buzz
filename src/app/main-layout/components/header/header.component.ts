@@ -6,12 +6,12 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 import { CommonService } from 'src/app/@shared/services/common.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from 'src/app/@shared/services/auth.service';
 import { VideoPostModalComponent } from 'src/app/@shared/modals/video-post-modal/video-post-modal.component';
 import { NotificationsModalComponent } from '../notifications-modal/notifications-modal.component';
 import { ToastService } from 'src/app/@shared/services/toast.service';
 import { CustomerService } from 'src/app/@shared/services/customer.service';
+import { CreateChannelComponent } from 'src/app/@shared/modals/create-channel/create-channel-modal.component';
 
 @Component({
   selector: 'app-header',
@@ -22,15 +22,16 @@ export class HeaderComponent implements OnInit {
   userDetails: any;
   apiUrl = environment.apiUrl + 'customers/logout';
   userMenusOverlayDialog: any;
-
+  channelList: any = [];
+  
   constructor(
     public shareService: ShareService,
     private breakpointService: BreakpointService,
     private offcanvasService: NgbOffcanvas,
     private customerService: CustomerService,
-    private cookieService: CookieService,
     public authService: AuthService,
     private router: Router,
+    private commonService: CommonService,
     private toastService: ToastService,
     private modalService: NgbModal
   ) {
@@ -83,18 +84,18 @@ export class HeaderComponent implements OnInit {
     return this.userDetails?.MediaApproved === 1;
   }
 
-  openVideoUploadPopUp(): void {
-    const modalRef = this.modalService.open(VideoPostModalComponent, {
-      centered: true,
-      size: 'lg',
-    });
-    modalRef.componentInstance.title = `Upload Video`;
-    modalRef.componentInstance.confirmButtonLabel = 'Upload Video';
-    modalRef.componentInstance.cancelButtonLabel = 'Cancel';
-    modalRef.result.then((res) => {
-      console.log(res);
-    });
-  }
+  // openVideoUploadPopUp(): void {
+  //   const modalRef = this.modalService.open(VideoPostModalComponent, {
+  //     centered: true,
+  //     size: 'lg',
+  //   });
+  //   modalRef.componentInstance.title = `Upload Video`;
+  //   modalRef.componentInstance.confirmButtonLabel = 'Upload Video';
+  //   modalRef.componentInstance.cancelButtonLabel = 'Cancel';
+  //   modalRef.result.then((res) => {
+  //     console.log(res);
+  //   });
+  // }
 
   openNotificationsModal(): void {
     this.userMenusOverlayDialog = this.modalService.open(
@@ -104,5 +105,66 @@ export class HeaderComponent implements OnInit {
         modalDialogClass: 'notifications-modal',
       }
     );
+  }
+
+  openVideoUploadPopUp(): void {
+    const openModal = () => {
+      const modalRef = this.modalService.open(VideoPostModalComponent, {
+        centered: true,
+        size: 'lg',
+      });
+      modalRef.componentInstance.title = `Upload Video`;
+      modalRef.componentInstance.confirmButtonLabel = 'Upload Video';
+      modalRef.componentInstance.cancelButtonLabel = 'Cancel';
+      modalRef.componentInstance.channelList = this.channelList;
+      modalRef.result.then((res) => {
+        if (res === 'success') {
+          window.location.reload();
+        }
+      });
+    };
+  
+    if (!this.channelList || !this.channelList.length) {
+      const userId = this.userDetails?.Id;
+      const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
+      this.commonService.get(apiUrl).subscribe(
+        (res) => {
+          this.channelList = res.data;
+          openModal();
+        }
+      )
+    } else {
+      openModal();
+    }
+  }
+
+  createChannel(): void {
+    const modalRef = this.modalService.open(CreateChannelComponent, {
+      centered: true,
+      size: 'lg',
+    });
+    modalRef.componentInstance.title = `Create Channel`;
+    modalRef.componentInstance.confirmButtonLabel = 'Save';
+    modalRef.componentInstance.cancelButtonLabel = 'Cancel';
+    modalRef.result.then((res) => {
+      if (res === 'success') {
+      }
+    });
+  }
+
+  getChannels(): void {
+    const userId = this.userDetails?.Id;
+    const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
+    this.commonService.get(apiUrl).subscribe({
+      next: (res) => {
+        this.channelList = res.data;
+        let channelIds = this.channelList.map(e => e.id);
+        localStorage.setItem('get-channels', JSON.stringify(channelIds));
+        // console.log(this.channelList);
+      },
+      error(err) {
+        console.log(err);
+      },
+    });
   }
 }

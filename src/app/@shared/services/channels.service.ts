@@ -65,4 +65,8 @@ export class ChannelService {
       data
     );
   }
+
+  getCategory(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/get-category`);
+  }
 }

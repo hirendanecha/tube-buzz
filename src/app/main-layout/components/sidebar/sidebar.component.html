@@ -12,10 +12,22 @@
       <span>Home</span>
     </a>
   </li>
-  <li class="nav-item" routerLinkActive="active" *ngIf="isUserMediaApproved()">
+  <li class="nav-item" routerLinkActive="active">
     <a class="nav-link" routerLink="/channels">
-      <fa-icon [icon]="['fas', 'user']" [fixedWidth]="true" />
-      <span>My Channel</span>
+      <fa-icon [icon]="['fas', 'clapperboard']" [fixedWidth]="true" />
+      <span>My Channels</span>
+    </a>
+  </li>
+  <li class="nav-item" routerLinkActive="active">
+    <a class="nav-link" routerLink="/account">
+      <fa-icon [icon]="['fas', 'user-circle']" [fixedWidth]="true" />
+      <span>My Profile</span>
+    </a>
+  </li>
+  <li class="nav-item" (click)="createChannel()">
+    <a class="nav-link" routerLink="/account">
+      <fa-icon [icon]="['fas', 'plus']" [fixedWidth]="true" />
+      <span>Create Channel</span>
     </a>
   </li>
 
