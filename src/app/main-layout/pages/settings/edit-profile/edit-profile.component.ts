@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { debounceTime, forkJoin, fromEvent } from 'rxjs';
-import { Customer } from 'src/app/@shared/constant/customer';
+// import { Customer } from 'src/app/@shared/constant/customer';
 import { ConfirmationModalComponent } from 'src/app/@shared/modals/confirmation-modal/confirmation-modal.component';
 import { AuthService } from 'src/app/@shared/services/auth.service';
 import { CommonService } from 'src/app/@shared/services/common.service';
@@ -21,12 +21,11 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./edit-profile.component.scss'],
 })
 export class EditProfileComponent implements OnInit, AfterViewInit {
-  customer: Customer = new Customer();
+  customer: any = {};
   useDetails: any = {};
   allCountryData: any = [];
   isEdit = false;
   userMail: string;
-  userId: number;
   userlocalId: number;
   profileId: number;
   profileImg: any = {
@@ -45,13 +44,13 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
     FirstName: new FormControl('', [Validators.required]),
     LastName: new FormControl('', [Validators.required]),
     Country: new FormControl('', [Validators.required]),
-    Zip: new FormControl({ value: '', disabled: true }, [Validators.required]),
+    Zip: new FormControl('', [Validators.required]),
     MobileNo: new FormControl('', [
       Validators.required,
       Validators.pattern(/^\d{10}$/),
     ]),
-    City: new FormControl({ value: '', disabled: true }, [Validators.required]),
-    State: new FormControl({ value: '', disabled: true }, [
+    City: new FormControl('', [Validators.required]),
+    State: new FormControl('', [
       Validators.required,
     ]),
     Username: new FormControl('', [Validators.required]),
@@ -66,25 +65,22 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
     private toasterService: ToastService,
     private spinner: NgxSpinnerService,
     private modalService: NgbModal,
-    private uploadService:UploadFilesService,
-    private sharedService:SharedService,
+    private uploadService: UploadFilesService,
+    private sharedService: SharedService,
     private toastService: ToastService,
     private router: Router,
-    private customerService:CustomerService,
-    private tokenStorage:TokenStorageService
+    private customerService: CustomerService,
+    private tokenStorage: TokenStorageService
   ) {
-    this.profileId = +localStorage.getItem('profileId');
-    this.userMail = JSON.parse(localStorage.getItem('userData'))?.Email;
-    this.userId = JSON.parse(localStorage.getItem('userData'))?.Id;
-    if (this.profileId) {
-      this.getProfile(this.profileId);
-    }
-    this.useDetails = JSON.parse(this.authService.getUserData() as any);
+    this.profileId = this.authService.profileId();
+    this.userMail = this.authService?.userData()?.Email;
+    this.sharedService.getUserDetails();
   }
   ngOnInit(): void {
     this.getAllCountries();
     this.getUserDetails();
   }
+
   ngAfterViewInit(): void {
     fromEvent(this.zipCode.nativeElement, 'input')
       .pipe(debounceTime(1000))
@@ -97,6 +93,7 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
   }
 
   getUserDetails(): void {
+    this.useDetails = this.authService?.userData();
     const data = {
       FirstName: this.useDetails?.FirstName,
       LastName: this.useDetails?.LastName,
@@ -109,49 +106,50 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
       ProfilePicName: this.useDetails?.ProfilePicName,
       CoverPicName: this.useDetails?.CoverPicName,
       // Email:this.useDetails?.Email,
-      UserID: this.useDetails?.Id
+      UserID: this.useDetails?.UserID
     };
+    console.log('useDetails', data);
     this.userForm.setValue(data);
   }
-  getProfile(id): void {
-    this.spinner.show();
-    this.customerService.getProfile(id).subscribe({
-      next: (res: any) => {
-        this.spinner.hide();
-        if (res.data) {
-          this.customer = res.data;
-          this.getAllCountries();
-        }
-      },
-      error: (error) => {
-        this.spinner.hide();
-        console.log(error);
-      },
-    });
-  }
+  // getProfile(id): void {
+  //   this.spinner.show();
+  //   this.customerService.getProfile(id).subscribe({
+  //     next: (res: any) => {
+  //       this.spinner.hide();
+  //       if (res.data) {
+  //         this.customer = res.data;
+  //         this.getAllCountries();
+  //       }
+  //     },
+  //     error: (error) => {
+  //       this.spinner.hide();
+  //       console.log(error);
+  //     },
+  //   });
+  // }
 
-  saveChanges(): void {
-    this.spinner.show();
-    if (this.userForm?.value) {
-      const profileId = this.useDetails.Id;
-      const apiUrl = `${this.apiUrl}profile/${profileId}`;
-      this.commonService.update(apiUrl, this.userForm.value).subscribe({
-        next: (res: any) => {
-          this.spinner.hide();
-          this.isEdit = false;
-          this.toasterService.success(res.message);
-        },
-        error: (error: any) => {
-          this.spinner.hide();
-          console.log(error);
-        },
-      });
-    } else {
-      this.spinner.hide();
-      this.toasterService.danger('something went wrong!');
+  // saveChanges(): void {
+  //   this.spinner.show();
+  //   if (this.userForm?.value) {
+  //     const profileId = this.useDetails.Id;
+  //     const apiUrl = `${this.apiUrl}profile/${profileId}`;
+  //     this.commonService.update(apiUrl, this.userForm.value).subscribe({
+  //       next: (res: any) => {
+  //         this.spinner.hide();
+  //         this.isEdit = false;
+  //         this.toasterService.success(res.message);
+  //       },
+  //       error: (error: any) => {
+  //         this.spinner.hide();
+  //         console.log(error);
+  //       },
+  //     });
+  //   } else {
+  //     this.spinner.hide();
+  //     this.toasterService.danger('something went wrong!');
 
-    }
-  }
+  //   }
+  // }
 
   getAllCountries() {
     this.commonService.get(`${this.apiUrl}countries`).subscribe({
@@ -188,8 +186,8 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
             // zip_data ? this.userForm.get('City')!.setValue(zip_data.city) : null;
             this.userForm.get('State').enable();
             this.userForm.get('City').enable();
-            this.userForm.get('State')!.setValue(zip_data.state);
-            this.userForm.get('City')!.setValue(zip_data.city);
+            this.userForm.get('State').setValue(zip_data.state);
+            this.userForm.get('City').setValue(zip_data.city);
             console.log(zip_data);
           } else {
             this.userForm.get('State').disable();
@@ -272,15 +270,10 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
   }
   updateCustomer(): void {
     if (this.profileId) {
+      console.log(this.userForm.value);
       this.spinner.show();
-      this.customer.ProfilePicName =
-        this.profileImg?.url || this.customer.ProfilePicName;
-      this.customer.CoverPicName =
-        this.profileCoverImg?.url || this.customer.CoverPicName;
-      this.customer.IsActive = 'Y';
-      this.customer.UserID = +this.userId;
       this.customerService
-        .updateProfile(this.profileId, this.customer)
+        .updateProfile(this.profileId, this.userForm.value)
         .subscribe({
           next: (res: any) => {
             this.spinner.hide();

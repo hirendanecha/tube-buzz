@@ -80,6 +80,11 @@ export class AuthService {
     return userData['_id'];
   }
 
+  profileId(): any {
+    const userData = this.userData();
+    return userData['profileId'];
+  }
+
   // userLogin(userJson: any = {}): Observable<any> {
   //     localStorage.clear();
   //     localStorage.setItem('userData', JSON.stringify(userJson));
@@ -144,12 +149,13 @@ export class AuthService {
   // }
 
   setUserData(userDetails: any) {
-    // localStorage.setItem('userData', JSON.stringify(userDetails));
+    localStorage.setItem('userData', JSON.stringify(userDetails));
   }
 
   getUserData() {
     return localStorage.getItem('userData');
   }
+
 
   verifyToken(token): Observable<any> {
     return this.http.get(

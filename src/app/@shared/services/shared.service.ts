@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ChannelService } from './channels.service';
+import { AuthService } from './auth.service';
 // import { CustomerService } from './customer.service';
 
 @Injectable({
@@ -28,7 +29,7 @@ export class SharedService {
     public modalService: NgbModal,
     private spinner: NgxSpinnerService,
     // private customerService: CustomerService,
-    // private communityService: CommunityService,
+    private authService: AuthService,
     private channelService: ChannelService,
     private route: ActivatedRoute
   ) {
@@ -70,20 +71,18 @@ export class SharedService {
   getUserDetails() {
     const profileId = localStorage.getItem('profileId');
     if (profileId) {
-      const localUserData = JSON.parse(localStorage.getItem('userData'));
-      if (localUserData?.ID) {
-        this.userData = localUserData;
-      }
-
+      // const localUserData = JSON.parse(localStorage.getItem('userData'));
+      // if (localUserData?.ID) {
+      //   this.userData = localUserData;
+      // }
       this.spinner.show();
-
       this.channelService.getProfile(profileId).subscribe({
         next: (res: any) => {
           this.spinner.hide();
-          const data = res?.data?.[0];
-
+          const data = res?.data;
           if (data) {
             this.userData = data;
+            this.authService.setUserData(this.userData)
             localStorage.setItem('userData', JSON.stringify(this.userData));
           }
         },

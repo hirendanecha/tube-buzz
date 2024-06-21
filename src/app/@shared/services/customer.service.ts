@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Customer } from '../constant/customer';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -16,7 +15,7 @@ export class CustomerService {
 
   customerObs: Subject<any> = new Subject<any>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getCustomer(id: number): Observable<any> {
     this.http
@@ -74,7 +73,7 @@ export class CustomerService {
     return this.http.get<Object>(`${this.baseUrl}/profile/${id}`);
   }
 
-  updateProfile(id, customer: Customer): Observable<Object> {
+  updateProfile(id, customer: any): Observable<Object> {
     const token = localStorage.getItem('auth-token');
     return this.http.put(`${this.baseUrl}/profile/${id}`, customer, {
       headers: {
@@ -121,12 +120,12 @@ export class CustomerService {
     return this.http.get(`${this.baseUrl}/verify-token/${token}`);
   }
 
-  startCallToBuzzRing(callerData: Object): Observable<any>{
+  startCallToBuzzRing(callerData: Object): Observable<any> {
     const url = 'https://ring-api.freedom.buzz/api/v1/customers/call-notification';
     return this.http.post(url, callerData);
   }
 
-  startGroupCallToBuzzRing(callerData: Object): Observable<any>{
+  startGroupCallToBuzzRing(callerData: Object): Observable<any> {
     const url = 'https://ring-api.freedom.buzz/api/v1/customers/group-call-notification';
     return this.http.post(url, callerData);
   }
