@@ -125,7 +125,7 @@ export class HeaderComponent implements OnInit {
     };
   
     if (!this.channelList || !this.channelList.length) {
-      const userId = this.userDetails?.Id;
+      const userId = this.userDetails?.UserID;
       const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
       this.commonService.get(apiUrl).subscribe(
         (res) => {
@@ -153,7 +153,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getChannels(): void {
-    const userId = this.userDetails?.Id;
+    const userId = this.userDetails?.UserID;
     const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
     this.commonService.get(apiUrl).subscribe({
       next: (res) => {

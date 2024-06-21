@@ -157,7 +157,7 @@ export class LfDashboardComponent implements OnInit {
     };
   
     if (!this.channelList || !this.channelList.length) {
-      this.userId = this.useDetails?.Id;
+      this.userId = this.useDetails?.UserID;
       const apiUrl = `${environment.apiUrl}channels/get-channels/${this.userId}`;
       this.commonService.get(apiUrl).subscribe(
         (res) => {
@@ -193,13 +193,13 @@ export class LfDashboardComponent implements OnInit {
 
   getmyChannel(link): void {
     const unique_link = link || this.shareService.channelData.unique_link;
-    this.router.navigate([`channel/${unique_link}`], {
+    this.router.navigate([`channels/${unique_link}`], {
       state: { data: unique_link },
     });
   }
 
   getChannels(): void {
-    this.userId = JSON.parse(this.authService.getUserData() as any)?.Id;
+    this.userId = JSON.parse(this.authService.getUserData() as any)?.UserID;
     const apiUrl = `${environment.apiUrl}channels/get-channels/${this.userId}`;
     this.commonService.get(apiUrl).subscribe({
       next: (res) => {

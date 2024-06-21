@@ -1,5 +1,5 @@
 // const frontendUrl = 'http://localhost:4200/';
-// const backendUrl = 'http://192.168.1.16:8080/';
+// const backendUrl = 'http://localhost:8080/';
 // const loginUrl = 'http://localhost:4200/login';
 
 const frontendUrl = 'https://www.tube.buzz/';

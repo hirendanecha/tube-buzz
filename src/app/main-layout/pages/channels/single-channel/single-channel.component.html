@@ -1,26 +1,23 @@
-<div class="single-channel-image">
-  <img class="img-fluid" alt="" src="/assets/img/channel-banner.png" />
-  <div class="channel-profile">
-    <img
-      class="channel-profile-img"
-      alt=""
-      [src]="channelDetails?.profile_pic_name"
-      onerror="this.onerror=null;this.src='assets/default-profile.jpg';"
-    />
-  </div>
+<div class="d-flex gap-4 pb-4">
+  <img
+    class="channel-profile-img"
+    alt=""
+    [src]="channelDetails?.profile_pic_name"
+    onerror="this.onerror=null;this.src='assets/default-profile.jpg';"
+  />
+  <a class="channel-brand"
+    >{{ channelDetails?.firstname }}
+    <span
+      title=""
+      data-placement="top"
+      data-toggle="tooltip"
+      data-original-title="Verified"
+    >
+      <fa-icon [icon]="['fas', 'check-circle']" [fixedWidth]="true" /> </span
+  ></a>
 </div>
 <div class="single-channel-nav">
   <nav class="navbar navbar-expand-lg navbar-light w-100">
-    <a class="channel-brand"
-      >{{ channelDetails.firstname }}
-      <span
-        title=""
-        data-placement="top"
-        data-toggle="tooltip"
-        data-original-title="Verified"
-      >
-        <fa-icon [icon]="['fas', 'check-circle']" [fixedWidth]="true" /> </span
-    ></a>
     <button
       class="navbar-toggler"
       type="button"
@@ -46,14 +43,14 @@
           (click)="activeTab = 2"
           [ngClass]="activeTab === 2 ? 'active' : ''"
         >
-          <a class="nav-link">Playlist</a>
+          <a class="nav-link">About</a>
         </li>
         <!-- <li class="nav-item">
           <a class="nav-link">Channels</a>
         </li> -->
       </ul>
       <form class="d-flex form-inline my-2 my-lg-0">
-        <input
+        <!-- <input
           class="form-control form-control-sm mr-sm-1"
           type="search"
           placeholder="Search"
@@ -64,8 +61,8 @@
         >
           <fa-icon [icon]="['fas', 'search']" [fixedWidth]="true" />
         </button>
-        &nbsp;&nbsp;&nbsp;
-        <button class="btn btn-outline-danger btn-sm" type="button">
+        &nbsp;&nbsp;&nbsp; -->
+        <button class="btn btn-outline-danger btn-sm" (click)="channelSubscribe()">
           Subscribe
         </button>
       </form>
@@ -82,8 +79,28 @@
           <app-video-card [videoData]="videoList" />
         </ng-container>
         <ng-container *ngIf="activeTab === 2">
-          <h6>My Playlist</h6>
-          <app-video-card [videoData]="videoList" />
+          <h6>About</h6>
+          <div class="d-flex justify-content-between">
+            <div class="d-flex flex-column" *ngIf="channelDetails?.description">
+              <h2>Description</h2>
+              <p>{{ channelDetails?.description }}</p>
+            </div>
+            <div class="d-flex flex-column">
+              <h2>Additional Details</h2>
+              <p class="d-flex gap-3">
+                <fa-icon [icon]="['fas', 'calendar']" />
+                Joined {{ channelDetails?.created | date : "MMM d, y" }}
+              </p>
+              <p class="d-flex gap-3">
+                <fa-icon [icon]="['fas', 'video']" />
+                videos {{ channelDetails?.videoCount }}
+              </p>
+              <p class="d-flex gap-3">
+                <fa-icon [icon]="['fas', 'eye']" />
+                subscribers {{ channelDetails?.subscribers }}
+              </p>
+            </div>
+          </div>
         </ng-container>
       </div>
     </div>

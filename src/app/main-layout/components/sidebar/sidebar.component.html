@@ -51,7 +51,7 @@
       <li *ngFor="let channel of featuredChannels">
         <div (click)="navigateToChannel(channel)">
           <a
-            [routerLink]="'channel/' + channel?.unique_link"
+            [routerLink]="'channels/' + channel?.unique_link"
             [state]="{ data: channel }"
           >
             <img

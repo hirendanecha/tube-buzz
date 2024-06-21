@@ -646,7 +646,7 @@ export class VideoComponent implements OnInit, OnChanges {
   }
 
   openProfile(Id): void {
-    const url = `https://tube.buzz/channel/${Id}`;
+    const url = `https://tube.buzz/channels/${Id}`;
     window.open(url, '_blank');
   }
 

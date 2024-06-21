@@ -13,10 +13,10 @@ const routes: Routes = [
     path: 'home',
     component: HomeComponent,
   },
-  {
-    path: 'channel/:name',
-    component: HomeComponent,
-  },
+  // {
+  //   path: 'channel/:name',
+  //   component: HomeComponent,
+  // },
 ];
 
 @NgModule({

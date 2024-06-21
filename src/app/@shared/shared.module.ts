@@ -282,7 +282,8 @@ export class SharedModule {
       faFolderOpen,
       faCalendar,
       faCloudUpload,
-      faClapperboard
+      faClapperboard,
+      faCheckCircle
     );
   }
 }

@@ -41,7 +41,7 @@ export class MobileMenuComponent implements OnInit {
 
   getmyChannel() {
     const unique_link = this.shareService.channelData.unique_link;
-    this.router.navigate([`channel/${unique_link}`], {
+    this.router.navigate([`channels/${unique_link}`], {
       state: { data: unique_link },
     });
   }

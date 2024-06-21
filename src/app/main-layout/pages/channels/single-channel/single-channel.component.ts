@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 import { AuthService } from 'src/app/@shared/services/auth.service';
 import { CommonService } from 'src/app/@shared/services/common.service';
 import { environment } from 'src/environments/environment';
@@ -20,34 +21,54 @@ export class SingleChannelComponent implements OnInit {
     public authService: AuthService,
     private router: Router
   ) {
-    this.channelDetails = history.state.data;
+    this.router.events.subscribe((event: any) => {
+      const name = event?.routerEvent?.url.split('/')[2];
+      if (name) {
+        this.getChannelDetailsById(String(name));
+      }
+    });
+
     this.useDetails = JSON.parse(this.authService.getUserData() as any);
     if (this.useDetails?.MediaApproved === 1) {
-     return 
-    }else{
-      this.router.navigate(['/home'])
+      return;
+    } else {
+      this.router.navigate(['/home']);
     }
   }
 
-  ngOnInit(): void {
-    this.getPostVideosById();
-  }
+  ngOnInit(): void { }
 
-  getPostVideosById(): void {
+  getChannelDetailsById(id): void {
+    this.commonService.get(`${this.apiUrl}channels/${id}`).subscribe({
+      next: (res: any) => {
+        this.channelDetails = res.data;
+        if (this.channelDetails?.id) {
+          this.getPostVideosById(this.channelDetails?.id);
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+  getPostVideosById(channelid): void {
     this.commonService
       .post(`${this.apiUrl}channels/posts`, {
-        id: this.channelDetails?.profileid,
+        id: channelid,
         size: 10,
         page: 1,
       })
       .subscribe({
         next: (res: any) => {
           this.videoList = res.data;
-          console.log(res);
         },
         error: (error) => {
           console.log(error);
         },
       });
+  }
+
+  channelSubscribe(){
+    
   }
 }
