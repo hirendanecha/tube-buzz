@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
       } else {
         if (this.useDetails.UserID) {
-          this.getChannelByUserId(this.useDetails?.UserID);
+          // this.getChannelByUserId(this.useDetails?.UserID);
         }
       }
     });

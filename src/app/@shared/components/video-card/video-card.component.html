@@ -38,8 +38,17 @@
             <a [title]="stripTags(video.postdescription)">{{ stripTags(video.postdescription) }}
             </a>
           </div>
-          <div class="video-page text-dark c-height font-16-px" *ngIf="video?.channelName || video?.firstname">
+          <div class="video-page channel-Name text-dark c-height font-16-px" *ngIf="video?.channelName || video?.firstname">
+            <img
+            class="h-28-px w-28-px rounded-circle"
+            loading="lazy"
+            data-src="{{ video?.profile_pic_name }}"
+            onerror="this.onerror=null;this.src='assets/default-profile.jpg';"
+            alt=""
+          />
+          <a [routerLink]="'/channels/' + video?.unique_link">
             {{ video?.channelName || video?.firstname }}
+          </a>
           </div>
           <div class="d-flex video-view pt-2">
             <a [routerLink]="['/video/', video.id]" target="_blank">

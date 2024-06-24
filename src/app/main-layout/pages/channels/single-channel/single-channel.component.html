@@ -52,7 +52,7 @@
       <ng-container *ngIf="useDetails?.profileId !== channelDetails?.profileid && shareService.getCredentials()"
       >
       <div class="d-flex align-items-center form-inline my-2 my-lg-0">
-        <button class="btn btn-sm" [ngClass]="!channelDetails?.isSubscribed ? 'btn-outline-success' : 'btn-outline-danger'" (click)="channelSubscribe(channelDetails?.isSubscribed)">
+        <button class="btn btn-sm" [ngClass]="!channelDetails?.isSubscribed ? 'btn-success' : 'btn-danger'" (click)="channelSubscribe(channelDetails?.isSubscribed)">
           {{ !channelDetails?.isSubscribed ? 'Subscribe' : 'Unsubscribe'}}
         </button>
       </div>
