@@ -71,6 +71,7 @@ export class CreateChannelComponent {
           this.spinner.hide();
           this.activateModal.close('success');
           this.toastService.success('Channel created successfully');
+          location.reload();
         },
         error: (err) => {
           this.spinner.hide();

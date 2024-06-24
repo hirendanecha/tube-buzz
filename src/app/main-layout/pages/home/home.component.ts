@@ -207,7 +207,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.spinner.show();
     this.commonService
       .post(`${this.apiUrl}posts`, {
-        id: this.channelData?.id,
+        profileId: this.useDetails?.profileId,
         size: 12,
         page: this.activeFeturePage,
       })

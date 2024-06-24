@@ -70,7 +70,8 @@ export class MyAccountComponent {
     this.commonService
     // id: this.channelId,
       .post(`${this.apiUrl}/my-posts`, {
-        id: this.userData.profileId,
+        profileId: this.userData.profileId,
+        // id: this.channelId,
         size: 12,
         page: this.activePage,
       })

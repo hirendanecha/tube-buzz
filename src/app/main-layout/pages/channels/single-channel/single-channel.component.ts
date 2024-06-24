@@ -63,7 +63,7 @@ export class SingleChannelComponent implements OnInit {
 
   getPostVideosById(channelid): void {
     this.commonService
-      .post(`${this.apiUrl}channels/posts`, {
+      .post(`${this.apiUrl}channels/my-posts`, {
         id: channelid,
         size: 10,
         page: 1,
