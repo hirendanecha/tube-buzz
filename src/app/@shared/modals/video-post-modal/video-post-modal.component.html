@@ -22,6 +22,9 @@
           class="form-control w-100"
           (change)="selectChannel($event.target.value)"
         >
+        <option selected disabled>
+          <span>Select Video Upload Channel</span>
+        </option>
           <option [value]="channel?.id" *ngFor="let channel of channelList">
             <span>{{ channel.firstname }}</span>
           </option>
@@ -38,6 +41,9 @@
           (change)="selectCategory($event.target.value)"
         >
         <ng-container *ngIf="channelCategory$ | async as channelCategory">
+          <option selected disabled>
+            <span>Select Video Upload Category</span>
+          </option>
           <option [value]="channel?.categoryName" *ngFor="let channel of channelCategory">
             <span>{{ channel.categoryName }}</span>
           </option>

@@ -37,7 +37,7 @@ export class MyAccountComponent {
     // console.log("h",this.channelData);
     this.getChannels();
     this.getPostVideosById();
-    this.getChannelByUserId();
+    // this.getChannelByUserId();
   }
 
   getPostVideosById(): void {
@@ -91,23 +91,23 @@ export class MyAccountComponent {
       });
   }
 
-  getChannelByUserId(): void {
-    const url = environment.apiUrl
-    this.commonService.get(`${url}channels/my-channel/${this.userData.Id}`).subscribe({
-      next: (res) => {
-        if (res) {
-          this.channelData = res;
-          this.userChannelCount = this.channelData.length
-          console.log(this.channelData.length);
-        }
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
-  }
+  // getChannelByUserId(): void {
+  //   const url = environment.apiUrl
+  //   this.commonService.get(`${url}channels/my-channel/${this.userData.UserID}`).subscribe({
+  //     next: (res) => {
+  //       if (res) {
+  //         this.channelData = res;
+  //         this.userChannelCount = this.channelData.length
+  //         console.log(this.channelData.length);
+  //       }
+  //     },
+  //     error: (error) => {
+  //       console.log(error);
+  //     },
+  //   });
+  // }
   getChannels(): void {
-    const userId = JSON.parse(this.authService.getUserData() as any)?.UserID;
+    const userId = this.userData.UserID;
     const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
     this.commonService.get(apiUrl).subscribe({
       next: (res) => {

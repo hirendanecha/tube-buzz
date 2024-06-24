@@ -21,7 +21,7 @@ const routes: Routes = [
       {
         path: 'channels',
         loadChildren: () => import('./pages/channels/channels.module').then((m) => m.ChannelModule),
-        canActivate: mapToCanActivate([UserAuthGuard]),
+        // canActivate: mapToCanActivate([UserAuthGuard]),
 
       },
       {

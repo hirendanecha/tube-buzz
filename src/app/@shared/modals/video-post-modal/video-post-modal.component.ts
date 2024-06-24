@@ -81,10 +81,10 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
   ) {
     this.postData.profileid = JSON.parse(
       this.authService.getUserData() as any
-    )?.Id;
+    )?.profileId;
+    // this.channelId = +localStorage.getItem('channelId');
     // console.log('profileId', this.postData.profileid);
     // console.log('editData', this.data);
-    this.channelId = +localStorage.getItem('channelId');
     // console.log(this.channelId);
   }
 
@@ -108,6 +108,8 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
   }
 
   uploadImgAndSubmit(): void {
+    console.log(this.postData);
+    
     if (
       this.postData?.profileid &&
       this.postData.postdescription &&
@@ -115,6 +117,7 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
       (this.postData.file1 || this.selectedVideoFile) &&
       (this.postData.file2 || this.selectedThumbFile)
     ) {
+      this.postData['channelId'] = this.channelId || null;
       if (this.postData?.file1?.name || this.postData?.file2?.name) {
         if (this.postData?.file1?.name) {
           this.isProgress = true;
@@ -330,6 +333,7 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
 
   selectCategory(category): void {
     this.selectedCategory = category;
+    console.log(category);
   }
 
   getChannelCategory(): Observable<any[]> {

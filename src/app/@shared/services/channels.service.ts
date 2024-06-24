@@ -69,4 +69,12 @@ export class ChannelService {
   getCategory(): Observable<any> {
     return this.http.get(`${this.baseUrl}/get-category`);
   }
+
+  subscribeChannel(data): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/subscribe/create/`, data);
+  }
+
+  unsubscribeChannel(data): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}subscribe/remove/${data.ProfileId}/${data.SubscribeChannelId}`);
+  }
 }

@@ -12,19 +12,19 @@
       <span>Home</span>
     </a>
   </li>
-  <li class="nav-item" routerLinkActive="active">
+  <li class="nav-item" routerLinkActive="active" *ngIf="shareService.getCredentials()">
     <a class="nav-link" routerLink="/channels">
       <fa-icon [icon]="['fas', 'clapperboard']" [fixedWidth]="true" />
       <span>My Channels</span>
     </a>
   </li>
-  <li class="nav-item" routerLinkActive="active">
+  <li class="nav-item" routerLinkActive="active" *ngIf="shareService.getCredentials()">
     <a class="nav-link" routerLink="/account">
       <fa-icon [icon]="['fas', 'user-circle']" [fixedWidth]="true" />
       <span>My Profile</span>
     </a>
   </li>
-  <li class="nav-item" (click)="createChannel()">
+  <li class="nav-item" (click)="createChannel()" *ngIf="shareService.getCredentials()">
     <a class="nav-link" routerLink="/account">
       <fa-icon [icon]="['fas', 'plus']" [fixedWidth]="true" />
       <span>Create Channel</span>

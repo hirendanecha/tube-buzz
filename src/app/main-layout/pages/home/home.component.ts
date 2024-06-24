@@ -15,6 +15,7 @@ import { environment } from 'src/environments/environment';
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   apiUrl = environment.apiUrl + 'channels/';
+  useDetails: any = [];
   channelData: any = {};
   videoList: any = [];
   recommendedVideoList: any = [];
@@ -24,8 +25,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   hasMoreData = false;
   hasRecommendedData = false;
   channelName = '';
-  profileId: number;
-  userId: number;
   channelId: number;
   receivedSearchText: string = '';
   activeTab: string = 'Videos';
@@ -46,8 +45,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private shareService: ShareService,
     private seoService: SeoService,
   ) {
-    this.profileId = JSON.parse(this.authService.getUserData() as any)?.Id;
-    this.userId = JSON.parse(this.authService.getUserData() as any)?.Id;
+    this.useDetails = JSON.parse(this.authService.getUserData() as any);
     this.channelId = +localStorage.getItem('channelId');
 
     this.route.paramMap.subscribe((paramMap) => {
@@ -64,7 +62,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
           this.searchResults = null;
         }
       } else {
-        this.getChannelByUserId(this.userId);
+        if (this.useDetails.UserID) {
+          this.getChannelByUserId(this.useDetails?.UserID);
+        }
       }
     });
     const data = {
@@ -83,7 +83,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.socketService?.socket?.connect();
     }
 
-    this.socketService?.socket?.emit('join', { room: this.profileId });
+    this.socketService?.socket?.emit('join', { room: this.useDetails.profileId });
     this.socketService?.socket?.on('notification', (data: any) => {
       console.log(data);
       if (data) {

@@ -8,8 +8,8 @@
     </li>
 
     <li class="bottom-nav-item" routerLinkActive="active" *ngIf="isUserMediaApproved() && channelId">
-      <!-- routerLink="/channels" -->
-      <a class="bottom-nav-link" (click)="getmyChannel()">
+      <!-- (click)="getmyChannel()" -->
+      <a class="bottom-nav-link" routerLink="/channels">
         <fa-icon [icon]="['fas', 'user']" [fixedWidth]="true" />
         <span>Channel</span>
       </a>
