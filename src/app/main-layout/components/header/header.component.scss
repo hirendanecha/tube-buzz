@@ -9,6 +9,12 @@
     left: -170px;
   }
 }
+.navbar{
+  border-bottom: 1px solid;
+  .user-dropdown{
+    background-color: #1e1e1e !important;
+  }
+}
 
 .single-item {
   // margin-top: 10px;
