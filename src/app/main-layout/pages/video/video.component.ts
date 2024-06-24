@@ -88,7 +88,7 @@ export class VideoComponent implements OnInit, OnChanges {
     private seoService: SeoService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    this.profileId = JSON.parse(this.authService.getUserData() as any)?.Id || null;
+    this.profileId = JSON.parse(this.authService.getUserData() as any)?.profileId || null;
     if (isPlatformBrowser(this.platformId)) {
 
       this.route.params.subscribe((params) => {
