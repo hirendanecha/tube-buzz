@@ -502,7 +502,7 @@
               <app-video-slider-list [videoList]="videoList" />
               <div
                 class="d-flex flex-column text-center justify-content-center mb-2"
-                *ngIf="!hasMoreData"
+                *ngIf="hasMoreData"
               >
                 <fa-icon
                   [icon]="['fas', 'rotate-right']"
@@ -526,7 +526,7 @@
           <app-video-slider-list [videoList]="videoList" />
           <div
             class="d-flex flex-column text-center justify-content-center mb-2"
-            *ngIf="!hasMoreData"
+            *ngIf="hasMoreData"
           >
             <fa-icon
               [icon]="['fas', 'rotate-right']"

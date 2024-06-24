@@ -68,8 +68,9 @@ export class MyAccountComponent {
     this.activePage++;
     this.spinner.show();
     this.commonService
+    // id: this.channelId,
       .post(`${this.apiUrl}/my-posts`, {
-        id: this.channelId,
+        id: this.userData.profileId,
         size: 12,
         page: this.activePage,
       })
@@ -78,9 +79,11 @@ export class MyAccountComponent {
           this.spinner.hide();
           if (res?.data?.length > 0) {
             this.videoList = this.videoList.concat(res.data);
-            this.hasMoreData = false;
             this.postedVideoCount = res.pagination.totalItems;     
           } else {
+            this.hasMoreData = false;
+          }
+          if (this.activePage < res.pagination.totalPages) {
             this.hasMoreData = true;
           }
         },

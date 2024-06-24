@@ -192,6 +192,9 @@ export class VideoComponent implements OnInit, OnChanges {
           } else {
             this.hasMoreData = false;
           }
+          if (this.activePage < res.pagination.totalPages) {
+            this.hasMoreData = true;
+          }
         },
         error: (error) => {
           this.spinner.hide();

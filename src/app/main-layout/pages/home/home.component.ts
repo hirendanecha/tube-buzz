@@ -188,8 +188,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
           this.spinner.hide();
           if (res?.data?.length > 0) {
             this.videoList = this.videoList.concat(res.data);
-            this.hasMoreData = false;
           } else {
+            this.hasMoreData = false;
+          }
+          if (this.activePage < res.pagination.totalPages) {
             this.hasMoreData = true;
           }
         },
@@ -216,8 +218,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.recommendedVideoList = this.recommendedVideoList.concat(
               res.data
             );
-            this.hasRecommendedData = false;
           } else {
+            this.hasRecommendedData = false;
+          }
+          if (this.activeFeturePage < res.pagination.totalPages) {
             this.hasRecommendedData = true;
           }
         },

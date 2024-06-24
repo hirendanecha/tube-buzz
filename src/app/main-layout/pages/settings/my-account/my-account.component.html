@@ -80,7 +80,7 @@
       <app-video-card [videoData]="videoList" />
       <div
       class="d-flex justify-content-center mb-2"
-      *ngIf="!hasMoreData && videoList.length"
+      *ngIf="hasMoreData"
     >
       <button class="btn btn-outline-primary" (click)="loadMore()">
         Load More

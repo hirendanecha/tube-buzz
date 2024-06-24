@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit{
             this.tokenStorage.saveToken(data?.accessToken);
             this.tokenStorage.saveUser(data.user);
             localStorage.setItem('profileId', data.user.profileId);
-            localStorage.setItem('communityId', data.user.communityId);
+            // localStorage.setItem('communityId', data.user.communityId);
             localStorage.setItem('channelId', data.user?.channelId);
             // window.localStorage.user_level_id = 2;
             // window.localStorage.user_id = data.user.Id;
