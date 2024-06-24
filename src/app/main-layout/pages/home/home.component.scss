@@ -9,7 +9,7 @@
 
 ::ng-deep {
   .icon-color fa-icon svg path {
-    fill: var(--bg-secondary);
+    fill: var(--font-icon-color) !important;
     opacity: 0.9;
   }
   .loading-text {

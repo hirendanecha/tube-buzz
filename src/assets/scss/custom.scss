@@ -37,8 +37,8 @@
   --link-color: #fff;
   // --link-color: #ff0000;
   --link-color-1: #e41e1d;
-  --link-bg: #3e3e3e;
-  --scroll-color: #171954 ;
+  --link-bg: #3e3e3e; 
+  --scroll-color: #0D6EFD ;
   --blue-text: #1d1f55;
   --card-bg: #3e3e3e;
   --box-shadow: 0px 4px 26px rgba(66, 66, 66, 0.25);
@@ -1731,7 +1731,7 @@ h6 {
     padding: 0;
   }
 
-  background: var(--bg-white) none repeat scroll 0 0 !important;
+  background: var(--bg-secondary) none repeat scroll 0 0 !important;
   padding: 0rem 30px 0;
 }
 
