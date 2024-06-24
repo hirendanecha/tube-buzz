@@ -157,8 +157,8 @@ export class LfDashboardComponent implements OnInit {
     };
   
     if (!this.channelList || !this.channelList.length) {
-      this.userId = this.useDetails?.UserID;
-      const apiUrl = `${environment.apiUrl}channels/get-channels/${this.userId}`;
+      const userId = this.useDetails?.UserID;
+      const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
       this.commonService.get(apiUrl).subscribe(
         (res) => {
           this.channelList = res.data;
