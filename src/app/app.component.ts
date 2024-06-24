@@ -54,7 +54,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       if (splashScreenLoader) {
         splashScreenLoader.style.display = 'none';
       }
-    }, 1000);
+    }, 100);
   }
 
   logOut(): void {
