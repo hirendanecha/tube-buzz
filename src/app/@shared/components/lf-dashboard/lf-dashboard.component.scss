@@ -1,3 +1,6 @@
+.image-render{
+  image-rendering: -webkit-optimize-contrast;
+}
 .dash-container {
   background: var(--card-bg);
   .c-bg-color {

@@ -285,7 +285,7 @@ body.fixed-nav #content-wrapper {
 
     &.active .nav-link {
       background-color: var(--bg-secondary);
-      // border-radius: 35px;
+      border-radius: 35px;
     }
     .dropdown-menu {
       position: absolute !important;
@@ -382,7 +382,7 @@ body.fixed-nav #content-wrapper {
     &.toggled {
       // overflow: visible;
       overflow: scroll;
-      width: 90px !important;
+      width: 100px !important;
 
       &:hover {
         overflow-x: auto;
