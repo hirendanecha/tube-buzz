@@ -21,6 +21,10 @@ export class SingleChannelComponent implements OnInit {
   videoList: any = [];
   apiUrl = environment.apiUrl;
   activeTab = 1;
+  categoryName: string = 'Tube.buzz';
+  activeFeturePage = 0;
+  hasMoreData: boolean = false;
+
   constructor(
     private commonService: CommonService,
     private channelService: ChannelService,
@@ -32,8 +36,14 @@ export class SingleChannelComponent implements OnInit {
   ) {
     this.router.events.subscribe((event: any) => {
       const name = event?.routerEvent?.url.split('/')[2];
+      const url = this.router.routerState.snapshot.url;
       if (name) {
-        this.getChannelDetailsById(String(name));
+        if (url.includes('category')) {
+          this.getPostByCategory(String(name));
+          this.categoryName = String(name)
+        } else {
+          this.getChannelDetailsById(String(name));
+        }
       }
     });
 
@@ -46,6 +56,27 @@ export class SingleChannelComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  getPostByCategory(category): void {
+    this.activeFeturePage++;
+    const size = 20;
+    const page = this.activeFeturePage;
+    this.commonService.get(`${this.apiUrl}channels/posts/${category}?page=${page}&size=${size}`).subscribe({
+        next: (res: any) => {
+          if (res?.data) {
+            this.videoList = this.videoList.concat(res.data);
+          } else {
+            this.hasMoreData = false;
+          }
+          if (this.activeFeturePage < res.pagination.totalPages) {
+            this.hasMoreData = true;
+          }
+        },
+        error: (error) => {
+          console.log(error);
+        },
+    });
+  }
 
   getChannelDetailsById(id): void {
     const profileParam = this.useDetails?.profileId ? `?profileId=${this.useDetails?.profileId}` : '';

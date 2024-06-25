@@ -1,21 +1,40 @@
-<div class="d-flex gap-4 pb-4">
-  <img
-    class="channel-profile-img"
-    alt=""
-    [src]="channelDetails?.profile_pic_name"
-    onerror="this.onerror=null;this.src='assets/default-profile.jpg';"
-  />
-  <a class="channel-brand"
-    >{{ channelDetails?.firstname }}
-    <span
-      title=""
-      data-placement="top"
-      data-toggle="tooltip"
-      data-original-title="Verified"
-    >
-      <fa-icon [icon]="['fas', 'check-circle']" [fixedWidth]="true" /> </span
-  ></a>
-</div>
+<ng-container *ngIf="channelDetails.id">
+  <div class="d-flex gap-4 pb-4">
+    <img
+      class="channel-profile-img"
+      alt=""
+      [src]="channelDetails?.profile_pic_name"
+      onerror="this.onerror=null;this.src='assets/default-profile.jpg';"
+    />
+    <a class="channel-brand"
+      >{{ channelDetails?.firstname }}
+      <span
+        data-placement="top"
+        data-toggle="tooltip"
+        data-original-title="Verified"
+      >
+        <fa-icon [icon]="['fas', 'check-circle']" [fixedWidth]="true" /> </span
+    ></a>
+  </div>
+</ng-container>
+<ng-container *ngIf="!channelDetails.id">
+  <div class="d-flex align-items-center gap-4 pb-4">
+    <img
+      class="channel-profile-img"
+      alt=""
+      [src]="channelDetails?.profile_pic_name"
+      onerror="this.onerror=null;this.src='assets/default-profile.jpg';"
+    />
+    <div class="d-flex flex-column">
+      <a class="channel-brand text-capitalize"
+        >{{ categoryName === 'featuredVideos' ?  'Featured Videos' : categoryName }}
+      </a>
+      <p class="d-flex gap-2" *ngIf="videoList.length">
+        {{videoList.length}} Videos
+      </p>
+    </div>
+  </div>
+</ng-container>
 <div class="single-channel-nav">
   <nav class="navbar navbar-expand-lg navbar-light w-100">
     <!-- <button
@@ -39,6 +58,7 @@
           <a class="nav-link">Videos <span class="sr-only">(current)</span></a>
         </li>
         <li
+          *ngIf="channelDetails?.id"
           class="nav-item cursor"
           (click)="activeTab = 2"
           [ngClass]="activeTab === 2 ? 'active' : ''"
@@ -49,7 +69,7 @@
           <a class="nav-link">Channels</a>
         </li> -->
       </ul>
-      <ng-container *ngIf="useDetails?.profileId !== channelDetails?.profileid && shareService.getCredentials()"
+      <ng-container *ngIf="useDetails?.profileId !== channelDetails?.profileid && shareService.getCredentials() && channelDetails?.id"
       >
       <div class="d-flex align-items-center form-inline my-2 my-lg-0">
         <button class="btn btn-sm" [ngClass]="!channelDetails?.isSubscribed ? 'btn-success' : 'btn-danger'" (click)="channelSubscribe(channelDetails?.isSubscribed)">
@@ -57,8 +77,8 @@
         </button>
       </div>
     </ng-container>
-      <ng-container *ngIf="useDetails?.profileId === channelDetails?.profileid && shareService.getCredentials()"
-      >
+    <ng-container *ngIf="useDetails?.profileId === channelDetails?.profileid && shareService.getCredentials() && channelDetails?.id"
+    >
       <div class="d-flex align-items-center form-inline my-2 my-lg-0">
         <button class="btn btn-sm btn-primary" (click)="editChannel(channelDetails)">
           Edit Details
@@ -74,8 +94,16 @@
     <div class="col-md-12">
       <div class="main-title mt-3">
         <ng-container *ngIf="activeTab === 1">
-          <h6>My Videos</h6>
+          <h6 *ngIf="channelDetails.id">My Videos</h6>
           <app-video-card [videoData]="videoList" />
+          <div
+        class="d-flex justify-content-center mb-2"
+        *ngIf="hasMoreData"
+      >
+        <button class="btn btn-outline-primary" (click)="getPostByCategory(categoryName)">
+          Load More
+        </button>
+      </div>
         </ng-container>
         <ng-container *ngIf="activeTab === 2">
           <h6>About</h6>

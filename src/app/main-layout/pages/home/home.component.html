@@ -23,7 +23,7 @@
     </ng-container>
   </div>
 </div>
-<ng-container *ngIf="!searchResults">
+<!-- <ng-container *ngIf="!searchResults">
   <div class="video-block section-padding">
     <div class="row">
       <div class="col-md-12">
@@ -43,9 +43,25 @@
       </div>
     </div>
   </div>
+</ng-container> -->
+<ng-container *ngIf="!searchResults">
+  <div class="video-block section-padding">
+    <div class="row">
+      <ng-container *ngFor="let category of categoryName">
+        <div class="col-md-12 d-flex justify-content-between">
+          <div class="main-title d-flex font-24-px icon-color">
+            <fa-icon [icon]="['fas', 'play-circle']" class="me-2"></fa-icon>
+            <h6 class="text-capitalize">{{ category === 'featuredVideos' ?  'Featured Videos' : category }}</h6>
+          </div>
+          <button class="btn btn-outline-primary rounded-5" (click)="categoryViewAll(category)">View all</button>
+        </div>
+        <app-video-card [videoData]="recommendedVideoList[category]"></app-video-card>
+        <hr class="mt-0">
+      </ng-container>
+    </div>
+  </div>
 </ng-container>
 
-<!-- <hr class="mt-0"> -->
 <!-- <div class="video-block section-padding">
   <div class="row">
     <div class="col-md-12">
@@ -68,12 +84,12 @@
           <h4>Search result for {{searchText}}</h4>
         </div>
         <fa-icon
-        [icon]="['fas', 'xmark']"
-        class="font-24-px"
-        role="button"
-        title="close"
-        (click)="clearSearchData()"
-      />
+          [icon]="['fas', 'xmark']"
+          class="font-24-px"
+          role="button"
+          title="close"
+          (click)="clearSearchData()"
+        />
       </div>
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item cursor">

@@ -25,6 +25,10 @@ const routes: Routes = [
 
       },
       {
+        path: 'category',
+        loadChildren: () => import('./pages/channels/channels.module').then((m) => m.ChannelModule),
+      },
+      {
         path: 'video/:id',
         loadChildren: () => import('./pages/video/video.module').then((m) => m.VideoModule),
         // canActivate: mapToCanActivate([UserAuthGuard]),

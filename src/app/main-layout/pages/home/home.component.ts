@@ -34,10 +34,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   notificationId: number;
   searchText: string;
+  categorizedVideos: any = [];
+  categoryName: any = [];
 
   constructor(
-
     private route: ActivatedRoute,
+    private router: Router,
     private commonService: CommonService,
     private spinner: NgxSpinnerService,
     private socketService: SocketService,
@@ -208,16 +210,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.commonService
       .post(`${this.apiUrl}posts`, {
         profileId: this.useDetails?.profileId,
-        size: 12,
-        page: this.activeFeturePage,
+        // size: 12,
+        // page: this.activeFeturePage,
       })
       .subscribe({
         next: (res: any) => {
           this.spinner.hide();
-          if (res?.data?.length > 0) {
-            this.recommendedVideoList = this.recommendedVideoList.concat(
-              res.data
-            );
+          if (res?.data) {
+            // this.recommendedVideoList = this.recommendedVideoList.concat(
+            //   res.data
+            // );
+            this.recommendedVideoList = res.data
+            this.categoryName = Object.keys(this.recommendedVideoList)
           } else {
             this.hasRecommendedData = false;
           }
@@ -239,8 +243,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   onSearchData(searchText: string) {
     console.log(searchText);
     this.searchText = searchText;
-
-
 
     this.spinner.show();
     this.commonService
@@ -268,5 +270,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.searchChannelData = null;
     this.searchPostData = null;
     this.searchResults = null;
+  }
+
+  categoryViewAll(category){
+    this.router.navigate([`category/${category}`]);
   }
 }
