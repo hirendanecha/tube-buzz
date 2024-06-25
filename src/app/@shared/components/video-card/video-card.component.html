@@ -12,7 +12,7 @@
             />
           </a> -->
           <a>
-            <img *ngIf="!isPlay || postId !== video.id" class="img-fluid h-100 w-100 rounded-top-3" loading="lazy"
+            <img *ngIf="!isPlay || postId !== video.id" class="img-fluid h-100 w-100 rounded-top-3 image-render" loading="lazy"
               data-src="{{ video?.thumbfilename }}" onerror="this.onerror=null;this.src='/assets/dummy/11.jpg';" alt=""
               (click)="playvideo(video)" />
           </a>
