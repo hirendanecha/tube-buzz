@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { filter } from 'rxjs';
+import { CreateChannelComponent } from 'src/app/@shared/modals/create-channel/create-channel-modal.component';
 import { AuthService } from 'src/app/@shared/services/auth.service';
 import { ChannelService } from 'src/app/@shared/services/channels.service';
 import { CommonService } from 'src/app/@shared/services/common.service';
@@ -25,6 +27,7 @@ export class SingleChannelComponent implements OnInit {
     public authService: AuthService,
     private toasterService: ToastService,
     public shareService: ShareService,
+    private modalService: NgbModal,
     private router: Router
   ) {
     this.router.events.subscribe((event: any) => {
@@ -104,5 +107,14 @@ export class SingleChannelComponent implements OnInit {
         },
       });
     }
+  }
+
+  editChannel(channelData){
+    const modalRef = this.modalService.open(CreateChannelComponent, {
+      centered: true,
+      size: 'lg',
+    });
+    modalRef.componentInstance.title = `Edit Channel Details`;
+    modalRef.componentInstance.channelEditData = channelData;
   }
 }

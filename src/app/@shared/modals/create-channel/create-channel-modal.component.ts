@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -6,6 +6,7 @@ import { ToastService } from '../../services/toast.service';
 import { ChannelService } from '../../services/channels.service';
 import { AuthService } from '../../services/auth.service';
 import { UploadFilesService } from '../../services/upload-files.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,7 +14,10 @@ import { UploadFilesService } from '../../services/upload-files.service';
   templateUrl: './create-channel-modal.component.html',
   styleUrls: ['./create-channel-modal.component.scss'],
 })
-export class CreateChannelComponent {
+export class CreateChannelComponent implements OnInit{
+  @Input() title: string = 'Create Channel';
+  @Input() channelEditData: any = [];
+
   userForm = new FormGroup({
     profileid: new FormControl(),
     profile_pic_name: new FormControl(''),
@@ -38,11 +42,18 @@ export class CreateChannelComponent {
     private channelService: ChannelService,
     private uploadFilesService: UploadFilesService,
     public authService: AuthService,
+    private router: Router
   ) {
     this.profileId = JSON.parse(this.authService.getUserData() as any).profileId;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.channelEditData) {
+      this.userForm.get('unique_link').enable();
+      this.selectedFile = this.channelEditData.profile_pic_name;
+      this.userForm.patchValue(this.channelEditData);
+    }
+  }
 
   slugify = (str: string) => {
     return str?.length > 0
@@ -64,14 +75,29 @@ export class CreateChannelComponent {
 
   saveChanges(): void {
     this.userForm.get('profileid').setValue(this.profileId)
-    if (this.userForm.valid) {
+    if (this.userForm.valid && !this.channelEditData.id) {
       this.spinner.show();
       this.channelService.createChannel(this.userForm.value).subscribe({
         next: (res: any) => {
           this.spinner.hide();
           this.activateModal.close('success');
           this.toastService.success('Channel created successfully');
-          location.reload();
+        },
+        error: (err) => {
+          this.spinner.hide();
+          console.log(err);
+        },
+      });
+    } else if (this.userForm.valid && this.channelEditData.id){
+      this.spinner.show();
+      const id = this.channelEditData.id;
+      console.log(this.userForm.value);
+      this.channelService.editChannal(id, this.userForm.value).subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+          this.toastService.success('Channel Edit successfully');
+          this.router.navigate([`channels/${this.userForm.get('unique_link').value}`]);
+          this.activateModal.close('success');
         },
         error: (err) => {
           this.spinner.hide();
@@ -101,6 +127,8 @@ export class CreateChannelComponent {
           };
         },
       });
+    } else if (this.channelEditData.id){
+      this.saveChanges();
     } else {
       this.toastService.danger('Please select channel logo!');
     }

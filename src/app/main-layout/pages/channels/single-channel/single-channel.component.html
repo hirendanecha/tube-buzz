@@ -57,6 +57,14 @@
         </button>
       </div>
     </ng-container>
+      <ng-container *ngIf="useDetails?.profileId === channelDetails?.profileid && shareService.getCredentials()"
+      >
+      <div class="d-flex align-items-center form-inline my-2 my-lg-0">
+        <button class="btn btn-sm btn-primary" (click)="editChannel(channelDetails)">
+          Edit Details
+        </button>
+      </div>
+    </ng-container>
     </div>
   </nav>
 </div>

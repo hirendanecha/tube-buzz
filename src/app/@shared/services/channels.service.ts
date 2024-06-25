@@ -41,6 +41,10 @@ export class ChannelService {
     return this.http.post(`${this.baseUrl}/create-channel`, data);
   }
 
+  editChannal(id: number, data: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/edit-channel/${id}`, data);
+  }
+
   changeChannelStatus(id, feature): Observable<any> {
     return this.http.get(`${this.baseUrl}/feature/${id}?feature=${feature}`);
   }
