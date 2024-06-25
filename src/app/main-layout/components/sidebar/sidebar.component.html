@@ -1,11 +1,8 @@
-<ul
-  class="sidebar navbar-nav"
-  [ngClass]="{
+<ul class="sidebar navbar-nav" [ngClass]="{
     toggled:
       !shareService.isSidebarOpen &&
       (breakpointService?.screen | async)?.md?.gatherThen
-  }"
->
+  }">
   <li class="nav-item" routerLinkActive="active">
     <a class="nav-link" routerLink="/home">
       <fa-icon [icon]="['fas', 'home']" [fixedWidth]="true" />
@@ -48,19 +45,14 @@
   <li class="channel-sidebar-list">
     <h6>Featured Channels</h6>
     <ul>
-      <li class="nav-item"  *ngFor="let channel of featuredChannels">
-        <div (click)="navigateToChannel(channel)">
-          <a
-            [routerLink]="'channels/' + channel?.unique_link"
-            [state]="{ data: channel }"
-          >
-            <img
-              class="img-fluid"
-              [src]="channel.profile_pic_name"
-              alt=""
-              onerror="this.onerror=null;this.src='assets/default-profile.jpg';"
-            />
-            {{ channel.firstname }}
+      <li class="nav-item" *ngFor="let channel of featuredChannels">
+        <div class="channels-list" (click)="navigateToChannel(channel)">
+          <a [routerLink]="'channels/' + channel?.unique_link" [state]="{ data: channel }">
+            <img class="img-fluid image-render" [src]="channel.profile_pic_name" alt=""
+              onerror="this.onerror=null;this.src='assets/default-profile.jpg';" />
+            <ng-container *ngIf="shareService.isSidebarOpen">
+              {{ channel.firstname }}
+            </ng-container>
           </a>
         </div>
         <!-- <div (click)="navigateToChannel(channel)">

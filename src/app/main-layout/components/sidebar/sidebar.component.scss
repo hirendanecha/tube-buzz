@@ -1,7 +1,32 @@
 :host {
   height: 100vh;
 }
-.nav-item:hover{
-  background-color: var(--bg-secondary) !important ;
-  border-radius: 35px;
+.sidebar{
+  border-right: 1px solid;
+}
+.sidebar .nav-item.active .nav-link {
+  border-radius: 20px !important;
+}
+.nav-item {
+  .channels-list {
+    padding: 5px 5px !important;
+
+    &:hover {
+      background-color: var(--bg-secondary) !important;
+      align-items: center;
+      border-radius: 20px;
+    }
+  }
+
+  .nav-link {
+    &:hover {
+      background-color: var(--bg-secondary) !important;
+      align-items: center;
+      border-radius: 20px;
+    }
+  }
+}
+
+.image-render {
+  image-rendering: -webkit-optimize-contrast;
 }

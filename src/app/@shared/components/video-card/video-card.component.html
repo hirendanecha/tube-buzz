@@ -1,9 +1,9 @@
 <div class="row">
   <ng-container *ngIf="videoData.length">
-    <div class="col-xl-3 col-sm-6 mb-3" *ngFor="let video of videoData">
-      <div class="video-container shadow rounded-3" *ngIf="videoData">
+    <div class="col-xl-3 col-sm-6 mb-2" *ngFor="let video of videoData">
+      <div class="video-container rounded-3" *ngIf="videoData">
         <!-- [ngClass]="postId === video.id ? '' : 'video-card'" -->
-        <div class="video-card-image">
+        <div class="video-card-image rounded-4">
           <!-- <a class="play-icon">
             <fa-icon
               [icon]="['fas', 'play-circle']"
@@ -12,9 +12,10 @@
             />
           </a> -->
           <a>
-            <img *ngIf="!isPlay || postId !== video.id" class="img-fluid h-100 w-100 rounded-top-3 image-render" loading="lazy"
+            <img *ngIf="!isPlay || postId !== video.id"  class="img-fluid h-100 w-100 rounded-top-3 image-render cursor" loading="lazy"
               data-src="{{ video?.thumbfilename }}" onerror="this.onerror=null;this.src='/assets/dummy/11.jpg';" alt=""
-              (click)="playvideo(video)" />
+              (click)="openDetailPage(video)" />
+              <!-- (click)="playvideo(video)" /> -->
           </a>
           <div [id]="'jwVideo-' + video.id" class="w-100 c-height"></div>
           <div class="d-flex align-items-center time text-white">
@@ -33,35 +34,36 @@
               {{ video.albumname }}
             </div>
           </div>
-          <div class="c-description-height video-description">
+          <div class="c-description-height video-description d-none">
             <!-- [title]="video.postdescription" -->
             <a [title]="stripTags(video.postdescription)">{{ stripTags(video.postdescription) }}
             </a>
           </div>
-          <div class="video-page channel-Name text-dark c-height font-16-px" *ngIf="video?.channelName || video?.firstname">
-            <img
-            class="h-28-px w-28-px rounded-circle"
-            loading="lazy"
-            data-src="{{ video?.profile_pic_name }}"
-            onerror="this.onerror=null;this.src='assets/default-profile.jpg';"
-            alt=""
-          />
-          <a [routerLink]="'/channels/' + video?.unique_link">
-            {{ video?.channelName || video?.firstname }}
-          </a>
+          <div class="d-flex gap-2 video-page channel-Name text-dark c-height font-16-px" *ngIf="video?.channelName || video?.firstname">
+              <img class="h-28-px w-28-px rounded-circle image-render" loading="lazy" data-src="{{ video?.profile_pic_name }}"
+                onerror="this.onerror=null;this.src='assets/default-profile.jpg';" alt="" />
+            <div class="d-flex flex-column">
+              <a [routerLink]="'/channels/' + video?.unique_link">
+                {{ video?.channelName || video?.firstname }}
+              </a>
+              <div class="font-12-px">
+                <!-- <fa-icon [icon]="['fas', 'calendar']" [fixedWidth]="true" /> -->
+                {{ video.postcreationdate | dateDay }}
+              </div>
+            </div>
           </div>
           <div class="d-flex video-view pt-2">
-            <a [routerLink]="['/video/', video.id]" target="_blank">
+            <!-- <a [routerLink]="['/video/', video.id]" target="_blank">
               <div class="pe-2">
                 <fa-icon [icon]="['fas', 'play']" [fixedWidth]="true" />
                 <span>Large Player</span>
               </div>
-            </a>
+            </a> -->
 
             <!-- <fa-icon [icon]="['fas', 'eye']" [fixedWidth]="true" />
             &nbsp;{{ video.viewcount }} &nbsp; -->
-            <fa-icon [icon]="['fas', 'calendar']" [fixedWidth]="true" />
-            {{ video.postcreationdate | dateDay }}
+            <!-- <fa-icon [icon]="['fas', 'calendar']" [fixedWidth]="true" />
+            {{ video.postcreationdate | dateDay }} -->
           </div>
         </div>
       </div>
