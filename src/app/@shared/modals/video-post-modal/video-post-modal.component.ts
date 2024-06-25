@@ -220,7 +220,7 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
       this.postData.albumname
     ) {
       this.postData['channelId'] = this.channelId || null;
-      this.postData['category'] = this.selectedCategory || null;
+      this.postData['categoryName'] = this.selectedCategory || null;
       console.log('post-data', this.postData);
       this.commonService.post(this.apiUrl, this.postData).subscribe({
         next: (res: any) => {
