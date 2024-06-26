@@ -91,6 +91,7 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     if (this.data) {
       this.postData.id = this.data.id;
+      this.channelId = this.data.channelId
       this.postData.profileid = this.data.profileid;
       this.postData.category = this.data.category;
       this.postData.albumname = this.data.albumname;
