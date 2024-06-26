@@ -1,7 +1,7 @@
 <div class="">
   <div class="text-center mb-5 login-main-left-header pt-4">
     <img src="assets/img/TubeBuzz-Logo.png" class="img-fluid register-logo" alt="LOGO" />
-    <h5 class="mt-3 mb-3 text-black">Welcome to Tube.buzz</h5>
+    <h5 class="mt-3 mb-3 custom-text">Welcome to Tube.buzz</h5>
   </div>
   <form class="form-dark d-flex flex-column" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <div class="alert alert-{{ type }}" role="alert" *ngIf="registrationMessage || msg">
@@ -117,9 +117,9 @@
         <label class="form-label">Country<span class="text-danger">*</span></label>
         <select id="Country" required name="Country" class="input-area form-control w-100" formControlName="Country"
           (input)="convertToUppercase($event)" (change)="onCountryChange($event)">
-          <option [value]="defaultCountry">United states</option>
+          <option [value]="defaultCountry"><span class="text-black">United states</span></option>
           <option [value]="item.country_code" *ngFor="let item of allCountryData">
-            {{ item.country }}
+           <span class="text-black">{{ item.country }}</span>
           </option>
         </select>
       </div>
@@ -179,15 +179,15 @@
       <input type="checkbox" class="p-0 check-box" formControlName="TermAndPolicy" />
       <label class="form-check-label ms-2 c-pointer">
         I agree to the Tube.buzz
-        <a class="text-black" href="/user-agreement" target="_blank">Terms of Use</a> and
-        <a class="text-black" href="/privacy-policy" target="_blank">Privacy Policy</a>.
+        <a class="custom-text" href="/user-agreement" target="_blank">Terms of Use</a> and
+        <a class="custom-text" href="/privacy-policy" target="_blank">Privacy Policy</a>.
         <span class="text-danger">*</span>
       </label>
     </div>
 
     <div class="text-center mt-5 d-flex">
       <p class="light-gray">
-        Already have an Account? <a class="text-black" routerLink="/login">Sign In</a>
+        Already have an Account? <a class="custom-text" routerLink="/login">Sign In</a>
       </p>
       <button class="btn btn-primary my-2 ms-auto" type="submit" [disabled]="!registerForm.valid">
         Register
