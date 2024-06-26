@@ -70,7 +70,7 @@ export class VideoComponent implements OnInit, OnChanges {
   player: any;
   // webUrl = environment.webUrl;
   hasMoreData = false;
-  activePage: number;
+  activePage: number = 0;
   commentMessageTags = [];
   commentMessageInputValue: string = '';
   isTheaterModeOn: boolean = false;
@@ -154,7 +154,9 @@ export class VideoComponent implements OnInit, OnChanges {
         this.seoService.updateSeoMetaData(data);
         this.playvideo(this.videoDetails.id);
         this.viewComments(this.videoDetails.id);
-        this.getPostVideosById();
+        if (!this.videoList.length) {
+          this.getPostVideosById();
+        }
       },
       error: (error) => {
         this.spinner.hide();
@@ -164,7 +166,6 @@ export class VideoComponent implements OnInit, OnChanges {
   }
 
   getPostVideosById(): void {
-    this.activePage = 0;
     this.loadMore();
     // this.commonService
     //   .post(`${this.apiUrl}/posts`, { size: 15, page: 1 })
