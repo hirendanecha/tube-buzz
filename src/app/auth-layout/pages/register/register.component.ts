@@ -39,6 +39,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   };
   theme = '';
   passwordHidden: boolean = true;
+  confirmpasswordHidden:boolean = true;
+  apiUrl = environment.apiUrl + 'customers/';
 
   @ViewChild('zipCode') zipCode: ElementRef;
 
@@ -52,9 +54,9 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     MobileNo: new FormControl('', [Validators.required]),
     Country: new FormControl('US', [Validators.required]),
     Zip: new FormControl('', [Validators.required]),
-    State: new FormControl('', [Validators.required]),
-    City: new FormControl('', [Validators.required]),
-    County: new FormControl('', [Validators.required]),
+    State: new FormControl({ value: '', disabled: true }, [Validators.required]),
+    City: new FormControl({ value: '', disabled: true }, [Validators.required]),
+    County: new FormControl({ value: '', disabled: true }, [Validators.required]),
     TermAndPolicy: new FormControl(false, Validators.required),
     Anonymous: new FormControl(false, Validators.required),
   });
@@ -78,7 +80,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       .subscribe((event) => {
         const val = event['target'].value;
         if (val.length > 3) {
-          // this.onZipChange(val);
+          this.onZipChange(val);
         }
       });
     // this.loadCloudFlareWidget();
@@ -104,6 +106,12 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       passwordInput.type === 'password' ? 'text' : 'password';
     this.passwordHidden = !this.passwordHidden;
   }
+  toggleConfirmPasswordVisibility(confirmpasswordInput: HTMLInputElement) {
+    confirmpasswordInput.type =
+    confirmpasswordInput.type === 'password' ? 'text' : 'password';
+    this.confirmpasswordHidden = !this.confirmpasswordHidden;
+  }
+
 
   selectFiles(event) {
     this.profileImg = event;
@@ -303,38 +311,40 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       });
   }
 
-  // onZipChange(event) {
-  //   this.spinner.show();
-  //   this.commonService
-  //     .getZipData(event, this.registerForm.get('Country').value)
-  //     .subscribe(
-  //       (data) => {
-  //         if (data[0]) {
-  //           const zipData = data[0];
-  //           this.registerForm.get('State').enable();
-  //           this.registerForm.get('City').enable();
-  //           this.registerForm.get('County').enable();
-  //           this.registerForm.patchValue({
-  //             State: zipData.state,
-  //             City: zipData.city,
-  //             County: zipData.places,
-  //           });
-  //         }
-  //          else {
-  //           this.registerForm.get('State').disable();
-  //           this.registerForm.get('City').disable();
-  //           this.registerForm.get('County').disable();
-  //           this.toastService.danger(data?.message);
-  //         }
+  onZipChange(event) {
+    const country = this.registerForm.value.Country;
+    const zip = event;
+    this.spinner.show();
+    this.commonService
+    .get(`${this.apiUrl}zip/${zip}?country=${country}`)
+      .subscribe(
+        (data) => {
+          if (data[0]) {
+            const zipData = data[0];
+            this.registerForm.get('State').enable();
+            this.registerForm.get('City').enable();
+            this.registerForm.get('County').enable();
+            this.registerForm.patchValue({
+              State: zipData.state,
+              City: zipData.city,
+              County: zipData.places,
+            });
+          }
+           else {
+            this.registerForm.get('State').disable();
+            this.registerForm.get('City').disable();
+            this.registerForm.get('County').disable();
+            this.toastService.danger(data?.message);
+          }
 
-  //         this.spinner.hide();
-  //       },
-  //       (err) => {
-  //         this.spinner.hide();
-  //         console.log(err);
-  //       }
-  //     );
-  // }
+          this.spinner.hide();
+        },
+        (err) => {
+          this.spinner.hide();
+          console.log(err);
+        }
+      );
+  }
 
   changetopassword(event) {
     event.target.setAttribute('type', 'password');
