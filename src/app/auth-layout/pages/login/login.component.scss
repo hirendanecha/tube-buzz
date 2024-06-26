@@ -1,29 +1,44 @@
 :host {
-    display: flex;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .custom-input-area {
+    fa-icon {
+      right: 20px;
+      background-color: var(--box-1st-color);
+      border-radius: 50%;
+      height: 36px;
+      width: 36px;
+      text-align: -webkit-center;
+      align-content: center;
+    }
+    // fa-icon {
+    // }
+  }
+
+  .input-area {
+    color: black !important;
+  }
+
+  .custom-text {
+    color: var(--blue-text) !important;
+  }
+}
+.captcha-btn {
+  display: flex;
+
+  @media (max-width: 410px) {
     flex-direction: column;
-    width: 100%;
-  
-    .custom-input-area {
-      fa-icon{
-        right: 20px;
-        background-color: var(--box-1st-color);
-        border-radius: 50%;
-        height: 36px;
-        width: 36px;
-        text-align: -webkit-center;
-        align-content: center;
+  }
+}
+
+::ng-deep {
+  .custom-input-area {
+    .eye-slash {
+      svg path {
+        fill: var(--blue-text) !important;
       }
     }
-    .custom-text{
-      color: var(--blue-text) !important;
-    }
   }
-  .captcha-btn{
-    display: flex;
-  
-  @media(max-width: 410px) {
-    flex-direction: column;
-   
-  }
-  }
-  
+}
