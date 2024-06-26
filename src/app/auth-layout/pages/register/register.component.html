@@ -69,7 +69,7 @@
           <!-- [icon]="passwordHidden ? ['fas', 'eye'] : ['fas', 'eye-slash']" -->
           <fa-icon
             [icon]="passwordHidden ? ['fas', 'eye'] : ['fas', 'eye-slash']"
-            class="font-20-px position-absolute"
+            class="font-20-px position-absolute eye-slash"
             (click)="togglePasswordVisibility(passwordInput)"
           ></fa-icon>
         </div>
@@ -89,7 +89,7 @@
           (keyup)="changetopassword($event)" formControlName="confirm_password" autocomplete="new-password" #confirmpasswordInput />
           <fa-icon
             [icon]="confirmpasswordHidden ? ['fas', 'eye'] : ['fas', 'eye-slash']"
-            class="font-20-px position-absolute"
+            class="font-20-px position-absolute eye-slash"
             (click)="toggleConfirmPasswordVisibility(confirmpasswordInput)"
           ></fa-icon>
         </div>

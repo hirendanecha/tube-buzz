@@ -8,6 +8,9 @@
       width: 36px;
       text-align: -webkit-center;
       align-content: center;
+      svg path {
+        fill: var(--blue-text) !important;
+      }
     }
   }
 
@@ -17,11 +20,6 @@
 
   .input-area {
     color: black !important;
-
-  }
-
-  fa-icon {
-    fill: var(--blue-text) !important;
   }
 }
 
@@ -65,8 +63,6 @@
     }
   }
 
-
-
   .form-check-label {
     text-transform: none;
   }
@@ -93,3 +89,13 @@
 //     box-sizing: unset !important;
 //   }
 // }
+
+::ng-deep {
+  .custom-input-area {
+    .eye-slash {
+      svg path {
+        fill: var(--blue-text) !important;
+      }
+    }
+  }
+}
