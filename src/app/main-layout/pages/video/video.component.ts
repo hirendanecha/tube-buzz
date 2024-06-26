@@ -188,7 +188,7 @@ export class VideoComponent implements OnInit, OnChanges {
     //   .post(`${this.apiUrl}/posts`, { size: 15, page: this.activePage })
     const size = 15;
     const page = this.activePage;
-    const category = this.videoDetails.categoryName.trim().toLowerCase()
+    const category = this.videoDetails?.categoryName?.trim()?.toLowerCase() || 'featuredVideos'
     
     this.commonService.get(`${this.apiUrl}/posts/${category}?page=${page}&size=${size}`)
       .subscribe({
