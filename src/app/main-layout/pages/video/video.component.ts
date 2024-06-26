@@ -113,7 +113,7 @@ export class VideoComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     // this.getMyChannels();
     if (isPlatformBrowser(this.platformId)) {
-      this.getPostVideosById();
+      // this.getPostVideosById();
       this.viewComments(this.videoDetails?.id);
       this.socketListner();
     }
@@ -154,6 +154,7 @@ export class VideoComponent implements OnInit, OnChanges {
         this.seoService.updateSeoMetaData(data);
         this.playvideo(this.videoDetails.id);
         this.viewComments(this.videoDetails.id);
+        this.getPostVideosById();
       },
       error: (error) => {
         this.spinner.hide();
@@ -182,12 +183,19 @@ export class VideoComponent implements OnInit, OnChanges {
   loadMore() {
     this.activePage++;
     // this.spinner.show();
-    this.commonService
-      .post(`${this.apiUrl}/posts`, { size: 15, page: this.activePage })
+    // this.commonService
+    //   .post(`${this.apiUrl}/posts`, { size: 15, page: this.activePage })
+    const size = 15;
+    const page = this.activePage;
+    const category = this.videoDetails.categoryName.trim().toLowerCase()
+    
+    this.commonService.get(`${this.apiUrl}/posts/${category}?page=${page}&size=${size}`)
       .subscribe({
         next: (res: any) => {
           this.spinner.hide();
-          if (res?.data?.length > 0) {
+          // if (res?.data?.length > 0) {
+          //   this.videoList = this.videoList.concat(res.data);
+          if (res?.data) {
             this.videoList = this.videoList.concat(res.data);
           } else {
             this.hasMoreData = false;
