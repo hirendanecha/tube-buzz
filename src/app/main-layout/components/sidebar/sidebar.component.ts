@@ -18,7 +18,7 @@ export class SidebarComponent {
   channel: any;
   featuredChannels: any;
   useDetails: any = {};
-
+  backCanvas: boolean = true;
   apiUrl = environment.apiUrl + 'channels/';
 
   constructor(
@@ -37,6 +37,9 @@ export class SidebarComponent {
     const channelId = this.route.snapshot.paramMap.get('id');
     this.getChannels();
     // this.channel = this.channelService.getChannelById(channelId);
+    this.backCanvas = this.offcanvasService.hasOpenOffcanvas();
+    console.log(this.backCanvas);
+    
   }
 
   getChannels(): void {

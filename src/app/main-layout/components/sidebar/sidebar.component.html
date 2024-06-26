@@ -50,7 +50,7 @@
           <a [routerLink]="'channels/' + channel?.unique_link" [state]="{ data: channel }">
             <img class="img-fluid image-render" [src]="channel.profile_pic_name" alt=""
               onerror="this.onerror=null;this.src='assets/default-profile.jpg';" />
-            <ng-container *ngIf="shareService.isSidebarOpen">
+            <ng-container *ngIf="shareService.isSidebarOpen || backCanvas">
               {{ channel.firstname }}
             </ng-container>
           </a>

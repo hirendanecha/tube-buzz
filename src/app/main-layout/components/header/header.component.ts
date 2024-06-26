@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit {
   apiUrl = environment.apiUrl + 'customers/logout';
   userMenusOverlayDialog: any;
   channelList: any = [];
-  
+
   constructor(
     public shareService: ShareService,
     private breakpointService: BreakpointService,
@@ -108,34 +108,19 @@ export class HeaderComponent implements OnInit {
   }
 
   openVideoUploadPopUp(): void {
-    const openModal = () => {
-      const modalRef = this.modalService.open(VideoPostModalComponent, {
-        centered: true,
-        size: 'lg',
-      });
-      modalRef.componentInstance.title = `Upload Video`;
-      modalRef.componentInstance.confirmButtonLabel = 'Upload Video';
-      modalRef.componentInstance.cancelButtonLabel = 'Cancel';
-      modalRef.componentInstance.channelList = this.channelList;
-      modalRef.result.then((res) => {
-        if (res === 'success') {
-          window.location.reload();
-        }
-      });
-    };
-  
-    if (!this.channelList || !this.channelList.length) {
-      const userId = this.userDetails?.UserID;
-      const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
-      this.commonService.get(apiUrl).subscribe(
-        (res) => {
-          this.channelList = res.data;
-          openModal();
-        }
-      )
-    } else {
-      openModal();
-    }
+    const modalRef = this.modalService.open(VideoPostModalComponent, {
+      centered: true,
+      size: 'lg',
+    });
+    modalRef.componentInstance.title = `Upload Video`;
+    modalRef.componentInstance.confirmButtonLabel = 'Upload Video';
+    modalRef.componentInstance.cancelButtonLabel = 'Cancel';
+    modalRef.componentInstance.channelList = this.channelList;
+    modalRef.result.then((res) => {
+      if (res === 'success') {
+        window.location.reload();
+      }
+    });
   }
 
   createChannel(): void {
@@ -158,7 +143,7 @@ export class HeaderComponent implements OnInit {
     this.commonService.get(apiUrl).subscribe({
       next: (res) => {
         this.channelList = res.data;
-        let channelIds = this.channelList.map(e => e.id);
+        let channelIds = this.channelList.map((e) => e.id);
         localStorage.setItem('get-channels', JSON.stringify(channelIds));
         // console.log(this.channelList);
       },

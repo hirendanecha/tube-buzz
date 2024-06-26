@@ -67,6 +67,7 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
   streamnameProgress = 0;
   thumbfilenameProgress = 0;
   fileSizeError = false;
+  userDetails: any;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -79,9 +80,11 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
     public modalService: NgbModal,
     private cdr: ChangeDetectorRef
   ) {
-    this.postData.profileid = JSON.parse(
-      this.authService.getUserData() as any
-    )?.profileId;
+    this.userDetails = JSON.parse(this.authService.getUserData() as any);
+    this.postData.profileid = this.userDetails?.profileId;
+    // this.postData.profileid = JSON.parse(
+    //   this.authService.getUserData() as any
+    // )?.profileId;
     // this.channelId = +localStorage.getItem('channelId');
     // console.log('profileId', this.postData.profileid);
     // console.log('editData', this.data);
@@ -106,6 +109,15 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
   }
   ngOnInit(): void {
     this.channelCategory$ = this.getChannelCategory();
+    if (!this.channelList || !this.channelList.length) {
+      const userId = this.userDetails?.UserID;
+      const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
+      this.commonService.get(apiUrl).subscribe(
+        (res) => {
+          this.channelList = res.data;
+        }
+      )
+    }
   }
 
   uploadImgAndSubmit(): void {
@@ -329,12 +341,12 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
 
   selectChannel(channelId): void {
     this.channelId = channelId;
-    console.log(this.channelId);
+    // console.log(this.channelId);
   }
 
   selectCategory(category): void {
     this.selectedCategory = category;
-    console.log(category);
+    // console.log(category);
   }
 
   getChannelCategory(): Observable<any[]> {
