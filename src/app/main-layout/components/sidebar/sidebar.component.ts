@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { ShareService } from 'src/app/@shared/services/share.service';
@@ -15,7 +15,7 @@ import { ChannelService } from 'src/app/@shared/services/channels.service';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   channel: any;
   featuredChannels: any;
   useDetails: any = {};
@@ -26,6 +26,7 @@ export class SidebarComponent {
     public shareService: ShareService,
     private route: ActivatedRoute,
     private channelService: ChannelService,
+    private commonService: CommonService,
     private spinner: NgxSpinnerService,
     private router: Router,
     public authService: AuthService,
@@ -36,32 +37,36 @@ export class SidebarComponent {
 
   ngOnInit(): void {
     const channelId = this.route.snapshot.paramMap.get('id');
-    this.getChannels();
-    // this.channel = this.channelService.getChannelById(channelId);
+    // this.getChannels();
+    this.channel = this.channelService.getChannelById(channelId);
     this.backCanvas = this.offcanvasService.hasOpenOffcanvas();
-  }
-
-  getChannels(): void {
     this.channelService.getChannels();
-    this.channelService.channels$.subscribe(channels => {
+    this.channelService.channels$.subscribe((channels) => {
       this.featuredChannels = channels;
     });
   }
+
   // getChannels(): void {
-  //   // this.spinner.show();
-  //   this.commonService.get(this.apiUrl).subscribe({
-  //     next: (res: any) => {
-  //       // this.spinner.hide();
-  //       if (res.data) {
-  //         this.featuredChannels = res.data;
-  //       }
-  //     },
-  //     error: (error) => {
-  //       // this.spinner.hide();
-  //       console.log(error);
-  //     },
+  //   this.channelService.getChannels();
+  //   this.channelService.channels$.subscribe(channels => {
+  //     this.featuredChannels = channels;
   //   });
   // }
+  getChannels(): void {
+    // this.spinner.show();
+    this.commonService.get(this.apiUrl).subscribe({
+      next: (res: any) => {
+        // this.spinner.hide();
+        if (res.data) {
+          this.featuredChannels = res.data;
+        }
+      },
+      error: (error) => {
+        // this.spinner.hide();
+        console.log(error);
+      },
+    });
+  }
 
   navigateToChannel(channel: any) {
     // console.log(channel);
@@ -87,7 +92,8 @@ export class SidebarComponent {
     modalRef.componentInstance.cancelButtonLabel = 'Cancel';
     modalRef.result.then((res) => {
       if (res === 'success') {
-        this.channelService.getChannels();
+        // this.channelService.getChannels();
+        // this.getChannels();
       }
     });
   }
