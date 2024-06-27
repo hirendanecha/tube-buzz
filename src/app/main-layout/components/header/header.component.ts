@@ -12,6 +12,7 @@ import { NotificationsModalComponent } from '../notifications-modal/notification
 import { ToastService } from 'src/app/@shared/services/toast.service';
 import { CustomerService } from 'src/app/@shared/services/customer.service';
 import { CreateChannelComponent } from 'src/app/@shared/modals/create-channel/create-channel-modal.component';
+import { ChannelService } from 'src/app/@shared/services/channels.service';
 
 @Component({
   selector: 'app-header',
@@ -32,6 +33,7 @@ export class HeaderComponent implements OnInit {
     public authService: AuthService,
     private router: Router,
     private commonService: CommonService,
+    private channelService: ChannelService,
     private toastService: ToastService,
     private modalService: NgbModal
   ) {
@@ -141,17 +143,21 @@ export class HeaderComponent implements OnInit {
 
   getChannels(): void {
     const userId = this.userDetails?.UserID;
-    const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
-    this.commonService.get(apiUrl).subscribe({
-      next: (res) => {
-        this.channelList = res.data;
-        let channelIds = this.channelList.map((e) => e.id);
-        localStorage.setItem('get-channels', JSON.stringify(channelIds));
-        // console.log(this.channelList);
-      },
-      error(err) {
-        console.log(err);
-      },
+    this.channelService.getMyChannels(userId);
+    this.channelService.myChannels$.subscribe(channels => {
+      this.channelList = channels;
     });
+    // const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
+    // this.commonService.get(apiUrl).subscribe({
+    //   next: (res) => {
+    //     this.channelList = res.data;
+    //     let channelIds = this.channelList.map((e) => e.id);
+    //     localStorage.setItem('get-channels', JSON.stringify(channelIds));
+    //     // console.log(this.channelList);
+    //   },
+    //   error(err) {
+    //     console.log(err);
+    //   },
+    // });
   }
 }

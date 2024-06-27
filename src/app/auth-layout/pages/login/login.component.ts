@@ -6,8 +6,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/@shared/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from 'src/app/@shared/services/toast.service';
-import { SharedService } from 'src/app/@shared/services/shared.service';
 import { TokenStorageService } from 'src/app/@shared/services/token-storage.service';
+import { ShareService } from 'src/app/@shared/services/share.service';
 
 @Component({
   selector: 'app-login',
@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit{
     private fb: FormBuilder,
     private toastService: ToastService,
     private tokenStorage: TokenStorageService,
-    private sharedService:SharedService
+    private shareService: ShareService
   ){
     const isVerify = this.route.snapshot.queryParams['isVerify'];
     if (isVerify === 'false') {
@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit{
             // window.localStorage.user_id = data.user.Id;
             // window.localStorage.user_country = data.user.Country;
             // window.localStorage.user_zip = data.user.ZipCode;
-            this.sharedService.getUserDetails();
+            this.shareService.getUserDetails();
             this.isLoginFailed = false;
             this.isLoggedIn = true;
             this.toastService.success('Logged in successfully');

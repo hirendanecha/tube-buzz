@@ -33,7 +33,7 @@ export class CreateChannelComponent implements OnInit{
   selectedFile: any;
   myProp: string;
   hasDisplayedError = false;
-  profileId: number;
+  userData: any = {};
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -44,7 +44,7 @@ export class CreateChannelComponent implements OnInit{
     public authService: AuthService,
     private router: Router
   ) {
-    this.profileId = JSON.parse(this.authService.getUserData() as any).profileId;
+    this.userData = JSON.parse(this.authService.getUserData() as any);
   }
 
   ngOnInit(): void {
@@ -74,7 +74,7 @@ export class CreateChannelComponent implements OnInit{
   }
 
   saveChanges(): void {
-    this.userForm.get('profileid').setValue(this.profileId)
+    this.userForm.get('profileid').setValue(this.userData.profileId)
     if (this.userForm.valid && !this.channelEditData.id) {
       this.spinner.show();
       this.channelService.createChannel(this.userForm.value).subscribe({
@@ -82,6 +82,8 @@ export class CreateChannelComponent implements OnInit{
           this.spinner.hide();
           this.activateModal.close('success');
           this.toastService.success('Channel created successfully');
+          this.channelService.getChannels();
+          this.channelService.getMyChannels(this.userData.UserID);
         },
         error: (err) => {
           this.spinner.hide();
@@ -98,6 +100,8 @@ export class CreateChannelComponent implements OnInit{
           this.toastService.success('Channel Edit successfully');
           this.router.navigate([`channels/${this.userForm.get('unique_link').value}`]);
           this.activateModal.close('success');
+          this.channelService.getChannels();
+          this.channelService.getMyChannels(this.userData.UserID);
         },
         error: (err) => {
           this.spinner.hide();

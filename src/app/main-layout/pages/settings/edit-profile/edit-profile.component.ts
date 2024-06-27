@@ -9,7 +9,7 @@ import { ConfirmationModalComponent } from 'src/app/@shared/modals/confirmation-
 import { AuthService } from 'src/app/@shared/services/auth.service';
 import { CommonService } from 'src/app/@shared/services/common.service';
 import { CustomerService } from 'src/app/@shared/services/customer.service';
-import { SharedService } from 'src/app/@shared/services/shared.service';
+import { ShareService } from 'src/app/@shared/services/share.service';
 import { ToastService } from 'src/app/@shared/services/toast.service';
 import { TokenStorageService } from 'src/app/@shared/services/token-storage.service';
 import { UploadFilesService } from 'src/app/@shared/services/upload-files.service';
@@ -66,7 +66,7 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
     private spinner: NgxSpinnerService,
     private modalService: NgbModal,
     private uploadService: UploadFilesService,
-    private sharedService: SharedService,
+    private shareService: ShareService,
     private toastService: ToastService,
     private router: Router,
     private customerService: CustomerService,
@@ -74,7 +74,7 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
   ) {
     this.profileId = this.authService.profileId();
     this.userMail = this.authService?.userData()?.Email;
-    this.sharedService.getUserDetails();
+    this.shareService.getUserDetails();
   }
   ngOnInit(): void {
     this.getAllCountries();
@@ -246,14 +246,14 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
           if (res?.profileImg?.body?.url) {
             this.profileImg['file'] = null;
             this.profileImg['url'] = res?.profileImg?.body?.url;
-            this.sharedService['userData']['ProfilePicName'] =
+            this.shareService['userData']['ProfilePicName'] =
               this.profileImg['url'];
           }
 
           if (res?.profileCoverImg?.body?.url) {
             this.profileCoverImg['file'] = null;
             this.profileCoverImg['url'] = res?.profileCoverImg?.body?.url;
-            this.sharedService['userData']['CoverPicName'] =
+            this.shareService['userData']['CoverPicName'] =
               this.profileCoverImg['url'];
           }
 
@@ -279,7 +279,7 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
             this.spinner.hide();
             if (!res.error) {
               this.toastService.success(res.message);
-              this.sharedService.getUserDetails();
+              this.shareService.getUserDetails();
             } else {
               this.toastService.danger(res?.message);
             }

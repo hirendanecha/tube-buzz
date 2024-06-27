@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'src/app/@shared/services/auth.service';
+import { ChannelService } from 'src/app/@shared/services/channels.service';
 import { CommonService } from 'src/app/@shared/services/common.service';
 import { environment } from 'src/environments/environment';
 
@@ -15,6 +16,7 @@ export class ChannelsComponent implements OnInit, AfterViewInit {
   channelList: any = []
   constructor(
     private commonService: CommonService,
+    private channelService: ChannelService,
     private authService: AuthService,
     private router: Router
   ) {}
@@ -36,16 +38,20 @@ export class ChannelsComponent implements OnInit, AfterViewInit {
 
   getChannelByUserId(): void {
     const userId = this.userData.UserID;
-    const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
-    this.commonService.get(apiUrl).subscribe({
-      next: (res) => {
-        this.channelList = res.data;
-        let channelIds = this.channelList.map(e => e.id);
-        localStorage.setItem('get-channels', JSON.stringify(channelIds));
-      },
-      error(err) {
-        console.log(err);
-      },
+    this.channelService.getMyChannels(userId);
+    this.channelService.myChannels$.subscribe(channels => {
+      this.channelList = channels;
     });
+    // const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
+    // this.commonService.get(apiUrl).subscribe({
+    //   next: (res) => {
+    //     this.channelList = res.data;
+    //     let channelIds = this.channelList.map(e => e.id);
+    //     localStorage.setItem('get-channels', JSON.stringify(channelIds));
+    //   },
+    //   error(err) {
+    //     console.log(err);
+    //   },
+    // });
   }
 }

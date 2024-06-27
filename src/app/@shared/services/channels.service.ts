@@ -5,7 +5,7 @@ import {
   HttpHeaders,
   HttpRequest,
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 
@@ -18,6 +18,10 @@ const httpOptions = {
 })
 export class ChannelService {
   private baseUrl = environment.apiUrl + 'channels';
+  private channelsSubject = new Subject<any>();
+  public channels$ = this.channelsSubject.asObservable();
+  private myChannelsSubject = new Subject<any>();
+  public myChannels$ = this.myChannelsSubject.asObservable();
   constructor(private http: HttpClient) {}
 
   getAllChannels(
@@ -80,5 +84,34 @@ export class ChannelService {
 
   unsubscribeChannel(data): Observable<any> {
     return this.http.delete(`${environment.apiUrl}subscribe/remove/${data.ProfileId}/${data.SubscribeChannelId}`);
+  }
+
+  getChannels(): void {
+    this.http.get(this.baseUrl).pipe(
+      tap((res: any) => {
+        if (res.data) {
+          this.channelsSubject.next(res.data);
+        }
+      })
+    ).subscribe({
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+
+  getMyChannels(userId): void {
+    const apiUrl = `${this.baseUrl}/get-channels/${userId}`;
+    this.http.get(apiUrl).pipe(
+      tap((res: any) => {
+        this.myChannelsSubject.next(res.data);
+        let channelIds = res.data.map((e: any) => e.id);
+        localStorage.setItem('get-channels', JSON.stringify(channelIds));
+      })
+    ).subscribe({
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 }

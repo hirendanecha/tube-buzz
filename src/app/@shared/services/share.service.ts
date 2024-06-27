@@ -3,6 +3,7 @@ import { CommonService } from './common.service';
 import { environment } from 'src/environments/environment';
 import { AuthService } from './auth.service';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { ChannelService } from './channels.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class ShareService {
   isSidebarOpen: boolean = true;
   isDarkTheme: boolean = false;
   userDetails: any = {};
+  userData: any = {};
   channelData: any = {};
   notificationList: any = [];
   isNotify: boolean;
@@ -22,6 +24,7 @@ export class ShareService {
 
   constructor(
     private commonService: CommonService,
+    private channelService: ChannelService,
     private authService: AuthService
   ) {
     const theme = localStorage.getItem('theme');
@@ -88,23 +91,47 @@ export class ShareService {
     this.mediaApprovedSubject.next(value);
   }
 
-  getUserDetails(id: any): void {
-    // const id = JSON.parse(this.authService.getUserData() as any)?.profileId
-    const url = environment.apiUrl + `customers/profile/${id}`
-    this.commonService.get(url).subscribe({
-      next: ((res: any) => {
-        localStorage.setItem('userData', JSON.stringify(res.data[0]));
-        this.userDetails = res.data[0];
-        const mediaApproved = res.data[0].MediaApproved === 1;
-        this.updateMediaApproved(mediaApproved);
-        this.getChannelByUserId(this.userDetails?.channelId);
-      }), error: error => {
-        console.log(error)
-      }
-    })
+  // getUserDetails(id: any): void {
+  //   // const id = JSON.parse(this.authService.getUserData() as any)?.profileId
+  //   const url = environment.apiUrl + `customers/profile/${id}`
+  //   this.commonService.get(url).subscribe({
+  //     next: ((res: any) => {
+  //       localStorage.setItem('userData', JSON.stringify(res.data[0]));
+  //       this.userDetails = res.data[0];
+  //       const mediaApproved = res.data[0].MediaApproved === 1;
+  //       this.updateMediaApproved(mediaApproved);
+  //       this.getChannelByUserId(this.userDetails?.channelId);
+  //     }), error: error => {
+  //       console.log(error)
+  //     }
+  //   })
+  // }
+  getUserDetails() {
+    const profileId = JSON.parse(this.authService.getUserData() as any)?.profileId
+    if (profileId) {
+      this.channelService.getProfile(profileId).subscribe({
+        next: (res: any) => {
+          const data = res?.data;
+          if (data) {
+            this.userData = data;
+            this.userDetails = data;
+            this.authService.setUserData(this.userData);
+            localStorage.setItem('userData', JSON.stringify(this.userData));
+            const mediaApproved = res.data.MediaApproved === 1;
+            this.updateMediaApproved(mediaApproved);
+            this.getChannelByUserId(this.userDetails?.channelId);
+          }
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+    }
   }
+
   getNotificationList() {
-    const id = localStorage.getItem('profileId');
+    const id = JSON.parse(this.authService.getUserData() as any)?.profileId
+    // const id = localStorage.getItem('profileId');
     const data = {
       page: 1,
       size: 20,

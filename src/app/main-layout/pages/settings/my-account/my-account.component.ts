@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/@shared/services/auth.service';
+import { ChannelService } from 'src/app/@shared/services/channels.service';
 import { CommonService } from 'src/app/@shared/services/common.service';
 import { ShareService } from 'src/app/@shared/services/share.service';
 import { environment } from 'src/environments/environment';
@@ -25,12 +26,14 @@ export class MyAccountComponent {
   userChannelCount: number;
   constructor(
     private commonService: CommonService,
+    private channelService: ChannelService,
     private spinner: NgxSpinnerService,
     private authService:AuthService,
     public shareService: ShareService,
   ) {
-    this.channelId = +localStorage.getItem('channelId');
-    this.userData = JSON.parse(localStorage.getItem('userData'));
+    // this.channelId = +localStorage.getItem('channelId');
+    this.userData = JSON.parse(this.authService.getUserData() as any);
+    this.channelId = this.userData?.channelId;
   }
 
   ngOnInit(): void {
@@ -58,7 +61,7 @@ export class MyAccountComponent {
     //       console.log(error);
     //     },
     //   });
-    this.activePage = 0;
+    // this.activePage = 0;
     if (this.channelId) {
       this.loadMore();
     }
@@ -112,19 +115,24 @@ export class MyAccountComponent {
   // }
   getChannels(): void {
     const userId = this.userData.UserID;
-    const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
-    this.commonService.get(apiUrl).subscribe({
-      next: (res) => {
-        if(res){
-        this.channelList = res.data;
-        this.countChannel=this.channelList.length
-        let channelIds = this.channelList.map(e => e.id);
-        localStorage.setItem('get-channels', JSON.stringify(channelIds));
-        }
-      },
-      error(err) {
-        console.log(err);
-      },
+    this.channelService.getMyChannels(userId);
+    this.channelService.myChannels$.subscribe(channels => {
+      this.channelList = channels;
+      this.countChannel = this.channelList.length
     });
+    // const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
+    // this.commonService.get(apiUrl).subscribe({
+    //   next: (res) => {
+    //     if(res){
+    //     this.channelList = res.data;
+    //     this.countChannel=this.channelList.length
+    //     let channelIds = this.channelList.map(e => e.id);
+    //     localStorage.setItem('get-channels', JSON.stringify(channelIds));
+    //     }
+    //   },
+    //   error(err) {
+    //     console.log(err);
+    //   },
+    // });
   }
 }

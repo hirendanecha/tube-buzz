@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { ToastService } from 'src/app/@shared/services/toast.service';
-import { ShareService } from 'src/app/@shared/services/share.service';
 import { CustomerService } from 'src/app/@shared/services/customer.service';
+import { AuthService } from 'src/app/@shared/services/auth.service';
 
 @Component({
   selector: 'app-notification',
@@ -20,7 +20,7 @@ export class NotificationsComponent {
     private spinner: NgxSpinnerService,
     private router: Router,
     private toastService: ToastService,
-    private shareService: ShareService
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -29,7 +29,7 @@ export class NotificationsComponent {
 
   getNotificationList() {
     this.spinner.show();
-    const id = localStorage.getItem('profileId');
+    const id = JSON.parse(this.authService.getUserData() as any)?.profileId
     const data = {
       page: this.activePage,
       size: 30,

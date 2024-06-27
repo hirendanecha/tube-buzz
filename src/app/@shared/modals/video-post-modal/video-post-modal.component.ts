@@ -111,12 +111,16 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
     this.channelCategory$ = this.getChannelCategory();
     if (!this.channelList || !this.channelList.length) {
       const userId = this.userDetails?.UserID;
-      const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
-      this.commonService.get(apiUrl).subscribe(
-        (res) => {
-          this.channelList = res.data;
-        }
-      )
+      // const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
+      // this.commonService.get(apiUrl).subscribe(
+      //   (res) => {
+      //     this.channelList = res.data;
+      //   }
+      // )
+      this.channelService.getMyChannels(userId);
+      this.channelService.myChannels$.subscribe(channels => {
+        this.channelList = channels;
+      });
     }
   }
 
