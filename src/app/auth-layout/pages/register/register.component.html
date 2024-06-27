@@ -24,17 +24,17 @@
       </div>
       <div class="col-12 col-md-6 mb-3">
         <label class="form-label">First Name</label>
-        <input type="text" class="input-area form-control form-control" name="FirstName" placeholder="Enter Your Name"
+        <input type="text" class="input-area form-control form-control border" name="FirstName" placeholder="Enter Your Name"
           formControlName="FirstName" />
       </div>
       <div class="col-12 col-md-6 mb-3">
         <label class="form-label">Last Name</label>
-        <input type="text" class="input-area form-control form-control" name="LastName" placeholder="Enter Your Name"
+        <input type="text" class="input-area form-control form-control border " name="LastName" placeholder="Enter Your Name"
           formControlName="LastName" />
       </div>
       <div class="col-12 col-md-6 mb-3">
         <label class="form-label">Username<span class="text-danger">*</span></label>
-        <input type="text" class="input-area form-control" name="Username" placeholder="Enter Your Username Name"
+        <input type="text" class="input-area form-control border" name="Username" placeholder="Enter Your Username Name"
           formControlName="Username" autocomplete="Username" required (input)="onChangeTag($event)" />
         <div class="text-danger" *ngIf="
             registerForm.get('Username').invalid &&
@@ -48,7 +48,7 @@
 
       <div class="col-12 col-md-6 mb-3">
         <label class="form-label">Email Address<span class="text-danger">*</span></label>
-        <input type="email" name="Email" class="input-area form-control" required placeholder="Enter your email"
+        <input type="email" name="Email" class="input-area form-control border" required placeholder="Enter your email"
           formControlName="Email" autocomplete="Email" />
         <div class="text-danger" *ngIf="
             registerForm.get('Email').hasError('required') &&
@@ -61,7 +61,7 @@
       <div class="col-12 col-md-6 mb-3">
         <label class="form-label">Password<span class="text-danger">*</span></label>
         <div class="d-flex custom-input-area position-relative">
-          <input type="password" class="input-area form-control" required name="password"
+          <input type="password" class="input-area form-control border" required name="password"
             placeholder="Enter your password" (input)="changetopassword($event)" (keyup)="changetopassword($event)"
             formControlName="Password" autocomplete="new-password" #passwordInput />
           <!-- [icon]="passwordHidden ? ['fas', 'eye'] : ['fas', 'eye-slash']" -->
@@ -79,7 +79,7 @@
       <div class="col-12 col-md-6 mb-3">
         <label class="form-label">Confirm Password<span class="text-danger">*</span></label>
         <div class="d-flex custom-input-area position-relative">
-          <input type="password" class="input-area form-control" required name="confirmPassword"
+          <input type="password" class="input-area form-control border" required name="confirmPassword"
             placeholder="Enter confirm password" (focusout)="validatepassword()" (input)="changetopassword($event)"
             (keyup)="changetopassword($event)" formControlName="confirm_password" autocomplete="new-password"
             #confirmpasswordInput />
@@ -97,7 +97,7 @@
 
       <div class="col-12 col-md-6 mb-3">
         <label class="form-label">Mobile<span class="text-danger">*</span></label>
-        <input type="number" class="input-area form-control" name="MobileNo" placeholder="Enter your mobile number"
+        <input type="number" class="input-area form-control border" name="MobileNo" placeholder="Enter your mobile number"
           formControlName="MobileNo" />
         <div class="text-danger" *ngIf="
             registerForm.get('MobileNo').hasError('required') &&
@@ -109,7 +109,7 @@
 
       <div class="col-12 col-md-6 mb-3">
         <label class="form-label">Country<span class="text-danger">*</span></label>
-        <select id="Country" required name="Country" class="input-area form-control w-100" formControlName="Country"
+        <select id="Country" required name="Country" class="input-area form-control w-100 border" formControlName="Country"
           (input)="convertToUppercase($event)" (change)="onCountryChange($event)">
           <option [value]="defaultCountry"><span class="text-black">United states</span></option>
           <option [value]="item.country_code" *ngFor="let item of allCountryData">
@@ -120,7 +120,7 @@
 
       <div class="col-12 col-md-6 mb-3">
         <label class="form-label">Zip Code<span class="text-danger">*</span></label>
-        <input type="text" class="input-area form-control" required placeholder="Enter your zip code"
+        <input type="text" class="input-area form-control border" required placeholder="Enter your zip code"
           formControlName="Zip" name="Zip" #zipCode (input)="convertToUppercase($event)" />
         <div class="text-danger" *ngIf="
             registerForm.get('Zip').hasError('required') &&
@@ -137,7 +137,7 @@
             {{ item.state }}
           </option>
         </select> -->
-        <input type="text" class="input-area form-control" required name="State" placeholder="Enter your city"
+        <input type="text" class="input-area form-control border" required name="State" placeholder="Enter your city"
         formControlName="State" />
         <div class="text-danger" *ngIf="
             registerForm.get('State').hasError('required') &&
@@ -149,7 +149,7 @@
 
       <div class="col-12 col-md-6 mb-3">
         <label class="form-label">City<span class="text-danger">*</span></label>
-        <input type="text" class="input-area form-control" required name="City" placeholder="Enter your city"
+        <input type="text" class="input-area form-control border" required name="City" placeholder="Enter your city"
           formControlName="City" />
         <div class="text-danger" *ngIf="
             registerForm.get('City').hasError('required') &&
@@ -161,7 +161,7 @@
 
       <div class="col-12 col-md-6 mb-3">
         <label class="form-label">County<span class="text-danger">*</span></label>
-        <input type="text" class="input-area form-control" required name="County" placeholder="Enter your County"
+        <input type="text" class="input-area form-control border" required name="County" placeholder="Enter your County"
           formControlName="County" />
         <div class="text-danger" *ngIf="
             registerForm.get('County').hasError('required') &&
