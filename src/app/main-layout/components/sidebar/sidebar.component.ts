@@ -36,15 +36,17 @@ export class SidebarComponent {
 
   ngOnInit(): void {
     const channelId = this.route.snapshot.paramMap.get('id');
-    // this.getChannels();
+    this.getChannels();
     // this.channel = this.channelService.getChannelById(channelId);
     this.backCanvas = this.offcanvasService.hasOpenOffcanvas();
+  }
+
+  getChannels(): void {
     this.channelService.getChannels();
     this.channelService.channels$.subscribe(channels => {
       this.featuredChannels = channels;
     });
   }
-
   // getChannels(): void {
   //   // this.spinner.show();
   //   this.commonService.get(this.apiUrl).subscribe({
