@@ -27,6 +27,20 @@
   }
 }
 
+.navbar-nav.toggled {
+  .channels-list {
+    // padding: 5px 5px !important;
+    width: 40px;
+    height: 40px;
+    
+    &:hover {
+      background-color: var(--bg-secondary) !important;
+      align-items: center;
+      border-radius: 20px;
+    }
+  }
+}
+
 .image-render {
   image-rendering: -webkit-optimize-contrast;
 }

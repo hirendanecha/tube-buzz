@@ -69,9 +69,11 @@ export class HeaderComponent implements OnInit {
     // location.href = "https://freedom-api.opash.in/api/v1/customers/logout";
     this.customerService.logout().subscribe({
       next: (res) => {
+        const theme = localStorage.getItem('theme');
         localStorage.clear();
         sessionStorage.clear();
         this.toastService.success('Logout successfully');
+        localStorage.setItem('theme', theme);
         this.router.navigate(['/']);
       },
       error: (error) => {

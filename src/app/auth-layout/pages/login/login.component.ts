@@ -38,11 +38,21 @@ export class LoginComponent implements OnInit{
     private toastService: ToastService,
     private tokenStorage: TokenStorageService,
     private sharedService:SharedService
-  ){}
+  ){
+    const isVerify = this.route.snapshot.queryParams['isVerify'];
+    if (isVerify === 'false') {
+      this.msg =
+        'Please check your email and click the activation link to activate your account.';
+      this.type = 'success';
+    } else if (isVerify === 'true') {
+      this.msg = 'Account activated';
+      this.type = 'success';
+    }
+  }
   ngOnInit(): void {
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
-      // this.router.navigate([`/home`]);
+      this.router.navigate([`/home`]);
     } 
 
     this.loginForm = this.fb.group({

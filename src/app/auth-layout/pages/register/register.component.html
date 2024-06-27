@@ -8,14 +8,12 @@
       {{ registrationMessage || msg }}
     </div>
     <div class="row">
-      <div class="col-12 col-md-6 mb-3 px-6">
-        <label class="form-label"
-          >Profile Picture<span class="text-danger"></span
-        ></label>
+      <div class="col-12 col-md-6 mb-3 px-6 ">
+        <label class="form-label">Profile Picture<span class="text-danger"></span></label>
         <app-img-picker classes="w-200-px h-200-px signup-img" (onFileChange)="selectFiles($event)" />
       </div>
-      <div class="col-12 col-md-6 mb-3 single-box px-6 p-5">
-        <p class="align-items-center text-start my-auto mt-3 font-check">
+      <div class="col-12 col-md-6 mb-3 single-box border px-6 p-5">
+        <p class="align-items-center text-start my-auto mt-3 box-font text-black font-check">
           Hide your personal information and remain anonymous on
           Tube.buzz.<br />Only your User Name will be displayed
         </p>
@@ -25,9 +23,9 @@
         </div>
       </div>
       <div class="col-12 col-md-6 mb-3">
-          <label class="form-label">First Name</label>
-          <input type="text" class="input-area form-control form-control" name="FirstName" placeholder="Enter Your Name"
-            formControlName="FirstName" />
+        <label class="form-label">First Name</label>
+        <input type="text" class="input-area form-control form-control" name="FirstName" placeholder="Enter Your Name"
+          formControlName="FirstName" />
       </div>
       <div class="col-12 col-md-6 mb-3">
         <label class="form-label">Last Name</label>
@@ -67,11 +65,8 @@
             placeholder="Enter your password" (input)="changetopassword($event)" (keyup)="changetopassword($event)"
             formControlName="Password" autocomplete="new-password" #passwordInput />
           <!-- [icon]="passwordHidden ? ['fas', 'eye'] : ['fas', 'eye-slash']" -->
-          <fa-icon
-            [icon]="passwordHidden ? ['fas', 'eye'] : ['fas', 'eye-slash']"
-            class="font-20-px position-absolute eye-slash"
-            (click)="togglePasswordVisibility(passwordInput)"
-          ></fa-icon>
+          <fa-icon [icon]="passwordHidden ? ['fas', 'eye'] : ['fas', 'eye-slash']"
+            class="font-20-px position-absolute eye-slash" (click)="togglePasswordVisibility(passwordInput)"></fa-icon>
         </div>
         <div class="text-danger" *ngIf="
             registerForm.get('Password').hasError('required') &&
@@ -84,14 +79,13 @@
       <div class="col-12 col-md-6 mb-3">
         <label class="form-label">Confirm Password<span class="text-danger">*</span></label>
         <div class="d-flex custom-input-area position-relative">
-        <input type="password" class="input-area form-control" required name="confirmPassword"
-          placeholder="Enter confirm password" (focusout)="validatepassword()" (input)="changetopassword($event)"
-          (keyup)="changetopassword($event)" formControlName="confirm_password" autocomplete="new-password" #confirmpasswordInput />
-          <fa-icon
-            [icon]="confirmpasswordHidden ? ['fas', 'eye'] : ['fas', 'eye-slash']"
+          <input type="password" class="input-area form-control" required name="confirmPassword"
+            placeholder="Enter confirm password" (focusout)="validatepassword()" (input)="changetopassword($event)"
+            (keyup)="changetopassword($event)" formControlName="confirm_password" autocomplete="new-password"
+            #confirmpasswordInput />
+          <fa-icon [icon]="confirmpasswordHidden ? ['fas', 'eye'] : ['fas', 'eye-slash']"
             class="font-20-px position-absolute eye-slash"
-            (click)="toggleConfirmPasswordVisibility(confirmpasswordInput)"
-          ></fa-icon>
+            (click)="toggleConfirmPasswordVisibility(confirmpasswordInput)"></fa-icon>
         </div>
         <div class="text-danger" *ngIf="
             registerForm.get('confirm_password').hasError('required') &&
@@ -119,7 +113,7 @@
           (input)="convertToUppercase($event)" (change)="onCountryChange($event)">
           <option [value]="defaultCountry"><span class="text-black">United states</span></option>
           <option [value]="item.country_code" *ngFor="let item of allCountryData">
-           <span class="text-black">{{ item.country }}</span>
+            <span class="text-black">{{ item.country }}</span>
           </option>
         </select>
       </div>
@@ -138,38 +132,43 @@
 
       <div class="col-12 col-md-6 mb-3">
         <label class="form-label">State<span class="text-danger">*</span></label>
-        <input type="text" class="input-area form-control" placeholder="Enter your state" name="state"
-        formControlName="State" readonly />
-        <!-- <div class="text-danger" *ngIf="
+        <!-- <select id="State" required name="State" class="input-area form-control w-100" formControlName="State">
+          <option *ngFor="let item of allStateData">
+            {{ item.state }}
+          </option>
+        </select> -->
+        <input type="text" class="input-area form-control" required name="State" placeholder="Enter your city"
+        formControlName="State" />
+        <div class="text-danger" *ngIf="
             registerForm.get('State').hasError('required') &&
             registerForm.get('State').touched
           ">
           State is required.
-        </div> -->
+        </div>
       </div>
 
       <div class="col-12 col-md-6 mb-3">
         <label class="form-label">City<span class="text-danger">*</span></label>
-        <input type="text" class="input-area form-control" required name="City"  placeholder="Enter your city"
-         formControlName="City" readonly/>
-        <!-- <div class="text-danger" *ngIf="
+        <input type="text" class="input-area form-control" required name="City" placeholder="Enter your city"
+          formControlName="City" />
+        <div class="text-danger" *ngIf="
             registerForm.get('City').hasError('required') &&
             registerForm.get('City').touched
           ">
           City is required.
-        </div> -->
+        </div>
       </div>
 
       <div class="col-12 col-md-6 mb-3">
         <label class="form-label">County<span class="text-danger">*</span></label>
         <input type="text" class="input-area form-control" required name="County" placeholder="Enter your County"
-          formControlName="County" readonly />
-        <!-- <div class="text-danger" *ngIf="
+          formControlName="County" />
+        <div class="text-danger" *ngIf="
             registerForm.get('County').hasError('required') &&
             registerForm.get('County').touched
           ">
           County is required.
-        </div> -->
+        </div>
       </div>
     </div>
     <!-- <div class="form-check ps-0 my-4 d-flex">
