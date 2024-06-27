@@ -3,6 +3,10 @@
     <img src="assets/img/TubeBuzz-Logo.png" class="img-fluid register-logo" alt="LOGO" />
     <h5 class="mt-3 mb-3 custom-text">Welcome to Tube.buzz</h5>
   </div>
+  <p class="light-gray">
+    Already have an Account? <a class="custom-text" routerLink="/login">Sign In</a>
+  </p>
+  <h3 class="mb-4 custom-text">Register Your Account</h3>
   <form class="form-dark d-flex flex-column" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <div class="alert alert-{{ type }}" role="alert" *ngIf="registrationMessage || msg">
       {{ registrationMessage || msg }}
@@ -184,11 +188,8 @@
       </label>
     </div>
 
-    <div class="text-center mt-5 d-flex">
-      <p class="light-gray">
-        Already have an Account? <a class="custom-text" routerLink="/login">Sign In</a>
-      </p>
-      <button class="btn btn-primary my-2 ms-auto" type="submit" [disabled]="!registerForm.valid">
+    <div class="text-center d-flex">
+        <button class="btn btn-primary my-2 ms-auto" type="submit" [disabled]="!registerForm.valid">
         Register
       </button>
     </div>
