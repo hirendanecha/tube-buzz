@@ -118,10 +118,10 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
       //   }
       // )
       this.channelService.getMyChannels();
-      this.channelService.myChannels$.subscribe(channels => {
-        this.channelList = channels;
-      });
     }
+    this.channelService.myChannels$.subscribe(channels => {
+      this.channelList = channels;
+    });
   }
 
   uploadImgAndSubmit(): void {

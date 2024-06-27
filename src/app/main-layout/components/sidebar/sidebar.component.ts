@@ -86,7 +86,9 @@ export class SidebarComponent {
     modalRef.componentInstance.confirmButtonLabel = 'Save';
     modalRef.componentInstance.cancelButtonLabel = 'Cancel';
     modalRef.result.then((res) => {
-      if (res === 'success') {}
+      if (res === 'success') {
+        this.channelService.getChannels();
+      }
     });
   }
 }
