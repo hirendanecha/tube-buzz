@@ -38,7 +38,7 @@ export class ChannelsComponent implements OnInit, AfterViewInit {
 
   getChannelByUserId(): void {
     const userId = this.userData.UserID;
-    this.channelService.getMyChannels(userId);
+    this.channelService.getMyChannels();
     this.channelService.myChannels$.subscribe(channels => {
       this.channelList = channels;
     });

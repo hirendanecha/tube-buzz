@@ -100,9 +100,10 @@ export class ChannelService {
     });
   }
 
-  getMyChannels(userId): void {
-    const apiUrl = `${this.baseUrl}/get-channels/${userId}`;
-    this.http.get(apiUrl).pipe(
+  getMyChannels(): void {
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    const userId = +userData.UserID as number;
+    this.http.get(`${this.baseUrl}/get-channels/${userId}`).pipe(
       tap((res: any) => {
         this.myChannelsSubject.next(res.data);
         let channelIds = res.data.map((e: any) => e.id);

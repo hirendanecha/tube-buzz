@@ -143,7 +143,7 @@ export class HeaderComponent implements OnInit {
 
   getChannels(): void {
     const userId = this.userDetails?.UserID;
-    this.channelService.getMyChannels(userId);
+    this.channelService.getMyChannels();
     this.channelService.myChannels$.subscribe(channels => {
       this.channelList = channels;
     });

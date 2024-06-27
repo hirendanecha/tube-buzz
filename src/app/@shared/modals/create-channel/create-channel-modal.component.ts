@@ -83,7 +83,7 @@ export class CreateChannelComponent implements OnInit{
           this.activateModal.close('success');
           this.toastService.success('Channel created successfully');
           this.channelService.getChannels();
-          this.channelService.getMyChannels(this.userData.UserID);
+          this.channelService.getMyChannels();
         },
         error: (err) => {
           this.spinner.hide();
@@ -101,7 +101,7 @@ export class CreateChannelComponent implements OnInit{
           this.router.navigate([`channels/${this.userForm.get('unique_link').value}`]);
           this.activateModal.close('success');
           this.channelService.getChannels();
-          this.channelService.getMyChannels(this.userData.UserID);
+          this.channelService.getMyChannels();
         },
         error: (err) => {
           this.spinner.hide();

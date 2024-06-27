@@ -117,7 +117,7 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
       //     this.channelList = res.data;
       //   }
       // )
-      this.channelService.getMyChannels(userId);
+      this.channelService.getMyChannels();
       this.channelService.myChannels$.subscribe(channels => {
         this.channelList = channels;
       });

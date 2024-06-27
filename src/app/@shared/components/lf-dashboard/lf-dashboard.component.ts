@@ -200,8 +200,8 @@ export class LfDashboardComponent implements OnInit {
   }
 
   getChannels(): void {
-    this.userId = JSON.parse(this.authService.getUserData() as any)?.UserID;
-    this.channelService.getMyChannels(this.userId);
+    // this.userId = JSON.parse(this.authService.getUserData() as any)?.UserID;
+    this.channelService.getMyChannels();
     this.channelService.myChannels$.subscribe(channels => {
       this.channelList = channels;
     });
