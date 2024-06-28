@@ -867,7 +867,7 @@ footer.sticky-footer {
 }
 
 .progress-bar {
-  background-color: var(--link-color);
+  background-color: var(--blue-text) !important;
 }
 
 // .bg-success,
@@ -1712,6 +1712,7 @@ h6 {
 
 .progress {
   background-color: var(--link-bg);
+  color: var(--body-bg); 
 }
 
 .history-video .progress {
