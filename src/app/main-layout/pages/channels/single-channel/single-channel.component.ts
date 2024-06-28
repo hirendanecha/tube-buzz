@@ -41,7 +41,7 @@ export class SingleChannelComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private router: Router
   ) {
-    this.routerSubscription =  this.router.events.subscribe((event: any) => {
+    this.routerSubscription = this.router.events.subscribe((event: any) => {
       const name = event?.routerEvent?.url.split('/')[2];
       const url = this.router.routerState.snapshot.url;
       if (name) {
@@ -66,10 +66,10 @@ export class SingleChannelComponent implements OnInit, OnDestroy {
 
   onPageChange(config: Pagination, category): void {
     this.pagination = config;
-    if (category) {
-      this.getPostByCategory(category);
-    } else if(this.channelDetails?.unique_link){
+    if (this.channelDetails?.unique_link) {
       this.getChannelDetailsById(this.channelDetails?.unique_link);
+    } else {
+      this.getPostByCategory(category);
     }
   }
 

@@ -100,14 +100,14 @@
           [items]="pagination?.totalItems"
           (onPageChange)="onPageChange($event, categoryName)"
         />
-        <div
+        <!-- <div
         class="d-flex justify-content-center mb-2"
         *ngIf="hasMoreData"
         >
         <button class="btn btn-outline-primary" (click)="getPostByCategory(categoryName)">
           Load More
         </button>
-      </div>
+      </div> -->
         </ng-container>
         <ng-container *ngIf="activeTab === 2">
           <h6>About</h6>
