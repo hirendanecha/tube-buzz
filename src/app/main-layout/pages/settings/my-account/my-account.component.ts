@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
+import { Pagination } from 'src/app/@shared/interfaces/pagination';
 import { AuthService } from 'src/app/@shared/services/auth.service';
 import { ChannelService } from 'src/app/@shared/services/channels.service';
 import { CommonService } from 'src/app/@shared/services/common.service';
@@ -13,7 +15,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './my-account.component.html',
   styleUrls: ['./my-account.component.scss'],
 })
-export class MyAccountComponent {
+export class MyAccountComponent implements OnInit, OnDestroy{
   userData: any;
   videoList: any = [];
   channelDetails: any = {};
@@ -24,9 +26,15 @@ export class MyAccountComponent {
   channelId: number;
   countChannel: number;
   hasMoreData = false;
-  postedVideoCount: number;
   userChannelCount: number;
   isHistoryPage: boolean = false;
+  pagination: Pagination = {
+    activePage: 1,
+    perPage: 20,
+    totalItems: 0,
+  };
+  routerSubscription: Subscription | undefined;
+  
   constructor(
     private commonService: CommonService,
     private channelService: ChannelService,
@@ -40,23 +48,37 @@ export class MyAccountComponent {
     this.userData = JSON.parse(this.authService.getUserData() as any);
     this.channelId = this.userData?.channelId;
 
-    this.router.events.subscribe((event: any) => {
+    this.routerSubscription = this.router.events.subscribe((event: any) => {
       console.log(event);
       if (event.routerEvent.url.includes('history')) {
         this.isHistoryPage = true;
         this.getViewHistory();
       } else {
         this.isHistoryPage = false;
-        this.getChannels();
-        this.getPostVideosById();
+        this.channelService.getMyChannels();
+        this.loadMore();
       }
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.channelService.myChannels$.subscribe((channels) => {
+      this.channelList = channels;
+      this.countChannel = this.channelList.length;
+    });
+  }
 
-  getPostVideosById(): void {
-    if (this.channelId) {
+  // getPostVideosById(): void {
+  //   if (this.channelId) {
+  //     this.loadMore();
+  //   }
+  // }
+
+  onPageChange(config: Pagination): void {
+    this.pagination = config;
+    if (this.isHistoryPage) {
+      this.getViewHistory();
+    } else if (!this.isHistoryPage) {
       this.loadMore();
     }
   }
@@ -69,21 +91,23 @@ export class MyAccountComponent {
       .post(`${this.apiUrl}/my-posts`, {
         profileId: this.userData.profileId,
         // id: this.channelId,
-        size: 12,
-        page: this.activePage,
+        size: this.pagination.perPage,
+        page: this.pagination.activePage,
       })
       .subscribe({
         next: (res: any) => {
           this.spinner.hide();
           if (res?.data?.length > 0) {
-            this.videoList = this.videoList.concat(res.data);
-            this.postedVideoCount = res.pagination.totalItems;
-          } else {
-            this.hasMoreData = false;
+            this.videoList = res.data;
+            // this.videoList = this.videoList.concat(res.data);
+            this.pagination.totalItems = res?.pagination?.totalItems;
           }
-          if (this.activePage < res.pagination.totalPages) {
-            this.hasMoreData = true;
-          }
+          // else {
+          //   this.hasMoreData = false;
+          // }
+          // if (this.activePage < res.pagination.totalPages) {
+          //   this.hasMoreData = true;
+          // }
         },
         error: (error) => {
           this.spinner.hide();
@@ -110,10 +134,6 @@ export class MyAccountComponent {
   getChannels(): void {
     const userId = this.userData.UserID;
     this.channelService.getMyChannels();
-    this.channelService.myChannels$.subscribe((channels) => {
-      this.channelList = channels;
-      this.countChannel = this.channelList.length;
-    });
     // const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
     // this.commonService.get(apiUrl).subscribe({
     //   next: (res) => {
@@ -136,8 +156,14 @@ export class MyAccountComponent {
       (res) => {
         console.log('video List', res);
         this.videoList = res.data;
-        this.postedVideoCount = res.pagination.totalItems;
+        this.pagination.totalItems = res?.pagination?.totalItems;
       }
     );
+  }
+  
+  ngOnDestroy() {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
   }
 }

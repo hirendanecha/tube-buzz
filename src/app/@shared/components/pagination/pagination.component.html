@@ -1,0 +1,30 @@
+<ng-container *ngIf="config?.totalPages">
+  <div class="row app-pagination pt-3">
+    <!-- <div class="col-6 d-flex align-items-center">
+      <select [formControl]="perPageCtrl" class="form-select w-80-px">
+        <option value="15">15</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="200">200</option>
+        <option value="500">500</option>
+      </select>
+      <span class="ps-2 text-secondary">
+        Items per page, {{ ((config.activePage - 1) * config.perPage) || 1 }} – {{ config.activePage * config.perPage }} of {{ config.totalItems }} Items
+      </span>
+    </div> -->
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination 
+        [collectionSize]="config.totalItems" 
+        [(page)]="config.activePage" 
+        [pageSize]="config.perPage" 
+        [maxSize]="5" 
+        [rotate]="true" 
+        [boundaryLinks]="true" 
+        [ellipses]="false"
+        (pageChange)="pageChange($event)">
+      </ngb-pagination>
+    </div>
+  </div>
+</ng-container>

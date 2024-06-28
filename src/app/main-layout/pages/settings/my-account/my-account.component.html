@@ -28,7 +28,7 @@
               <fa-icon [icon]="['fas', 'video']" />
             </div>
             <div class="mr-5">
-              <b>{{ postedVideoCount }}</b> Videos
+              <b>{{ pagination.totalItems }}</b> Videos
             </div>
           </div>
           <a class="card-footer text-white clearfix small z-1">
@@ -48,7 +48,7 @@
               <fa-icon [icon]="['fas', 'list-alt']" />
             </div>
             <div class="mr-5">
-              <b>{{ postedVideoCount }}</b> Watch Count
+              <b>{{ pagination.totalItems }}</b> Watch Count
             </div>
           </div>
           <a class="card-footer text-white clearfix small z-1">
@@ -75,11 +75,15 @@
         </div>
       </div>
       <app-video-card [videoData]="videoList" />
-      <div class="d-flex justify-content-center mb-2" *ngIf="hasMoreData">
+      <app-pagination
+      [items]="pagination?.totalItems"
+      (onPageChange)="onPageChange($event)"
+    />
+      <!-- <div class="d-flex justify-content-center mb-2" *ngIf="hasMoreData">
         <button class="btn btn-outline-primary" (click)="loadMore()">
           Load More
         </button>
-      </div>
+      </div> -->
     </div>
   </div>
   <ng-container *ngIf="!isHistoryPage">

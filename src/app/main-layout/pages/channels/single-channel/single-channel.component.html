@@ -26,11 +26,11 @@
       onerror="this.onerror=null;this.src='assets/default-profile.jpg';"
     />
     <div class="d-flex flex-column">
-      <a class="channel-brand text-capitalize"
-        >{{ categoryName === 'featuredVideos' ?  'Featured Videos' : categoryName }}
+      <a class="channel-brand text-capitalize">
+        {{ categoryName === 'featuredVideos' ? 'Featured Videos' : categoryName === 'independentmedia' ? 'Independent Media' : categoryName }}
       </a>
-      <p class="d-flex gap-2" *ngIf="videoList.length">
-        {{videoList.length}} Videos
+      <p class="d-flex gap-2" *ngIf="pagination.totalItems">
+        {{pagination.totalItems}} Videos
       </p>
     </div>
   </div>
@@ -96,10 +96,14 @@
         <ng-container *ngIf="activeTab === 1">
           <h6 *ngIf="channelDetails.id">My Videos</h6>
           <app-video-card [videoData]="videoList" />
-          <div
+          <app-pagination
+          [items]="pagination?.totalItems"
+          (onPageChange)="onPageChange($event, categoryName)"
+        />
+        <div
         class="d-flex justify-content-center mb-2"
         *ngIf="hasMoreData"
-      >
+        >
         <button class="btn btn-outline-primary" (click)="getPostByCategory(categoryName)">
           Load More
         </button>

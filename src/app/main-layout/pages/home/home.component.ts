@@ -1,6 +1,7 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/@shared/services/auth.service';
 import { CommonService } from 'src/app/@shared/services/common.service';
 import { SeoService } from 'src/app/@shared/services/seo.service';
@@ -13,7 +14,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   apiUrl = environment.apiUrl + 'channels/';
   useDetails: any = [];
   channelData: any = {};
@@ -36,7 +37,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
   searchText: string;
   categorizedVideos: any = [];
   categoryName: any = [];
-
+  independentMedia: any = [];
+  hasindependentMedia: boolean = false;
+  independentMediaPage: number = 0;
+  routerSubscription: Subscription | undefined;
+  desiredOrder = [
+    'recentPosted',
+    'sports',
+    'gaming',
+    'finance',
+    'news',
+    'entertainment',
+    'cooking',
+    'science',
+    'music',
+    'featuredVideos'
+];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -50,7 +66,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.useDetails = JSON.parse(this.authService.getUserData() as any);
     this.channelId = +localStorage.getItem('channelId');
 
-    this.route.paramMap.subscribe((paramMap) => {
+    this.routerSubscription = this.route.paramMap.subscribe((paramMap) => {
       // https://facetime.opash.in/
       const name = paramMap.get('name');
       this.channelName = name;
@@ -78,6 +94,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.recommendedLoadMore();
+    this.independentMediaLoadMore();
   }
 
   ngAfterViewInit(): void {
@@ -221,7 +238,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             //   res.data
             // );
             this.recommendedVideoList = res.data
-            this.categoryName = Object.keys(this.recommendedVideoList)
+            // this.categoryName = Object.keys(this.recommendedVideoList)
+            this.categoryName = this.desiredOrder.filter(category => Object.keys(this.recommendedVideoList).includes(category));
           } else {
             this.hasRecommendedData = false;
           }
@@ -274,5 +292,45 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   categoryViewAll(category){
     this.router.navigate([`category/${category}`]);
+  }
+
+  independentViewAll(){
+    this.router.navigate([`category/independentmedia`]);
+  }
+
+  independentMediaLoadMore() {
+    this.independentMediaPage++;
+    this.spinner.show();
+    const api = `https://api.freedom.buzz/api/v1/channels/`
+    this.commonService
+      .post(`${api}posts`, {
+        size: 8,
+        page: this.independentMediaPage,
+      })
+      .subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+          if (res?.data?.length > 0) {
+            this.independentMedia = res.data;
+            // this.independentMedia = this.independentMedia.concat(
+            //   res.data
+            // );
+            // this.hasindependentMedia = false;
+          } 
+          // else {
+          //   this.hasindependentMedia = true;
+          // }
+        },
+        error: (error) => {
+          this.spinner.hide();
+          console.log(error);
+        },
+      });
+  }
+
+  ngOnDestroy() {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
   }
 }

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { filter } from 'rxjs';
+import { Subscription, filter } from 'rxjs';
+import { Pagination } from 'src/app/@shared/interfaces/pagination';
 import { CreateChannelComponent } from 'src/app/@shared/modals/create-channel/create-channel-modal.component';
 import { AuthService } from 'src/app/@shared/services/auth.service';
 import { ChannelService } from 'src/app/@shared/services/channels.service';
@@ -15,7 +16,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './single-channel.component.html',
   styleUrls: ['./single-channel.component.scss'],
 })
-export class SingleChannelComponent implements OnInit {
+export class SingleChannelComponent implements OnInit, OnDestroy {
   useDetails: any = {};
   channelDetails: any = {};
   videoList: any = [];
@@ -24,6 +25,12 @@ export class SingleChannelComponent implements OnInit {
   categoryName: string = 'Tube.buzz';
   activeFeturePage = 0;
   hasMoreData: boolean = false;
+  pagination: Pagination = {
+    activePage: 1,
+    perPage: 20,
+    totalItems: 0,
+  };
+  routerSubscription: Subscription | undefined;
 
   constructor(
     private commonService: CommonService,
@@ -34,13 +41,13 @@ export class SingleChannelComponent implements OnInit {
     private modalService: NgbModal,
     private router: Router
   ) {
-    this.router.events.subscribe((event: any) => {
+    this.routerSubscription =  this.router.events.subscribe((event: any) => {
       const name = event?.routerEvent?.url.split('/')[2];
       const url = this.router.routerState.snapshot.url;
       if (name) {
         if (url.includes('category')) {
           this.getPostByCategory(String(name));
-          this.categoryName = String(name)
+          this.categoryName = String(name);
         } else {
           this.getChannelDetailsById(String(name));
         }
@@ -57,29 +64,60 @@ export class SingleChannelComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  onPageChange(config: Pagination, category): void {
+    this.pagination = config;
+    if (category) {
+      this.getPostByCategory(category);
+    } else if(this.channelDetails?.unique_link){
+      this.getChannelDetailsById(this.channelDetails?.unique_link);
+    }
+  }
+
   getPostByCategory(category): void {
-    this.activeFeturePage++;
-    const size = 20;
-    const page = this.activeFeturePage;
-    this.commonService.get(`${this.apiUrl}channels/posts/${category}?page=${page}&size=${size}`).subscribe({
-        next: (res: any) => {
-          if (res?.data) {
-            this.videoList = this.videoList.concat(res.data);
-          } else {
-            this.hasMoreData = false;
-          }
-          if (this.activeFeturePage < res.pagination.totalPages) {
-            this.hasMoreData = true;
-          }
-        },
-        error: (error) => {
-          console.log(error);
-        },
-    });
+    const size = this.pagination.perPage;
+    const page = this.pagination.activePage;
+    if (category !== 'independentmedia') {
+      this.commonService
+        .get(
+          `${this.apiUrl}channels/posts/${category}?page=${page}&size=${size}`
+        )
+        .subscribe({
+          next: (res: any) => {
+            if (res?.data) {
+              this.videoList = res.data;
+              // this.videoList = this.videoList.concat(res.data);
+              this.pagination.totalItems = res?.pagination?.totalItems;
+            }
+          },
+          error: (error) => {
+            console.log(error);
+          },
+        });
+    } else if (category === 'independentmedia') {
+      const api = `https://api.freedom.buzz/api/v1/channels/`;
+      this.commonService
+        .post(`${api}posts`, {
+          size: size,
+          page: page,
+        })
+        .subscribe({
+          next: (res: any) => {
+            if (res?.data) {
+              this.videoList = res.data;
+              this.pagination.totalItems = res?.pagination?.totalItems;
+            }
+          },
+          error: (error) => {
+            console.log(error);
+          },
+        });
+    }
   }
 
   getChannelDetailsById(id): void {
-    const profileParam = this.useDetails?.profileId ? `?profileId=${this.useDetails?.profileId}` : '';
+    const profileParam = this.useDetails?.profileId
+      ? `?profileId=${this.useDetails?.profileId}`
+      : '';
     this.commonService
       .get(`${this.apiUrl}channels/${id}${profileParam}`)
       .subscribe({
@@ -99,12 +137,13 @@ export class SingleChannelComponent implements OnInit {
     this.commonService
       .post(`${this.apiUrl}channels/my-posts`, {
         id: channelid,
-        size: 10,
-        page: 1,
+        size: this.pagination.perPage,
+        page: this.pagination.activePage,
       })
       .subscribe({
         next: (res: any) => {
           this.videoList = res.data;
+          this.pagination.totalItems = res?.pagination?.totalItems;
         },
         error: (error) => {
           console.log(error);
@@ -140,12 +179,18 @@ export class SingleChannelComponent implements OnInit {
     }
   }
 
-  editChannel(channelData){
+  editChannel(channelData) {
     const modalRef = this.modalService.open(CreateChannelComponent, {
       centered: true,
       size: 'lg',
     });
     modalRef.componentInstance.title = `Edit Channel Details`;
     modalRef.componentInstance.channelEditData = channelData;
+  }
+
+  ngOnDestroy() {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
   }
 }

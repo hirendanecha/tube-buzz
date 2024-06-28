@@ -88,9 +88,9 @@ export class VideoComponent implements OnInit, OnChanges {
     private seoService: SeoService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    this.profileId =
-      JSON.parse(this.authService.getUserData() as any)?.profileId || null;
+    this.profileId = JSON.parse(this.authService.getUserData() as any)?.profileId || null;
     if (isPlatformBrowser(this.platformId)) {
+
       this.route.params.subscribe((params) => {
         const id = +params['id'];
         console.log('>>>>>', id);
@@ -108,7 +108,7 @@ export class VideoComponent implements OnInit, OnChanges {
 
     // });
   }
-  ngOnChanges(changes: SimpleChanges): void {}
+  ngOnChanges(changes: SimpleChanges): void { }
 
   ngOnInit(): void {
     // this.getMyChannels();
@@ -154,7 +154,6 @@ export class VideoComponent implements OnInit, OnChanges {
         this.seoService.updateSeoMetaData(data);
         this.playvideo(this.videoDetails.id);
         this.viewComments(this.videoDetails.id);
-        this.addWatchHistory(this.videoDetails.id);
         if (!this.videoList.length) {
           this.getPostVideosById();
         }
@@ -189,12 +188,9 @@ export class VideoComponent implements OnInit, OnChanges {
     //   .post(`${this.apiUrl}/posts`, { size: 15, page: this.activePage })
     const size = 15;
     const page = this.activePage;
-    const category =
-      this.videoDetails?.categoryName?.trim()?.toLowerCase() ||
-      'featuredVideos';
-
-    this.commonService
-      .get(`${this.apiUrl}/posts/${category}?page=${page}&size=${size}`)
+    const category = this.videoDetails?.categoryName?.trim()?.toLowerCase() || 'featuredVideos'
+    
+    this.commonService.get(`${this.apiUrl}/posts/${category}?page=${page}&size=${size}`)
       .subscribe({
         next: (res: any) => {
           this.spinner.hide();
@@ -237,7 +233,7 @@ export class VideoComponent implements OnInit, OnChanges {
           viewability: false,
         },
         playbackRateControls: true,
-        playbackRates: [0.25, 0.5, , 0.75, 1, 1.25, 1.75, 2],
+        playbackRates: [0.25, 0.50, , 0.75, 1, 1.25, 1.75, 2],
         controls: true,
         events: {
           onError: function (e: any) {
@@ -250,26 +246,21 @@ export class VideoComponent implements OnInit, OnChanges {
         ...config,
       });
       const isPhoneView = window.innerWidth <= 768;
-      if (!isPhoneView) {
+      if (!isPhoneView) {    
         const buttonId = 'theater-mode-button';
         const iconPath = 'assets/img/theater-mode.png';
         const tooltipText = 'Theater Mode';
-        jwplayer('jwVideo-' + id).addButton(
-          iconPath,
-          tooltipText,
-          this.buttonClickAction.bind(this),
-          buttonId
-        );
+        jwplayer('jwVideo-' + id).addButton(iconPath, tooltipText, this.buttonClickAction.bind(this), buttonId);
       }
       this.player.load();
       console.log('>>>>>', this.player);
-
+  
       if (this.player) clearInterval(i);
     }, 1000);
   }
-
+  
   buttonClickAction() {
-    this.isTheaterModeOn = !this.isTheaterModeOn;
+    this.isTheaterModeOn = !this.isTheaterModeOn
   }
 
   onPostFileSelect(event: any, type: string): void {
@@ -382,7 +373,7 @@ export class VideoComponent implements OnInit, OnChanges {
         }
       },
       error: (error) => {
-        console.log(error);
+        console.log(error);;
       },
       complete: () => {
         this.isCommentsLoader = false;
@@ -769,15 +760,5 @@ export class VideoComponent implements OnInit, OnChanges {
         }
       }
     });
-  }
-
-  addWatchHistory(id): void {
-    if (id) {
-      const data = {
-        profileId: this.profileId,
-        postId: id,
-      };
-      this.socketService.addWatchHistory(data, (data) => {});
-    }
   }
 }

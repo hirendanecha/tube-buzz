@@ -12,10 +12,7 @@
         <h6>{{ channelData.firstname }}</h6>
       </div>
       <app-video-card [videoData]="videoList" />
-      <div
-        class="d-flex justify-content-center mb-2"
-        *ngIf="hasMoreData"
-      >
+      <div class="d-flex justify-content-center mb-2" *ngIf="hasMoreData">
         <button class="btn btn-outline-primary" (click)="loadMore()">
           Load More
         </button>
@@ -44,19 +41,56 @@
     </div>
   </div>
 </ng-container> -->
+<div class="video-block section-padding">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="col-md-12 d-flex justify-content-between m-2">
+        <div class="main-title d-flex font-24-px icon-color">
+          <fa-icon [icon]="['fas', 'play-circle']" class="me-2" />
+          <h6>Independent Media</h6>
+        </div>
+        <button
+          class="btn btn-outline-primary rounded-5"
+          (click)="independentViewAll()"
+        >
+          View all
+        </button>
+      </div>
+    </div>
+    <app-video-card [videoData]="independentMedia" [openLink] = "'https://tube.freedom.buzz/'" />
+    <div class="d-flex justify-content-center mb-2" *ngIf="hasindependentMedia">
+      <button
+        class="btn btn-outline-primary"
+        (click)="independentMediaLoadMore()"
+      >
+        Load More
+      </button>
+    </div>
+  </div>
+</div>
 <ng-container *ngIf="!searchResults">
   <div class="video-block section-padding">
     <div class="row">
       <ng-container *ngFor="let category of categoryName">
-        <div class="col-md-12 d-flex justify-content-between m-2 ">
+        <div class="col-md-12 d-flex justify-content-between m-2">
           <div class="main-title d-flex font-24-px icon-color">
             <fa-icon [icon]="['fas', 'play-circle']" class="me-2"></fa-icon>
-            <h6 class="text-capitalize">{{ category === 'featuredVideos' ?  'Featured Videos' : category }}</h6>
+            <h6 class="text-capitalize">
+              {{ category === "featuredVideos" ? "Featured Videos" : category === "recentPosted" ? "Recently Uploaded": category }}
+            </h6>
           </div>
-          <button class="btn btn-outline-primary rounded-5" (click)="categoryViewAll(category)">View all</button>
+          <button
+            class="btn btn-outline-primary rounded-5"
+            *ngIf="category !== 'recentPosted'"
+            (click)="categoryViewAll(category)"
+          >
+            View all
+          </button>
         </div>
-        <app-video-card [videoData]="recommendedVideoList[category]"></app-video-card>
-        <hr class="mt-0">
+        <app-video-card
+          [videoData]="recommendedVideoList[category]"
+        ></app-video-card>
+        <hr class="mt-0" />
       </ng-container>
     </div>
   </div>
@@ -81,7 +115,7 @@
       <div class="d-flex justify-content-between">
         <div class="mb-5">
           <h6>About {{ searchResults }} results</h6>
-          <h4>Search result for {{searchText}}</h4>
+          <h4>Search result for {{ searchText }}</h4>
         </div>
         <fa-icon
           [icon]="['fas', 'xmark']"

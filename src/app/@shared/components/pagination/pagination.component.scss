@@ -1,0 +1,26 @@
+ngb-pagination {
+  ::ng-deep {
+    a {
+      color: var(--blue-text);
+    }
+
+    .page-item {
+      &.active {
+        .page-link {
+          border-color: var(--blue-text);
+          background-color: var(--blue-text);
+          color: #fff;
+          &:focus {
+            box-shadow: var(--blue-text);
+          }
+        }
+      }
+
+      .page-link {
+        &:not(:disabled):not(.disabled):active:focus {
+          box-shadow: var(--blue-text);
+        }
+      }
+    }
+  }
+}

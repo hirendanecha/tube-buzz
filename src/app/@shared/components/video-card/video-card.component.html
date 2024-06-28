@@ -11,7 +11,7 @@
               (click)="playvideo(video)"
             />
           </a> -->
-          <a [routerLink]="['/video/', video.id]" target="_blank">
+          <a [href]="openLink ? 'https://tube.freedom.buzz/video/' + video.id : '/video/' + video.id" target="_blank">
             <img *ngIf="!isPlay || postId !== video.id"  class="img-fluid h-100 w-100 rounded-top-3 image-render cursor" loading="lazy"
               data-src="{{ video?.thumbfilename }}" onerror="this.onerror=null;this.src='/assets/dummy/11.jpg';" alt="" />
               <!-- (click)="openDetailPage(video)" -->
@@ -30,7 +30,8 @@
         <div class="video-card-body cursor">
           
           <div class="video-title text-dark">
-            <a [routerLink]="['/video/', video.id]" target="_blank" [ngbTooltip]="video.albumname" placement="bottom" class="video-page font-16-px">
+            <!-- <a [routerLink]="['/video/', video.id]" target="_blank" [ngbTooltip]="video.albumname" placement="bottom" class="video-page font-16-px"> -->
+            <a [href]="openLink ? 'https://tube.freedom.buzz/video/' + video.id : '/video/' + video.id" target="_blank" [ngbTooltip]="video.albumname" placement="bottom" class="video-page font-16-px">
               {{ video.albumname }}
             </a>
           </div>

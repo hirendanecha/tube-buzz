@@ -25,6 +25,7 @@ export class VideoCardComponent implements OnInit, AfterViewInit {
   includedChannels: any = [];
 
   @Input('videoData') videoData: any = [];
+  @Input('openLink') openLink: string;
   constructor(
     private router: Router,
     public modalService: NgbModal,

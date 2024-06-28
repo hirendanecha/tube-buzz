@@ -140,6 +140,7 @@ import { MentionModule } from 'angular-mentions';
 import { SharePostModalComponent } from './modals/share-post-modal/share-post-modal.component';
 import { RePostCardComponent } from './modals/re-post-card/re-post-card.component';
 import { ImgPickerComponent } from './components/img-picker/img-picker.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 const sharedComponents = [
   ConfirmationModalComponent,
@@ -159,6 +160,7 @@ const sharedComponents = [
   SharePostModalComponent,
   RePostCardComponent,
   ImgPickerComponent,
+  PaginationComponent
 ];
 
 const sharedModules = [
