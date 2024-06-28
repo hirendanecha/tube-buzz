@@ -95,8 +95,9 @@
       <div class="main-title mt-3">
         <ng-container *ngIf="activeTab === 1">
           <h6 *ngIf="channelDetails.id">My Videos</h6>
-          <app-video-card [videoData]="videoList" />
+          <app-video-card [videoData]="videoList" [openLink]="categoryName === 'independentmedia'" />
           <app-pagination
+          *ngIf="videoList.length"
           [items]="pagination?.totalItems"
           (onPageChange)="onPageChange($event, categoryName)"
         />

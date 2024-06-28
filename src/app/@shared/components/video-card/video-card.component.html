@@ -44,7 +44,8 @@
               <img class="h-28-px w-28-px rounded-circle image-render" loading="lazy" data-src="{{ video?.profile_pic_name }}"
                 onerror="this.onerror=null;this.src='assets/default-profile.jpg';" alt="" />
             <div class="d-flex flex-column">
-              <a [routerLink]="'/channels/' + video?.unique_link">
+              <a [href]="openLink ? 'https://tube.freedom.buzz/channel/' + video?.unique_link : '/channels/' + video?.unique_link" target="_blank">
+              <!-- <a [routerLink]="'/channels/' + video?.unique_link"> -->
                 {{ video?.channelName || video?.firstname }}
               </a>
               <div class="font-12-px">
