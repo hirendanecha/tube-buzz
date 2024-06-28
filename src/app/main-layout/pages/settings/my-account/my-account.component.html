@@ -2,101 +2,97 @@
   <!-- <app-details-card></app-details-card> -->
 
   <div class="row">
-    <div class="col-xl-3 col-sm-6 mb-3">
-       <div class="card text-white bg-primary o-hidden h-100 border-none">
+    <ng-container *ngIf="!isHistoryPage">
+      <div class="col-xl-3 col-sm-6 mb-3">
+        <div class="card text-white bg-primary o-hidden h-100 border-none">
           <div class="card-body">
-             <div class="card-body-icon">
+            <div class="card-body-icon">
               <fa-icon [icon]="['fas', 'users']" />
-             </div>
-             <div class="mr-5"><b>{{ countChannel }}</b> Channels</div>
+            </div>
+            <div class="mr-5">
+              <b>{{ countChannel }}</b> Channels
+            </div>
           </div>
           <a class="card-footer text-white clearfix small z-1">
-          <span class="float-left">View Details</span>
-          <span class="float-right">
-             <fa-icon [icon]="['fas', 'angle-right']" />
-          </span>
+            <span class="float-left">View Details</span>
+            <span class="float-right">
+              <fa-icon [icon]="['fas', 'angle-right']" />
+            </span>
           </a>
-       </div>
-    </div>
-    <div class="col-xl-3 col-sm-6 mb-3">
-       <div class="card text-white bg-warning o-hidden h-100 border-none">
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 mb-3">
+        <div class="card text-white bg-warning o-hidden h-100 border-none">
           <div class="card-body">
-             <div class="card-body-icon">
+            <div class="card-body-icon">
               <fa-icon [icon]="['fas', 'video']" />
-             </div>
-             <div class="mr-5"><b>{{ postedVideoCount }}</b> Videos</div>
+            </div>
+            <div class="mr-5">
+              <b>{{ postedVideoCount }}</b> Videos
+            </div>
           </div>
           <a class="card-footer text-white clearfix small z-1">
-          <span class="float-left">View Details</span>
-          <span class="float-right">
-             <fa-icon [icon]="['fas', 'angle-right']" />
-          </span>
+            <span class="float-left">View Details</span>
+            <span class="float-right">
+              <fa-icon [icon]="['fas', 'angle-right']" />
+            </span>
           </a>
-       </div>
-    </div>
-    <!-- <div class="col-xl-3 col-sm-6 mb-3">
-       <div class="card text-white bg-success o-hidden h-100 border-none">
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isHistoryPage">
+      <div class="col-xl-3 col-sm-6 mb-3">
+        <div class="card text-white bg-success o-hidden h-100 border-none">
           <div class="card-body">
-             <div class="card-body-icon">
+            <div class="card-body-icon">
               <fa-icon [icon]="['fas', 'list-alt']" />
-             </div>
-             <div class="mr-5"><b>123</b> Watch Count</div>
+            </div>
+            <div class="mr-5">
+              <b>{{ postedVideoCount }}</b> Watch Count
+            </div>
           </div>
           <a class="card-footer text-white clearfix small z-1">
-          <span class="float-left">View Details</span>
-          <span class="float-right">
-             <fa-icon [icon]="['fas', 'angle-right']" />
-          </span>
+            <span class="float-left">View More</span>
+            <span
+              class="float-right"
+              routerLink="/home"
+              routerLinkActive="active"
+            >
+              <fa-icon [icon]="['fas', 'angle-right']" />
+            </span>
           </a>
-       </div>
-    </div>
-    <div class="col-xl-3 col-sm-6 mb-3">
-       <div class="card text-white bg-danger o-hidden h-100 border-none">
-          <div class="card-body">
-             <div class="card-body-icon">
-              <fa-icon [icon]="['fas', 'cloud-upload-alt']" />
-             </div>
-             <div class="mr-5"><b>13</b> Total likes</div>
-          </div>
-          <a class="card-footer text-white clearfix small z-1">
-          <span class="float-left">View Details</span>
-          <span class="float-right">
-             <fa-icon [icon]="['fas', 'angle-right']" />
-          </span>
-          </a>
-       </div>
-    </div> -->
- </div>
-
+        </div>
+      </div>
+    </ng-container>
+  </div>
 
   <hr />
   <div class="video-block section-padding">
     <div class="row">
       <div class="col-md-12">
         <div class="main-title">
-          <h6>My Videos</h6>
+          <h6>{{ isHistoryPage ? "Watching History" : "My Videos" }}</h6>
         </div>
       </div>
       <app-video-card [videoData]="videoList" />
-      <div
-      class="d-flex justify-content-center mb-2"
-      *ngIf="hasMoreData"
-    >
-      <button class="btn btn-outline-primary" (click)="loadMore()">
-        Load More
-      </button>
-    </div>
-    </div>
-  </div>
-  <hr class="mt-0" />
-  <div class="video-block section-padding">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="main-title">
-          <h6>My Channels</h6>
-        </div>
+      <div class="d-flex justify-content-center mb-2" *ngIf="hasMoreData">
+        <button class="btn btn-outline-primary" (click)="loadMore()">
+          Load More
+        </button>
       </div>
-      <app-channels-card [channelList]="channelList" />
     </div>
   </div>
+  <ng-container *ngIf="!isHistoryPage">
+    <hr class="mt-0" />
+    <div class="video-block section-padding">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="main-title">
+            <h6>My Channels</h6>
+          </div>
+        </div>
+        <app-channels-card [channelList]="channelList" />
+      </div>
+    </div>
+  </ng-container>
 </div>

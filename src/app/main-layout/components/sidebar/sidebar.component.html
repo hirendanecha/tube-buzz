@@ -1,30 +1,51 @@
-<ul class="sidebar navbar-nav" [ngClass]="{
+<ul
+  class="sidebar navbar-nav"
+  [ngClass]="{
     toggled:
       !shareService.isSidebarOpen &&
       (breakpointService?.screen | async)?.md?.gatherThen
-  }">
+  }"
+>
   <li class="nav-item" routerLinkActive="active">
     <a class="nav-link" routerLink="/home">
       <fa-icon [icon]="['fas', 'home']" [fixedWidth]="true" />
       <span>Home</span>
     </a>
   </li>
-  <li class="nav-item" routerLinkActive="active" *ngIf="shareService.getCredentials()">
+  <li
+    class="nav-item"
+    routerLinkActive="active"
+    *ngIf="shareService.getCredentials()"
+  >
     <a class="nav-link" routerLink="/channels">
       <fa-icon [icon]="['fas', 'clapperboard']" [fixedWidth]="true" />
       <span>My Channels</span>
     </a>
   </li>
-  <li class="nav-item" routerLinkActive="active" *ngIf="shareService.getCredentials()">
+  <li
+    class="nav-item"
+    routerLinkActive="active"
+    *ngIf="shareService.getCredentials()"
+  >
     <a class="nav-link" routerLink="/account">
       <fa-icon [icon]="['fas', 'user-circle']" [fixedWidth]="true" />
       <span>My Profile</span>
     </a>
   </li>
-  <li class="nav-item" (click)="createChannel()" *ngIf="shareService.getCredentials()">
-    <a class="nav-link" routerLink="/account">
+  <li
+    class="nav-item"
+    (click)="createChannel()"
+    *ngIf="shareService.getCredentials()"
+  >
+    <a class="nav-link">
       <fa-icon [icon]="['fas', 'plus']" [fixedWidth]="true" />
       <span>Create Channel</span>
+    </a>
+  </li>
+  <li class="nav-item" routerLinkActive="active" *ngIf="shareService.getCredentials()">
+    <a class="nav-link" routerLink="/history">
+      <fa-icon [icon]="['fas', 'clock-rotate-left']" [fixedWidth]="true" />
+      <span>Viewing History</span>
     </a>
   </li>
 
@@ -47,9 +68,16 @@
     <ul>
       <li class="nav-item" *ngFor="let channel of featuredChannels">
         <div class="channels-list" (click)="navigateToChannel(channel)">
-          <a [routerLink]="'channels/' + channel?.unique_link" [state]="{ data: channel }">
-            <img class="img-fluid image-render" [src]="channel.profile_pic_name" alt=""
-              onerror="this.onerror=null;this.src='assets/default-profile.jpg';" />
+          <a
+            [routerLink]="'channels/' + channel?.unique_link"
+            [state]="{ data: channel }"
+          >
+            <img
+              class="img-fluid image-render"
+              [src]="channel.profile_pic_name"
+              alt=""
+              onerror="this.onerror=null;this.src='assets/default-profile.jpg';"
+            />
             <ng-container *ngIf="shareService.isSidebarOpen || backCanvas">
               {{ channel.firstname }}
             </ng-container>

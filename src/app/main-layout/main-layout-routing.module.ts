@@ -15,34 +15,45 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () => import('./pages/home/home.module').then((m) => m.HomeModule),
+        loadChildren: () =>
+          import('./pages/home/home.module').then((m) => m.HomeModule),
         // canActivate: mapToCanActivate([UserAuthGuard]),
       },
       {
         path: 'channels',
-        loadChildren: () => import('./pages/channels/channels.module').then((m) => m.ChannelModule),
+        loadChildren: () =>
+          import('./pages/channels/channels.module').then(
+            (m) => m.ChannelModule
+          ),
         // canActivate: mapToCanActivate([UserAuthGuard]),
-
       },
       {
         path: 'category',
-        loadChildren: () => import('./pages/channels/channels.module').then((m) => m.ChannelModule),
+        loadChildren: () =>
+          import('./pages/channels/channels.module').then(
+            (m) => m.ChannelModule
+          ),
       },
       {
         path: 'video/:id',
-        loadChildren: () => import('./pages/video/video.module').then((m) => m.VideoModule),
+        loadChildren: () =>
+          import('./pages/video/video.module').then((m) => m.VideoModule),
         // canActivate: mapToCanActivate([UserAuthGuard]),
       },
       {
         path: 'upload',
-        loadChildren: () => import('./pages/upload/upload.module').then((m) => m.UploadModule),
+        loadChildren: () =>
+          import('./pages/upload/upload.module').then((m) => m.UploadModule),
         canActivate: mapToCanActivate([UserAuthGuard]),
       },
       {
         path: 'notifications',
-        loadChildren: () => import('./pages/notifications/notification.module').then((m) => m.NotificationsModule),
+        loadChildren: () =>
+          import('./pages/notifications/notification.module').then(
+            (m) => m.NotificationsModule
+          ),
         data: {
-          isShowLeftSideBar: true
+          isShowLeftSideBar: true,
         },
         canActivate: mapToCanActivate([UserAuthGuard]),
       },
@@ -61,12 +72,17 @@ const routes: Routes = [
         component: MyAccountComponent,
         canActivate: mapToCanActivate([UserAuthGuard]),
       },
-    ]
-  }
+      {
+        path: 'history',
+        component: MyAccountComponent,
+        canActivate: mapToCanActivate([UserAuthGuard]),
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class MainLayoutRoutingModule { }
+export class MainLayoutRoutingModule {}

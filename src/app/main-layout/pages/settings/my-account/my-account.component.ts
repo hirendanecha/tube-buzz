@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/@shared/services/auth.service';
 import { ChannelService } from 'src/app/@shared/services/channels.service';
 import { CommonService } from 'src/app/@shared/services/common.service';
 import { ShareService } from 'src/app/@shared/services/share.service';
+import { SocketService } from 'src/app/@shared/services/socket.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -17,51 +19,43 @@ export class MyAccountComponent {
   channelDetails: any = {};
   apiUrl = environment.apiUrl + 'channels';
   channelData: any = [];
-  channelList:any=[];
+  channelList: any = [];
   activePage = 0;
   channelId: number;
-  countChannel:number;
+  countChannel: number;
   hasMoreData = false;
   postedVideoCount: number;
   userChannelCount: number;
+  isHistoryPage: boolean = false;
   constructor(
     private commonService: CommonService,
     private channelService: ChannelService,
     private spinner: NgxSpinnerService,
-    private authService:AuthService,
+    private authService: AuthService,
     public shareService: ShareService,
+    private router: Router,
+    private socketService: SocketService
   ) {
     // this.channelId = +localStorage.getItem('channelId');
     this.userData = JSON.parse(this.authService.getUserData() as any);
     this.channelId = this.userData?.channelId;
+
+    this.router.events.subscribe((event: any) => {
+      console.log(event);
+      if (event.routerEvent.url.includes('history')) {
+        this.isHistoryPage = true;
+        this.getViewHistory();
+      } else {
+        this.isHistoryPage = false;
+        this.getChannels();
+        this.getPostVideosById();
+      }
+    });
   }
 
-  ngOnInit(): void {
-    // console.log("h",this.channelData);
-    this.getChannels();
-    this.getPostVideosById();
-    // this.getChannelByUserId();
-  }
+  ngOnInit(): void {}
 
   getPostVideosById(): void {
-    // this.commonService
-    //   .post(`${this.apiUrl}/posts`, {
-    //     id: this.channelDetails?.profileid,
-    //     size: 10,
-    //     page: 1,
-    //   })
-    //   .subscribe({
-    //     next: (res: any) => {
-    //       this.videoList = res.data;
-    //       // console.log(res);
-    //       console.log(this.videoList);
-
-    //     },
-    //     error: (error) => {
-    //       console.log(error);
-    //     },
-    //   });
-    // this.activePage = 0;
     if (this.channelId) {
       this.loadMore();
     }
@@ -71,7 +65,7 @@ export class MyAccountComponent {
     this.activePage++;
     this.spinner.show();
     this.commonService
-    // id: this.channelId,
+      // id: this.channelId,
       .post(`${this.apiUrl}/my-posts`, {
         profileId: this.userData.profileId,
         // id: this.channelId,
@@ -83,7 +77,7 @@ export class MyAccountComponent {
           this.spinner.hide();
           if (res?.data?.length > 0) {
             this.videoList = this.videoList.concat(res.data);
-            this.postedVideoCount = res.pagination.totalItems;     
+            this.postedVideoCount = res.pagination.totalItems;
           } else {
             this.hasMoreData = false;
           }
@@ -116,9 +110,9 @@ export class MyAccountComponent {
   getChannels(): void {
     const userId = this.userData.UserID;
     this.channelService.getMyChannels();
-    this.channelService.myChannels$.subscribe(channels => {
+    this.channelService.myChannels$.subscribe((channels) => {
       this.channelList = channels;
-      this.countChannel = this.channelList.length
+      this.countChannel = this.channelList.length;
     });
     // const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
     // this.commonService.get(apiUrl).subscribe({
@@ -134,5 +128,16 @@ export class MyAccountComponent {
     //     console.log(err);
     //   },
     // });
+  }
+
+  getViewHistory(): void {
+    this.socketService.getViewHistory(
+      { profileId: this.userData.profileId, size: 20, page: this.activePage },
+      (res) => {
+        console.log('video List', res);
+        this.videoList = res.data;
+        this.postedVideoCount = res.pagination.totalItems;
+      }
+    );
   }
 }

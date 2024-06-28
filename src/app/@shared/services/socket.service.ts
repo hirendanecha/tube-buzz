@@ -9,9 +9,7 @@ import { environment } from 'src/environments/environment';
 export class SocketService {
   public socket: any;
 
-  constructor(
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     if (isPlatformBrowser(this.platformId)) {
       const token = localStorage.getItem('auth-token');
       if (token) {
@@ -44,7 +42,6 @@ export class SocketService {
       this.socket?.connect();
       this.socket?.emit('create-new-post', params);
     }
-
   }
 
   editPost(params, callback: (post: any) => void) {
@@ -82,5 +79,13 @@ export class SocketService {
 
   commentOnPost(params, callback: (data: any) => void) {
     this.socket?.emit('comments-on-post', params, callback);
+  }
+
+  getViewHistory(params, callback: (data: any) => void) {
+    this.socket?.emit('watch-history', params, callback);
+  }
+
+  addWatchHistory(params, callback: (data: any) => void) {
+    this.socket?.emit('add-watch-history', params, callback);
   }
 }

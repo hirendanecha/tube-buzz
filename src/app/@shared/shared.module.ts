@@ -117,6 +117,7 @@ import {
   faBorderAll,
   faCamera,
   faClapperboard,
+  faClockRotateLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import { HttpClientModule } from '@angular/common/http';
 import { VideoCardComponent } from './components/video-card/video-card.component';
@@ -184,7 +185,7 @@ const sharedModules = [
   providers: [
     NgbActiveOffcanvas,
     { provide: LAZYLOAD_IMAGE_HOOKS, useClass: ScrollHooks },
-  ]
+  ],
 })
 export class SharedModule {
   constructor(library: FaIconLibrary) {
@@ -283,7 +284,8 @@ export class SharedModule {
       faCalendar,
       faCloudUpload,
       faClapperboard,
-      faCheckCircle
+      faCheckCircle,
+      faClockRotateLeft
     );
   }
 }

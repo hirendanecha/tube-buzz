@@ -210,7 +210,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.commonService
       .post(`${this.apiUrl}posts`, {
         profileId: this.useDetails?.profileId,
-        // size: 12,
+        size: 100,
         // page: this.activeFeturePage,
       })
       .subscribe({
