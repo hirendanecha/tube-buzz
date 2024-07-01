@@ -6,15 +6,21 @@
       [src]="channelDetails?.profile_pic_name"
       onerror="this.onerror=null;this.src='assets/default-profile.jpg';"
     />
-    <a class="channel-brand"
-      >{{ channelDetails?.firstname }}
-      <span
-        data-placement="top"
-        data-toggle="tooltip"
-        data-original-title="Verified"
-      >
-        <fa-icon [icon]="['fas', 'check-circle']" [fixedWidth]="true" /> </span
-    ></a>
+    <div class="channel-info d-grid">
+      <a class="channel-brand"
+        >{{ channelDetails?.firstname }}
+        <span
+          data-placement="top"
+          data-toggle="tooltip"
+          data-original-title="Verified"
+        >
+          <fa-icon
+            [icon]="['fas', 'check-circle']"
+            [fixedWidth]="true"
+          /> </span
+      ></a>
+      <span>{{ channelDetails.subscribers }} Subscribers</span>
+    </div>
   </div>
 </ng-container>
 <ng-container *ngIf="!channelDetails.id">
@@ -27,10 +33,16 @@
     />
     <div class="d-flex flex-column">
       <a class="channel-brand text-capitalize">
-        {{ categoryName === 'featuredVideos' ? 'Featured Videos' : categoryName === 'independentmedia' ? 'Independent Media' : categoryName }}
+        {{
+          categoryName === "featuredVideos"
+            ? "Featured Videos"
+            : categoryName === "independentmedia"
+            ? "Independent Media"
+            : categoryName
+        }}
       </a>
       <p class="d-flex gap-2" *ngIf="pagination.totalItems">
-        {{pagination.totalItems}} Videos
+        {{ pagination.totalItems }} Videos
       </p>
     </div>
   </div>
@@ -48,7 +60,10 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button> -->
-    <div class="d-flex justify-content-between w-100" id="navbarSupportedContent">
+    <div
+      class="d-flex justify-content-between w-100"
+      id="navbarSupportedContent"
+    >
       <ul class="navbar-nav mr-auto flex-row gap-4">
         <li
           class="nav-item cursor"
@@ -69,22 +84,41 @@
           <a class="nav-link">Channels</a>
         </li> -->
       </ul>
-      <ng-container *ngIf="useDetails?.profileId !== channelDetails?.profileid && shareService.getCredentials() && channelDetails?.id"
+      <ng-container
+        *ngIf="
+          useDetails?.profileId !== channelDetails?.profileid &&
+          shareService.getCredentials() &&
+          channelDetails?.id
+        "
       >
-      <div class="d-flex align-items-center form-inline my-2 my-lg-0">
-        <button class="btn btn-sm" [ngClass]="!channelDetails?.isSubscribed ? 'btn-success' : 'btn-danger'" (click)="channelSubscribe(channelDetails?.isSubscribed)">
-          {{ !channelDetails?.isSubscribed ? 'Subscribe' : 'Unsubscribe'}}
-        </button>
-      </div>
-    </ng-container>
-    <ng-container *ngIf="useDetails?.profileId === channelDetails?.profileid && shareService.getCredentials() && channelDetails?.id"
-    >
-      <div class="d-flex align-items-center form-inline my-2 my-lg-0">
-        <button class="btn btn-sm btn-primary" (click)="editChannel(channelDetails)">
-          Edit Details
-        </button>
-      </div>
-    </ng-container>
+        <div class="d-flex align-items-center form-inline my-2 my-lg-0">
+          <button
+            class="btn btn-sm"
+            [ngClass]="
+              !channelDetails?.isSubscribed ? 'btn-success' : 'btn-danger'
+            "
+            (click)="channelSubscribe(channelDetails?.isSubscribed)"
+          >
+            {{ !channelDetails?.isSubscribed ? "Subscribe" : "Unsubscribe" }}
+          </button>
+        </div>
+      </ng-container>
+      <ng-container
+        *ngIf="
+          useDetails?.profileId === channelDetails?.profileid &&
+          shareService.getCredentials() &&
+          channelDetails?.id
+        "
+      >
+        <div class="d-flex align-items-center form-inline my-2 my-lg-0">
+          <button
+            class="btn btn-sm btn-primary"
+            (click)="editChannel(channelDetails)"
+          >
+            Edit Details
+          </button>
+        </div>
+      </ng-container>
     </div>
   </nav>
 </div>
@@ -95,13 +129,16 @@
       <div class="main-title mt-3">
         <ng-container *ngIf="activeTab === 1">
           <h6 *ngIf="channelDetails.id">My Videos</h6>
-          <app-video-card [videoData]="videoList" [openLink]="categoryName === 'independentmedia'" />
+          <app-video-card
+            [videoData]="videoList"
+            [openLink]="categoryName === 'independentmedia'"
+          />
           <app-pagination
-          *ngIf="videoList.length"
-          [items]="pagination?.totalItems"
-          (onPageChange)="onPageChange($event, categoryName)"
-        />
-        <!-- <div
+            *ngIf="videoList.length"
+            [items]="pagination?.totalItems"
+            (onPageChange)="onPageChange($event, categoryName)"
+          />
+          <!-- <div
         class="d-flex justify-content-center mb-2"
         *ngIf="hasMoreData"
         >
@@ -112,7 +149,9 @@
         </ng-container>
         <ng-container *ngIf="activeTab === 2">
           <h6>About</h6>
-          <div class="d-flex flex-column gap-2 flex-sm-row justify-content-between">
+          <div
+            class="d-flex flex-column gap-2 flex-sm-row justify-content-between"
+          >
             <div class="d-flex flex-column" *ngIf="channelDetails?.description">
               <h2>Description</h2>
               <p>{{ channelDetails?.description }}</p>

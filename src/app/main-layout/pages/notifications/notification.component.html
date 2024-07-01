@@ -27,7 +27,11 @@
               }}</a> -->
               <a
                 class="cursor c-font"
-                [href]="notification.postId ? 'https://freedom.buzz/post/' + notification.postId : 'https://freedom.buzz/profile-chats'" target="_blank"
+                [routerLink]="
+                  notification.postId
+                    ? '/video/' + notification.postId
+                    : '/channels'
+                "
                 >{{ notification?.Username }}</a
               >
               <span class="ms-1">{{ notification?.notificationDesc }} </span>

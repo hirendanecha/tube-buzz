@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription, filter } from 'rxjs';
 import { Pagination } from 'src/app/@shared/interfaces/pagination';
 import { CreateChannelComponent } from 'src/app/@shared/modals/create-channel/create-channel-modal.component';
@@ -39,7 +40,8 @@ export class SingleChannelComponent implements OnInit, OnDestroy {
     private toasterService: ToastService,
     public shareService: ShareService,
     private modalService: NgbModal,
-    private router: Router
+    private router: Router,
+    private spinner: NgxSpinnerService
   ) {
     this.routerSubscription = this.router.events.subscribe((event: any) => {
       const name = event?.routerEvent?.url.split('/')[2];
@@ -115,6 +117,7 @@ export class SingleChannelComponent implements OnInit, OnDestroy {
   }
 
   getChannelDetailsById(id): void {
+    this.spinner.show();
     const profileParam = this.useDetails?.profileId
       ? `?profileId=${this.useDetails?.profileId}`
       : '';
@@ -122,12 +125,14 @@ export class SingleChannelComponent implements OnInit, OnDestroy {
       .get(`${this.apiUrl}channels/${id}${profileParam}`)
       .subscribe({
         next: (res: any) => {
+          this.spinner.hide();
           this.channelDetails = res.data;
           if (this.channelDetails?.id) {
             this.getPostVideosById(this.channelDetails?.id);
           }
         },
         error: (error) => {
+          this.spinner.hide();
           console.log(error);
         },
       });
@@ -155,6 +160,7 @@ export class SingleChannelComponent implements OnInit, OnDestroy {
     const data = {
       ProfileId: this.useDetails?.profileId,
       SubscribeChannelId: this.channelDetails?.id,
+      channelUserProfileId: this.channelDetails.profileid,
     };
     if (!subscribe) {
       this.channelService.subscribeChannel(data).subscribe({

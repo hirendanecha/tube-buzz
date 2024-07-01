@@ -118,6 +118,7 @@ import {
   faCamera,
   faClapperboard,
   faClockRotateLeft,
+  faHeart,
 } from '@fortawesome/free-solid-svg-icons';
 import { HttpClientModule } from '@angular/common/http';
 import { VideoCardComponent } from './components/video-card/video-card.component';
@@ -160,7 +161,7 @@ const sharedComponents = [
   SharePostModalComponent,
   RePostCardComponent,
   ImgPickerComponent,
-  PaginationComponent
+  PaginationComponent,
 ];
 
 const sharedModules = [
@@ -287,7 +288,9 @@ export class SharedModule {
       faCloudUpload,
       faClapperboard,
       faCheckCircle,
-      faClockRotateLeft
+      faClockRotateLeft,
+      faShareAlt,
+      faHeart
     );
   }
 }

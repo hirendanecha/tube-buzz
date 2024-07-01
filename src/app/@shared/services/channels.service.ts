@@ -79,7 +79,7 @@ export class ChannelService {
   }
 
   subscribeChannel(data): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/subscribe/create/`, data);
+    return this.http.post(`${environment.apiUrl}subscribe/create/`, data);
   }
 
   unsubscribeChannel(data): Observable<any> {

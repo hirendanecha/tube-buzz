@@ -8,10 +8,13 @@
         (click)="readUnreadNotification(notification.postId, notification.id)"
       > -->
       <a
-      class="d-flex justify-content-between align-items-center"
-      (click)="readUnreadNotification(notification.postId, notification)"
-      [href]="notification.postId ? 'https://freedom.buzz/post/' + notification.postId : 'https://freedom.buzz/profile-chats'" target="_blank"
-    >
+        class="d-flex justify-content-between align-items-center"
+        (click)="readUnreadNotification(notification.postId, notification.id)"
+        [routerLink]="
+          notification.postId ? '/video/' + notification.postId : '/channels'
+        "
+      >
+        <!-- [href]="notification.postId ? 'https://freedom.buzz/post/' + notification.postId : 'https://freedom.buzz/profile-chats'" target="_blank" -->
         <div class="left-item position-relative d-inline-flex gap-3">
           <div class="avatar position-relative d-inline-flex">
             <img

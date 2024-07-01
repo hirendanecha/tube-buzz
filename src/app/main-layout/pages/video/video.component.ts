@@ -141,29 +141,31 @@ export class VideoComponent implements OnInit, OnChanges {
   }
 
   getPostDetailsById(id): void {
-    this.commonService.get(`${this.apiUrl}/post/${id}`).subscribe({
-      next: (res) => {
-        this.spinner.hide();
-        // console.log(res);
-        this.videoDetails = res[0];
+    this.commonService
+      .get(`${this.apiUrl}/post/${id}?profileId=${this.profileId}`)
+      .subscribe({
+        next: (res) => {
+          this.spinner.hide();
+          // console.log(res);
+          this.videoDetails = res[0];
 
-        const data = {
-          title: `Tube.buzz ${this.videoDetails.albumname}`,
-          description: this.videoDetails.postdescription,
-        };
-        this.seoService.updateSeoMetaData(data);
-        this.playvideo(this.videoDetails.id);
-        this.viewComments(this.videoDetails.id);
-        this.addWatchHistory(this.videoDetails.id);
-        if (!this.videoList.length) {
-          this.getPostVideosById();
-        }
-      },
-      error: (error) => {
-        this.spinner.hide();
-        console.log(error);
-      },
-    });
+          const data = {
+            title: `Tube.buzz ${this.videoDetails.albumname}`,
+            description: this.videoDetails.postdescription,
+          };
+          this.seoService.updateSeoMetaData(data);
+          this.playvideo(this.videoDetails.id);
+          this.viewComments(this.videoDetails.id);
+          this.addWatchHistory(this.videoDetails.id);
+          if (!this.videoList.length) {
+            this.getPostVideosById();
+          }
+        },
+        error: (error) => {
+          this.spinner.hide();
+          console.log(error);
+        },
+      });
   }
 
   getPostVideosById(): void {
@@ -779,5 +781,40 @@ export class VideoComponent implements OnInit, OnChanges {
       };
       this.socketService.addWatchHistory(data, (data) => {});
     }
+  }
+
+  reactLikeOnPost(post: any) {
+    if (post.react != 'L') {
+      post.likescount = post?.likescount + 1;
+      post.totalReactCount = post?.totalReactCount + 1;
+      post.react = 'L';
+    }
+    const data = {
+      postId: post.id,
+      profileId: this.profileId,
+      likeCount: post.likescount,
+      actionType: 'L',
+      toProfileId: post.profileid,
+    };
+    this.socketService.likeFeedPost(data, (res) => {
+      return;
+    });
+  }
+
+  dislikeFeedPost(post) {
+    if (post.react == 'L' && post.likescount > 0) {
+      post.likescount = post.likescount - 1;
+      post.react = null;
+      post.totalReactCount = post.totalReactCount - 1;
+    }
+    const data = {
+      postId: post.id,
+      profileId: this.profileId,
+      likeCount: post.likescount,
+      toProfileId: post.profileid,
+    };
+    this.socketService.likeFeedPost(data, (res) => {
+      return;
+    });
   }
 }
