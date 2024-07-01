@@ -41,7 +41,7 @@
     </div>
   </div>
 </ng-container> -->
-<div class="video-block section-padding">
+<div class="video-block section-padding" *ngIf="!searchResults">
   <div class="row">
     <div class="col-md-12">
       <div class="col-md-12 d-flex justify-content-between m-2">
@@ -58,14 +58,14 @@
       </div>
     </div>
     <app-video-card [videoData]="independentMedia" [openLink] = "true" />
-    <div class="d-flex justify-content-center mb-2" *ngIf="hasindependentMedia">
+    <!-- <div class="d-flex justify-content-center mb-2" *ngIf="hasindependentMedia">
       <button
         class="btn btn-outline-primary"
         (click)="independentMediaLoadMore()"
       >
         Load More
       </button>
-    </div>
+    </div> -->
   </div>
 </div>
 <ng-container *ngIf="!searchResults">

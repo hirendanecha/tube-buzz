@@ -28,20 +28,23 @@ export class ChannelsComponent implements OnInit, AfterViewInit {
         window.scrollTo(0, 0);
       }
     });
+    this.getChannelByUserId();
+    this.channelService.myChannels$.subscribe(channels => {
+      this.channelList = channels;
+    });
   }
 
   ngAfterViewInit(): void {
     // this.userData = this.authService.userDetails;
     // console.log('user', this.userData);
-    this.getChannelByUserId();
   }
 
   getChannelByUserId(): void {
     const userId = this.userData.UserID;
     this.channelService.getMyChannels();
-    this.channelService.myChannels$.subscribe(channels => {
-      this.channelList = channels;
-    });
+    // this.channelService.myChannels$.subscribe(channels => {
+    //   this.channelList = channels;
+    // });
     // const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
     // this.commonService.get(apiUrl).subscribe({
     //   next: (res) => {

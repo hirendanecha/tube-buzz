@@ -21,7 +21,7 @@ export class CreateChannelComponent implements OnInit{
   userForm = new FormGroup({
     profileid: new FormControl(),
     profile_pic_name: new FormControl(''),
-    feature: new FormControl(false),
+    feature: new FormControl(true),
     firstname: new FormControl('', [Validators.required]),
     description: new FormControl(''),
     unique_link: new FormControl({ value: '', disabled: true }),
