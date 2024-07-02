@@ -106,7 +106,7 @@
   <button class="btn btn-danger text-white" (click)="activateModal.close()">
     Cancel
   </button>
-  <button [ngClass]="userForm.valid && profileImg.file ? 'btn-success' : 'btn-secondary'"
+  <button [ngClass]="userForm.valid && profileImg.file ? 'btn-primary' : 'btn-secondary'"
    class="btn text-white" type="submit" (click)="upload()">
     Save
   </button>

@@ -19,7 +19,7 @@
             [fixedWidth]="true"
           /> </span
       ></a>
-      <span>{{ channelDetails.subscribers }} Subscribers</span>
+      <!-- <span>{{ channelDetails.subscribers }} Subscribers</span> -->
     </div>
   </div>
 </ng-container>
@@ -95,7 +95,7 @@
           <button
             class="btn btn-sm"
             [ngClass]="
-              !channelDetails?.isSubscribed ? 'btn-success' : 'btn-danger'
+              !channelDetails?.isSubscribed ? 'btn-outline-primary' : 'btn-outline-danger'
             "
             (click)="channelSubscribe(channelDetails?.isSubscribed)"
           >
@@ -166,10 +166,10 @@
                 <fa-icon [icon]="['fas', 'video']" />
                 videos {{ channelDetails?.videoCount }}
               </p>
-              <p class="d-flex gap-3">
+              <!-- <p class="d-flex gap-3">
                 <fa-icon [icon]="['fas', 'eye']" />
                 subscribers {{ channelDetails?.subscribers }}
-              </p>
+              </p> -->
             </div>
           </div>
         </ng-container>
