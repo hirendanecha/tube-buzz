@@ -39,47 +39,47 @@
     <ul
       class="navbar-nav ms-auto ms-md-0 osahan-right-navbar align-items-center gap-sm-5 gap-3"
     >
-    <li class="nav-item dropdown no-arrow osahan-right-navbar-user">
-      <div
-        ngbDropdown
-        class="d-inline-block btn-group float-end right-action"
-      >
-        <a
-          class="user-dropdown-link d-flex align-items-center"
-          id="userDropdown"
-          role="button"
-          ngbDropdownToggle
-        >
-        <fa-icon
-        class="font-28-px"
-        [icon]="['fas', 'square-plus']"
-        [fixedWidth]="true"
-      />
-        </a>
+      <li class="nav-item dropdown no-arrow osahan-right-navbar-user">
         <div
-          ngbDropdownMenu
-          aria-labelledby="userDropdown"
-          class="shadow-lg p-1 mb-5 rounded"
+          ngbDropdown
+          class="d-inline-block btn-group float-end right-action"
         >
-          <button ngbDropdownItem (click)="openVideoUploadPopUp()">
+          <a
+            class="user-dropdown-link d-flex align-items-center"
+            id="userDropdown"
+            role="button"
+            ngbDropdownToggle
+          >
             <fa-icon
-              class="font-20-px"
-              [icon]="['fas', 'upload']"
+              class="font-28-px"
+              [icon]="['fas', 'square-plus']"
               [fixedWidth]="true"
             />
-            &nbsp; Upload
-          </button>
-          <button ngbDropdownItem (click)="createChannel()">
-            <fa-icon
-              class="font-20-px"
-              [icon]="['fas', 'plus']"
-              [fixedWidth]="true"
-            />
-            &nbsp; Create Channel
-          </button>
+          </a>
+          <div
+            ngbDropdownMenu
+            aria-labelledby="userDropdown"
+            class="shadow-lg p-1 mb-5 rounded"
+          >
+            <button ngbDropdownItem (click)="openVideoUploadPopUp()">
+              <fa-icon
+                class="font-20-px"
+                [icon]="['fas', 'upload']"
+                [fixedWidth]="true"
+              />
+              &nbsp; Upload
+            </button>
+            <button ngbDropdownItem (click)="createChannel()">
+              <fa-icon
+                class="font-20-px"
+                [icon]="['fas', 'plus']"
+                [fixedWidth]="true"
+              />
+              &nbsp; Create Channel
+            </button>
+          </div>
         </div>
-      </div>
-    </li>
+      </li>
       <div class="single-item">
         <div
           class="icon-area d-center position-relative"
@@ -104,7 +104,9 @@
             ngbDropdownToggle
           >
             <img
-              data-src="{{ userDetails?.ProfilePicName || '/assets/default-profile.jpg' }}"
+              data-src="{{
+                userDetails?.ProfilePicName || '/assets/default-profile.jpg'
+              }}"
               alt=""
               loading="lazy"
               onerror="this.onerror=null;this.src='/assets/default-profile.jpg';"
@@ -205,6 +207,12 @@
   <ng-template #noCredentials>
     <div class="d-flex align-items-center justify-content-between w-100 m-2">
       <div class="d-flex">
+        <button
+          class="btn btn-link btn-sm text-secondary order-1 order-sm-0 ms-1"
+          (click)="toggleSidebar()"
+        >
+          <fa-icon [icon]="['fas', 'bars']" [fixedWidth]="true" />
+        </button>
         <a class="navbar-brand ms-2 me-1" routerLink="/home"
           ><img
             class="img-fluid h-40-px rounded"

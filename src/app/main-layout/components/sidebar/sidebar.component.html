@@ -42,33 +42,29 @@
   </li>
 
   <li class="channel-sidebar-list">
-    <h6>Subscriptions Channels</h6>
-    <ul>
-      <li class="nav-item" *ngFor="let channel of subscriptionsChannels">
-        <div class="channels-list" (click)="navigateToChannel(channel)">
-          <a
-            [routerLink]="'channels/' + channel?.unique_link"
-            [state]="{ data: channel }"
-          >
-            <img
-              class="img-fluid image-render"
-              [src]="channel.profile_pic_name"
-              alt=""
-              onerror="this.onerror=null;this.src='assets/default-profile.jpg';"
-            />
-            <ng-container *ngIf="shareService.isSidebarOpen || backCanvas">
-              {{ channel.firstname }}
-            </ng-container>
-          </a>
-        </div>
-        <!-- <div (click)="navigateToChannel(channel)">
-            <img class="img-fluid" [src]="channel.profile_pic_name" alt=""
-            onerror="this.onerror=null;this.src='assets/default-profile.jpg';"
+    <ng-container *ngIf="shareService.getCredentials()">
+      <h6>Subscriptions Channels</h6>
+      <ul>
+        <li class="nav-item" *ngFor="let channel of subscriptionsChannels">
+          <div class="channels-list" (click)="navigateToChannel(channel)">
+            <a
+              [routerLink]="'channels/' + channel?.unique_link"
+              [state]="{ data: channel }"
             >
-            {{ channel.firstname }}
-          </div> -->
-      </li>
-    </ul>
+              <img
+                class="img-fluid image-render"
+                [src]="channel.profile_pic_name"
+                alt=""
+                onerror="this.onerror=null;this.src='assets/default-profile.jpg';"
+              />
+              <ng-container *ngIf="shareService.isSidebarOpen || backCanvas">
+                {{ channel.firstname }}
+              </ng-container>
+            </a>
+          </div>
+        </li>
+      </ul>
+    </ng-container>
     <h6>Featured Channels</h6>
     <ul>
       <li class="nav-item" *ngFor="let channel of featuredChannels">
