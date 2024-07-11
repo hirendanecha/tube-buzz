@@ -6,28 +6,20 @@
       (breakpointService?.screen | async)?.md?.gatherThen
   }"
 >
-  <li class="nav-item" routerLinkActive="active">
-    <a class="nav-link" routerLink="/home">
+  <li class="nav-item">
+    <a class="nav-link" routerLink="/home" routerLinkActive="active">
       <fa-icon [icon]="['fas', 'home']" [fixedWidth]="true" />
       <span>Home</span>
     </a>
   </li>
-  <li
-    class="nav-item"
-    routerLinkActive="active"
-    *ngIf="shareService.getCredentials()"
-  >
-    <a class="nav-link" routerLink="/channels">
+  <li class="nav-item" *ngIf="shareService.getCredentials()">
+    <a class="nav-link" routerLink="/channels" routerLinkActive="active">
       <fa-icon [icon]="['fas', 'clapperboard']" [fixedWidth]="true" />
       <span>My Channels</span>
     </a>
   </li>
-  <li
-    class="nav-item"
-    routerLinkActive="active"
-    *ngIf="shareService.getCredentials()"
-  >
-    <a class="nav-link" routerLink="/account">
+  <li class="nav-item" *ngIf="shareService.getCredentials()">
+    <a class="nav-link" routerLink="/account" routerLinkActive="active">
       <fa-icon [icon]="['fas', 'user-circle']" [fixedWidth]="true" />
       <span>My Profile</span>
     </a>
@@ -42,28 +34,41 @@
       <span>Create Channel</span>
     </a>
   </li>
-  <li class="nav-item" routerLinkActive="active" *ngIf="shareService.getCredentials()">
-    <a class="nav-link" routerLink="/history">
+  <li class="nav-item" *ngIf="shareService.getCredentials()">
+    <a class="nav-link" routerLink="/history" routerLinkActive="active">
       <fa-icon [icon]="['fas', 'clock-rotate-left']" [fixedWidth]="true" />
       <span>Viewing History</span>
     </a>
   </li>
 
-  <!-- <li class="nav-item" routerLinkActive="active">
-      <a class="nav-link" routerLink="/history-page">
-      <fa-icon [icon]="['fas', 'history']" [fixedWidth]="true" />
-      <span>History Page</span>
-      </a>
-   </li> -->
-
-  <li class="nav-item" routerLinkActive="active" *ngIf="isUserMediaApproved()">
-    <a class="nav-link" routerLink="/upload/details">
-      <fa-icon [icon]="['fas', 'cloud-upload']" [fixedWidth]="true" />
-      <span>Upload Details</span>
-    </a>
-  </li>
-
   <li class="channel-sidebar-list">
+    <h6>Subscriptions Channels</h6>
+    <ul>
+      <li class="nav-item" *ngFor="let channel of subscriptionsChannels">
+        <div class="channels-list" (click)="navigateToChannel(channel)">
+          <a
+            [routerLink]="'channels/' + channel?.unique_link"
+            [state]="{ data: channel }"
+          >
+            <img
+              class="img-fluid image-render"
+              [src]="channel.profile_pic_name"
+              alt=""
+              onerror="this.onerror=null;this.src='assets/default-profile.jpg';"
+            />
+            <ng-container *ngIf="shareService.isSidebarOpen || backCanvas">
+              {{ channel.firstname }}
+            </ng-container>
+          </a>
+        </div>
+        <!-- <div (click)="navigateToChannel(channel)">
+            <img class="img-fluid" [src]="channel.profile_pic_name" alt=""
+            onerror="this.onerror=null;this.src='assets/default-profile.jpg';"
+            >
+            {{ channel.firstname }}
+          </div> -->
+      </li>
+    </ul>
     <h6>Featured Channels</h6>
     <ul>
       <li class="nav-item" *ngFor="let channel of featuredChannels">

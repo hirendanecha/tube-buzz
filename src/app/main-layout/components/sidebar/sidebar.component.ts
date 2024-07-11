@@ -18,9 +18,11 @@ import { ChannelService } from 'src/app/@shared/services/channels.service';
 export class SidebarComponent implements OnInit {
   channel: any;
   featuredChannels: any;
+  subscriptionsChannels: any = [];
   useDetails: any = {};
   backCanvas: boolean = true;
   apiUrl = environment.apiUrl + 'channels/';
+  profileId: number;
 
   constructor(
     public shareService: ShareService,
@@ -37,10 +39,15 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     const channelId = this.route.snapshot.paramMap.get('id');
+    this.profileId = +localStorage.getItem('profileId');
+
+    console.log(this.profileId, 'profile id');
+
     // this.getChannels();
     this.channel = this.channelService.getChannelById(channelId);
     this.backCanvas = this.offcanvasService.hasOpenOffcanvas();
     this.channelService.getChannels();
+    this.getSubscribeChannels();
     this.channelService.channels$.subscribe((channels) => {
       this.featuredChannels = channels;
     });
@@ -96,5 +103,20 @@ export class SidebarComponent implements OnInit {
         // this.getChannels();
       }
     });
+  }
+
+  getSubscribeChannels(): void {
+    this.commonService
+      .get(
+        `${environment.apiUrl}subscribe/getSubscribedChannel/${this.profileId}`
+      )
+      .subscribe({
+        next: (res) => {
+          this.subscriptionsChannels = res;
+        },
+        error(err) {
+          console.log(err);
+        },
+      });
   }
 }

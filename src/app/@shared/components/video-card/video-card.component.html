@@ -1,5 +1,5 @@
 <div class="row border-bottom">
-  <ng-container *ngIf="videoData.length">
+  <ng-container *ngIf="videoData?.length">
     <div class="col-xl-3 col-sm-6 mb-2" *ngFor="let video of videoData">
       <div class="video-container rounded-3" *ngIf="videoData">
         <!-- [ngClass]="postId === video.id ? '' : 'video-card'" -->
@@ -71,7 +71,7 @@
       </div>
     </div>
   </ng-container>
-  <ng-container *ngIf="!videoData.length">
+  <ng-container *ngIf="!videoData?.length">
     <div class="col-12 text-center">
       <h6>No data available</h6>
     </div>
