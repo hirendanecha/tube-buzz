@@ -19,7 +19,7 @@ export const environment = {
   domain: '.tube.buzz',
   wasabiUrl: wasabiUrl,
   socketUrl: `${backendUrl}`,
-  conferenceUrl: 'https://facetime.tube/',
+  conferenceUrl: 'https://meet.facetime.tube/',
   logoutUrl: logoutUrl
 };
 
