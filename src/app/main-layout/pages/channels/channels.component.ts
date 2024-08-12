@@ -22,7 +22,7 @@ export class ChannelsComponent implements OnInit, AfterViewInit {
   ) {}
   
   ngOnInit(): void {
-    this.userData = JSON.parse(this.authService.getUserData() as any);
+    this.userData = this.authService.getUserData() as any;
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         window.scrollTo(0, 0);

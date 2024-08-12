@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private shareService: ShareService,
     private seoService: SeoService,
   ) {
-    this.useDetails = JSON.parse(this.authService.getUserData() as any);
+    this.useDetails = this.authService.getUserData() as any;
     this.channelId = +localStorage.getItem('channelId');
 
     this.routerSubscription = this.route.paramMap.subscribe((paramMap) => {

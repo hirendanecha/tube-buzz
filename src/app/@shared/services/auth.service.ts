@@ -153,9 +153,8 @@ export class AuthService {
   }
 
   getUserData() {
-    return localStorage.getItem('userData');
+    return JSON.parse(localStorage.getItem('userData'));
   }
-
 
   verifyToken(token): Observable<any> {
     return this.http.get(

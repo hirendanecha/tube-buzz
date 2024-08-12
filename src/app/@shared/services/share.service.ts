@@ -6,7 +6,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { ChannelService } from './channels.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ShareService {
   isSidebarOpen: boolean = true;
@@ -16,24 +16,25 @@ export class ShareService {
   channelData: any = {};
   notificationList: any = [];
   isNotify: boolean;
-  userChannelName: string
+  userChannelName: string;
   isUserAuthenticated: Subject<boolean> = new BehaviorSubject<boolean>(false);
   public _credentials: any = {};
   private mediaApprovedSubject = new BehaviorSubject<boolean>(false);
   mediaApproved$ = this.mediaApprovedSubject.asObservable();
-
+  loginUserInfo = new BehaviorSubject<any>(null);
+  loginUser = this.loginUserInfo.asObservable();
   constructor(
     private commonService: CommonService,
     private channelService: ChannelService,
     private authService: AuthService
   ) {
     const theme = localStorage.getItem('theme');
-    this.isDarkTheme = (theme === 'dark');
+    this.isDarkTheme = theme === 'dark';
     // this.isDarkTheme = !(theme === 'dark');
     this.toggleTheme();
 
     const sidebar = localStorage.getItem('sidebar');
-    this.isSidebarOpen = (sidebar === 'open');
+    this.isSidebarOpen = sidebar === 'open';
   }
 
   openSidebar(): void {
@@ -66,7 +67,6 @@ export class ShareService {
     }
   }
 
-
   // toggleTheme(): void {
   //   if (this.isDarkTheme) {
   //     document.body.classList.remove('dark-theme');
@@ -92,7 +92,7 @@ export class ShareService {
   }
 
   // getUserDetails(id: any): void {
-  //   // const id = JSON.parse(this.authService.getUserData() as any)?.profileId
+  //   // const id = this.authService.getUserData() as any?.profileId
   //   const url = environment.apiUrl + `customers/profile/${id}`
   //   this.commonService.get(url).subscribe({
   //     next: ((res: any) => {
@@ -107,7 +107,9 @@ export class ShareService {
   //   })
   // }
   getUserDetails() {
-    const profileId = JSON.parse(this.authService.getUserData() as any)?.profileId
+    const profileId = JSON.parse(
+      this.authService.getUserData() as any
+    )?.profileId;
     if (profileId) {
       this.channelService.getProfile(profileId).subscribe({
         next: (res: any) => {
@@ -116,7 +118,7 @@ export class ShareService {
             this.userData = data;
             this.userDetails = data;
             this.authService.setUserData(this.userData);
-            localStorage.setItem('userData', JSON.stringify(this.userData));
+            this.getLoginUserInfo(data);
             const mediaApproved = res.data.MediaApproved === 1;
             this.updateMediaApproved(mediaApproved);
             this.getChannelByUserId(this.userDetails?.channelId);
@@ -130,7 +132,7 @@ export class ShareService {
   }
 
   getNotificationList() {
-    const id = JSON.parse(this.authService.getUserData() as any)?.profileId
+    const id = this.authService.getUserData()?.profileId;
     // const id = localStorage.getItem('profileId');
     const data = {
       page: 1,
@@ -149,7 +151,7 @@ export class ShareService {
   }
 
   getChannelByUserId(value): void {
-    const url = environment.apiUrl
+    const url = environment.apiUrl;
     this.commonService.get(`${url}channels/get/${value}`).subscribe({
       next: (res) => {
         // console.log(res[0]?.id)
@@ -167,7 +169,7 @@ export class ShareService {
   }
 
   getCredentials(): any {
-    this._credentials = JSON.parse(this.authService.getUserData() as any) || null;
+    this._credentials = (this.authService.getUserData() as any) || null;
     const isAuthenticate = Object.keys(this._credentials || {}).length > 0;
     this.changeIsUserAuthenticated(isAuthenticate);
     return isAuthenticate;
@@ -175,5 +177,9 @@ export class ShareService {
 
   changeIsUserAuthenticated(flag: boolean = false) {
     this.isUserAuthenticated.next(flag);
+  }
+
+  getLoginUserInfo(userData: any) {
+    this.loginUserInfo.next(userData);
   }
 }

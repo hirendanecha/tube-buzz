@@ -14,7 +14,7 @@ export class NotificationsComponent {
   notificationList: any[] = [];
   activePage = 1;
   hasMoreData = false;
-  
+
   constructor(
     private customerService: CustomerService,
     private spinner: NgxSpinnerService,
@@ -29,7 +29,7 @@ export class NotificationsComponent {
 
   getNotificationList() {
     this.spinner.show();
-    const id = JSON.parse(this.authService.getUserData() as any)?.profileId
+    const id = this.authService.getUserData()?.profileId;
     const data = {
       page: this.activePage,
       size: 30,

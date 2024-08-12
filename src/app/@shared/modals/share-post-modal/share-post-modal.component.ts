@@ -26,7 +26,7 @@ export class SharePostModalComponent implements AfterViewInit {
     postdescription: '',
     meta: {},
     tags: [],
-    parentPostId: null
+    parentPostId: null,
   };
 
   constructor(
@@ -35,10 +35,10 @@ export class SharePostModalComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {
-    const profileId  = JSON.parse(this.authService.getUserData() as any)?.profileId;
+    const profileId = this.authService.getUserData()?.profileId;
     this.sharePostData.profileid = profileId;
     this.sharePostData.parentPostId = this.post.id;
-    this.sharePost = this.tubeUrl + 'video/' + this.post.id; 
+    this.sharePost = this.tubeUrl + 'video/' + this.post.id;
   }
 
   onTagUserInputChangeEvent(data: any): void {
@@ -52,6 +52,6 @@ export class SharePostModalComponent implements AfterViewInit {
 
   submit() {
     this.activeModal.close(this.sharePostData);
-    this.clearMetaData()
+    this.clearMetaData();
   }
 }

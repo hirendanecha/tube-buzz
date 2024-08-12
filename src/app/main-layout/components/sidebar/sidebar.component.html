@@ -42,7 +42,11 @@
   </li>
 
   <li class="channel-sidebar-list">
-    <ng-container *ngIf="shareService.getCredentials()">
+    <ng-container
+      *ngIf="
+        shareService.getCredentials() && subscriptionsChannels.length > 0
+      "
+    >
       <h6>Subscriptions Channels</h6>
       <ul>
         <li class="nav-item" *ngFor="let channel of subscriptionsChannels">

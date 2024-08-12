@@ -38,6 +38,8 @@ export class AppComponent implements OnInit, AfterViewInit {
         next: (res: any) => {
           if (!res?.verifiedToken) {
             this.logOut();
+          } else {
+            this.shareService.getLoginUserInfo(this.authService.userData());
           }
         },
         error: (err) => {

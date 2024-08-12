@@ -37,7 +37,7 @@ export class UploadVideoComponent {
     private spinner: NgxSpinnerService,
     private router: Router
   ) {
-    const userData = JSON.parse(this.authService.getUserData() as any)
+    const userData = this.authService.getUserData() as any
     this.postData.profileid = userData.profileId;
     if (history.state.data) {
       this.uploadVideoData = { ...history.state.data };

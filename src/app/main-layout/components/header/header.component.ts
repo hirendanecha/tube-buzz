@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userDetails = JSON.parse(this.authService.getUserData() as any);
+    this.userDetails = this.authService.getUserData() as any;
   }
 
   ngAfterViewInit(): void {}

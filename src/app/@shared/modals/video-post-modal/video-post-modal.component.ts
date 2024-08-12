@@ -80,7 +80,7 @@ export class VideoPostModalComponent implements OnInit, AfterViewInit {
     public modalService: NgbModal,
     private cdr: ChangeDetectorRef
   ) {
-    this.userDetails = JSON.parse(this.authService.getUserData() as any);
+    this.userDetails = this.authService.getUserData() as any;
     this.postData.profileid = this.userDetails?.profileId;
     // this.postData.profileid = JSON.parse(
     //   this.authService.getUserData() as any

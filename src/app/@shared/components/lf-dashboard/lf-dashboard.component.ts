@@ -53,7 +53,7 @@ export class LfDashboardComponent implements OnInit {
     public modalService: NgbModal,
     private router: Router
   ) {
-    this.useDetails = JSON.parse(this.authService.getUserData() as any);
+    this.useDetails = this.authService.getUserData() as any;
     // this.getChannelByUserId(this.useDetails?.UserID);
     this.route.paramMap.subscribe((paramMap) => {
       // https://facetime.opash.in/
@@ -90,9 +90,9 @@ export class LfDashboardComponent implements OnInit {
     if (this.userId) {
       this.getChannels();
     }
-    this.shareService.mediaApproved$.subscribe(value => {
+    this.shareService.mediaApproved$.subscribe((value) => {
       this.mediaApproved = value;
-    });    
+    });
   }
 
   getChannelDetails(value): void {
@@ -156,7 +156,7 @@ export class LfDashboardComponent implements OnInit {
   //       }
   //     });
   //   };
-  
+
   //   if (!this.channelList || !this.channelList.length) {
   //     const userId = this.useDetails?.UserID;
   //     const apiUrl = `${environment.apiUrl}channels/get-channels/${userId}`;
@@ -200,9 +200,9 @@ export class LfDashboardComponent implements OnInit {
   }
 
   getChannels(): void {
-    // this.userId = JSON.parse(this.authService.getUserData() as any)?.UserID;
+    // this.userId = this.authService.getUserData() as any?.UserID;
     this.channelService.getMyChannels();
-    this.channelService.myChannels$.subscribe(channels => {
+    this.channelService.myChannels$.subscribe((channels) => {
       this.channelList = channels;
     });
     // const apiUrl = `${environment.apiUrl}channels/get-channels/${this.userId}`;
