@@ -56,7 +56,7 @@ export class SingleChannelComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.useDetails = JSON.parse(this.authService.getUserData() as any);
+    this.useDetails = this.authService.getUserData() as any;
     // if (this.useDetails?.MediaApproved === 1) {
     //   return;
     // } else {

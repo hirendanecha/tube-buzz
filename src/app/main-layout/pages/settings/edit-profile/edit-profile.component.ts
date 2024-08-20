@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -50,9 +56,7 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
       Validators.pattern(/^\d{10}$/),
     ]),
     City: new FormControl('', [Validators.required]),
-    State: new FormControl('', [
-      Validators.required,
-    ]),
+    State: new FormControl('', [Validators.required]),
     Username: new FormControl('', [Validators.required]),
     UserID: new FormControl('', [Validators.required]),
     ProfilePicName: new FormControl('', [Validators.required]),
@@ -73,12 +77,13 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
     private tokenStorage: TokenStorageService
   ) {
     this.profileId = this.authService.profileId();
-    this.userMail = this.authService?.userData()?.Email;
-    this.shareService.getUserDetails();
+    this.shareService.getLoginUserInfo(this.authService.userData());
+    this.shareService.loginUserInfo.subscribe((user) => {
+      this.useDetails = user;
+    });
   }
   ngOnInit(): void {
     this.getAllCountries();
-    this.getUserDetails();
   }
 
   ngAfterViewInit(): void {
@@ -90,10 +95,11 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
           this.onZipChange(val);
         }
       });
+    this.getUserDetails();
   }
 
   getUserDetails(): void {
-    this.useDetails = this.authService?.userData();
+    this.userMail = this.useDetails?.Email;
     const data = {
       FirstName: this.useDetails?.FirstName,
       LastName: this.useDetails?.LastName,
@@ -106,9 +112,8 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
       ProfilePicName: this.useDetails?.ProfilePicName,
       CoverPicName: this.useDetails?.CoverPicName,
       // Email:this.useDetails?.Email,
-      UserID: this.useDetails?.UserID
+      UserID: this.useDetails?.UserID,
     };
-    console.log('useDetails', data);
     this.userForm.setValue(data);
   }
   // getProfile(id): void {

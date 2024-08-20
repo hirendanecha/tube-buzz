@@ -40,38 +40,16 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     const channelId = this.route.snapshot.paramMap.get('id');
     this.profileId = +localStorage.getItem('profileId');
-
-    console.log(this.profileId, 'profile id');
-
-    // this.getChannels();
     this.channel = this.channelService.getChannelById(channelId);
     this.backCanvas = this.offcanvasService.hasOpenOffcanvas();
     this.channelService.getChannels();
     this.getSubscribeChannels();
-    this.channelService.channels$.subscribe((channels) => {
-      this.featuredChannels = channels;
-    });
+    this.getChannels();
   }
 
-  // getChannels(): void {
-  //   this.channelService.getChannels();
-  //   this.channelService.channels$.subscribe(channels => {
-  //     this.featuredChannels = channels;
-  //   });
-  // }
   getChannels(): void {
-    // this.spinner.show();
-    this.commonService.get(this.apiUrl).subscribe({
-      next: (res: any) => {
-        // this.spinner.hide();
-        if (res.data) {
-          this.featuredChannels = res.data;
-        }
-      },
-      error: (error) => {
-        // this.spinner.hide();
-        console.log(error);
-      },
+    this.channelService.channels$.subscribe((channels) => {
+      this.featuredChannels = channels;
     });
   }
 

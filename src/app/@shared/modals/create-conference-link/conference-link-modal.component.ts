@@ -7,7 +7,6 @@ import { ChannelService } from '../../services/channels.service';
 import { AuthService } from '../../services/auth.service';
 import { environment } from 'src/environments/environment';
 
-
 @Component({
   selector: 'app-conference-link-modal',
   templateUrl: './conference-link-modal.component.html',
@@ -30,36 +29,34 @@ export class ConferenceLinkComponent {
   myProp: string;
   hasDisplayedError = false;
   profileId: number;
-  originUrl = environment.conferenceUrl
+  originUrl = environment.conferenceUrl;
   link: string = '';
   constructor(
     private spinner: NgxSpinnerService,
     public toastService: ToastService,
     public activateModal: NgbActiveModal,
     private channelService: ChannelService,
-    public authService: AuthService,
+    public authService: AuthService
   ) {
-    this.profileId = JSON.parse(this.authService.getUserData() as any).profileId;
+    this.profileId = this.authService.getUserData()?.profileId;
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   slugify = (str: string) => {
     return str?.length > 0
       ? str
-        .toLowerCase()
-        .trim()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/[\s_-]+/g, '-')
-        .replace(/^-+|-+$/g, '')
+          .toLowerCase()
+          .trim()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/[\s_-]+/g, '-')
+          .replace(/^-+|-+$/g, '')
       : '';
   };
-
 
   openConferenceCall(): void {
     const webRtcUrl = `${this.originUrl}${this.link}`;
     window.open(webRtcUrl, '_blank');
     this.activateModal.close();
   }
-
 }

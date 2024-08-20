@@ -44,7 +44,7 @@ export class CreateChannelComponent implements OnInit{
     public authService: AuthService,
     private router: Router
   ) {
-    this.userData = JSON.parse(this.authService.getUserData() as any);
+    this.userData = this.authService.getUserData() as any;
   }
 
   ngOnInit(): void {

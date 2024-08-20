@@ -45,7 +45,7 @@ export class MyAccountComponent implements OnInit, OnDestroy{
     private socketService: SocketService
   ) {
     // this.channelId = +localStorage.getItem('channelId');
-    this.userData = JSON.parse(this.authService.getUserData() as any);
+    this.userData = this.authService.getUserData() as any;
     this.channelId = this.userData?.channelId;
 
     this.routerSubscription = this.router.events.subscribe((event: any) => {
