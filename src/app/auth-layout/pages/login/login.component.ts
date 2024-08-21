@@ -75,11 +75,11 @@ export class LoginComponent implements OnInit{
     // }
     if (this.loginForm.valid) {
       this.spinner.show();
-      window.location.reload();
       this.authService.customerlogin(this.loginForm.value).subscribe({
         next: (data: any) => {
           this.spinner.hide();
           if (!data.error) {
+            window.location.reload();
             // this.cookieService.set('token', data?.accessToken);
             // this.cookieService.set('userData', JSON.stringify(data?.user));
             this.tokenStorage.saveToken(data?.accessToken);

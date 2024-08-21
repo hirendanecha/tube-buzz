@@ -108,7 +108,7 @@ export class ChannelService {
 
   getMyChannels(): void {
     const userData = JSON.parse(localStorage.getItem('userData'));
-    const userId = +userData.UserID as number;
+    const userId = +userData.Id as number;
     this.http
       .get(`${this.baseUrl}/get-channels/${userId}`)
       .pipe(

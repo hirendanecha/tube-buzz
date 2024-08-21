@@ -112,7 +112,7 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
       ProfilePicName: this.useDetails?.ProfilePicName,
       CoverPicName: this.useDetails?.CoverPicName,
       // Email:this.useDetails?.Email,
-      UserID: this.useDetails?.UserID,
+      UserID: this.useDetails?.Id,
     };
     this.userForm.setValue(data);
   }
