@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit{
   ngOnInit(): void {
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
-      this.router.navigate([`/home`]);
+      this.router.navigate(['/home']);
     } 
 
     this.loginForm = this.fb.group({
@@ -75,6 +75,7 @@ export class LoginComponent implements OnInit{
     // }
     if (this.loginForm.valid) {
       this.spinner.show();
+      window.location.reload();
       this.authService.customerlogin(this.loginForm.value).subscribe({
         next: (data: any) => {
           this.spinner.hide();
@@ -94,7 +95,6 @@ export class LoginComponent implements OnInit{
             this.isLoginFailed = false;
             this.isLoggedIn = true;
             this.toastService.success('Logged in successfully');
-            // window.location.reload();
             this.router.navigate(['/home']);
           } else {
             this.loginMessage = data.mesaage;
