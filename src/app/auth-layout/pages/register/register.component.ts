@@ -51,12 +51,12 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     Email: new FormControl('', [Validators.required]),
     Password: new FormControl('', [Validators.required]),
     confirm_password: new FormControl('', [Validators.required]),
-    MobileNo: new FormControl('', [Validators.required]),
+    MobileNo: new FormControl(''),
     Country: new FormControl('US', [Validators.required]),
     Zip: new FormControl('', [Validators.required]),
     State: new FormControl('', [Validators.required]),
-    City: new FormControl('', [Validators.required]),
-    County: new FormControl('', [Validators.required]),
+    City: new FormControl(''),
+    County: new FormControl(''),
     TermAndPolicy: new FormControl(false, Validators.required),
     Anonymous: new FormControl(false, Validators.required),
   });
@@ -115,6 +115,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   selectFiles(event) {
     this.profileImg = event;
+    console.log(event);
+    
   }
 
   upload(file: any = {}) {
